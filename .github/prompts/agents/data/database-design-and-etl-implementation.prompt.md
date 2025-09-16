@@ -1,5 +1,5 @@
 ---
-description: Design efficient database schemas and implement robust ETL pipelines for data processing. Adapts to project specifications defined in copilot.instructions.md.
+description: Design comprehensive database schemas and implement robust ETL pipelines with advanced data processing, transformation capabilities, and performance optimization. Adapts to project specifications defined in copilot.instructions.md.
 model: claude-4-sonnet
 tools:
   - codebase
@@ -8,46 +8,296 @@ tools:
   - runCommands
   - githubRepo
   - search
+  - vscodeAPI
 ---
+
+**🤖 CHATMODE ACTIVATION:** This prompt automatically activates the `data-engineer` chatmode.
+**📋 CHATMODE CONTEXT:** The activated chatmode will read copilot.instructions.md and adapt to project requirements.
+**🔄 GITHUB COPILOT INTEGRATION:** All tasks will be managed through GitHub Copilot Chat workflows.
 
 # Database Design and ETL Implementation
 
-**Agent: data-engineer**
-**Purpose: Design efficient database schemas and implement robust ETL pipelines for data processing**
+## FUNCTIONAL REQUIREMENTS
 
----
+**What needs to be accomplished:**
 
-## Context Analysis
+### Comprehensive Database Schema Design
+- **Data Modeling Excellence**: Design normalized database schemas with proper entity relationships, constraints, and business rule enforcement
+- **Performance Optimization**: Implement indexing strategies, query optimization, and database-specific performance enhancements
+- **Scalability Planning**: Design schemas that support horizontal and vertical scaling with partitioning and sharding strategies
+- **Compliance Integration**: Incorporate industry-specific compliance requirements including audit trails, data retention, and privacy controls
 
-**Context Adaptation**: Read copilot.instructions.md to understand:
-- **Database Technology**: Primary database system selection (PostgreSQL, MySQL, SQL Server, MongoDB) based on data patterns and requirements
-- **Backend Framework**: ORM and data access pattern selection (Hibernate for Java, Entity Framework for .NET, TypeORM for Node.js, SQLAlchemy for Python)
-- **Business Domain**: Industry-specific data modeling requirements, compliance needs (GDPR, HIPAA), and audit requirements
-- **Project Scale**: Data volume expectations, performance requirements, and analytics complexity
-- **Integration Requirements**: ETL complexity, real-time vs batch processing needs, and external system integrations
+### Advanced ETL Pipeline Implementation
+- **Data Extraction Strategies**: Implement robust data extraction from multiple sources including databases, APIs, files, and real-time streams
+- **Transformation Processing**: Design efficient data transformation pipelines with validation, cleansing, enrichment, and business rule application
+- **Load Optimization**: Implement high-performance data loading with bulk operations, upsert patterns, and error handling
+- **Pipeline Orchestration**: Create automated ETL workflows with scheduling, monitoring, and failure recovery mechanisms
 
-Based on this analysis, the engineer will select appropriate database technologies, data modeling approaches, and ETL implementation strategies.
+### Data Quality and Governance
+- **Data Validation Framework**: Implement comprehensive data quality checks with validation rules and anomaly detection
+- **Error Handling and Recovery**: Design robust error handling with data quarantine, retry mechanisms, and manual intervention workflows
+- **Audit and Lineage Tracking**: Create complete data lineage tracking with audit trails and change history management
+- **Performance Monitoring**: Implement comprehensive monitoring for ETL performance, data quality metrics, and system health
 
-## 🎯 Mission
+### Technology Stack Integration
+- **Database Technology Adaptation**: Optimize for specific database systems with vendor-specific features and best practices
+- **Framework Integration**: Integrate with backend frameworks and ORM technologies for seamless application development
+- **Cloud and On-Premise Support**: Design solutions that work across cloud platforms and on-premise infrastructure
+- **Real-time and Batch Processing**: Implement both real-time streaming and batch processing capabilities based on business requirements
 
-Create scalable data architecture that efficiently stores, processes, and transforms data to support business operations and analytics requirements.
+## HIGH-LEVEL ALGORITHMS
 
-## 📋 Database Design Process
+**How to approach the problem:**
 
-### Step 1: Data Requirements Analysis
-**From business and architecture specifications:**
-- **Business entities** and their relationships
-- **Data volume estimates** and growth projections
-- **Query patterns** and access requirements
-- **Performance requirements** (read/write ratios, latency)
-- **Compliance requirements** (GDPR, data retention, audit trails)
+### 1. Requirements Analysis and Technology Selection
+```
+1. Read copilot.instructions.md to extract:
+   - Database technology preferences and constraints
+   - Business domain data modeling requirements
+   - Performance and scalability expectations
+   - Compliance and regulatory requirements
 
-### Step 2: Data Modeling
+2. Data Architecture Assessment:
+   - Analyze data volume and growth projections
+   - Evaluate query patterns and access requirements
+   - Assess integration and ETL complexity needs
+   - Review real-time vs batch processing requirements
+```
 
-**Conceptual Data Model:**
-- **Business entities** identification (Customer, Order, Product)
-- **Relationships** between entities (one-to-one, one-to-many, many-to-many)
-- **Business rules** and constraints
+### 2. Database Schema Design and Optimization
+```
+1. Conceptual Data Modeling:
+   - Identify business entities and their relationships
+   - Define business rules and data constraints
+   - Map entity relationships and cardinalities
+   - Plan data lifecycle and retention strategies
+
+2. Physical Database Design:
+   - Design normalized schema with proper indexing
+   - Implement partitioning and sharding strategies
+   - Configure performance optimization settings
+   - Set up backup and recovery procedures
+```
+
+### 3. ETL Pipeline Architecture and Implementation
+```
+1. Data Source Analysis and Integration:
+   - Identify all data sources and formats
+   - Design data extraction strategies and scheduling
+   - Implement source system connectivity and authentication
+   - Plan incremental vs full data extraction patterns
+
+2. Transformation Logic Design:
+   - Design data transformation rules and business logic
+   - Implement data validation and quality checks
+   - Create error handling and data quarantine processes
+   - Set up data enrichment and aggregation workflows
+```
+
+### 4. Data Quality and Monitoring Implementation
+```
+1. Quality Assurance Framework:
+   - Implement data validation rules and quality metrics
+   - Create anomaly detection and alerting systems
+   - Design data profiling and quality reporting
+   - Set up manual data quality review processes
+
+2. Performance and Monitoring:
+   - Implement ETL performance monitoring and alerting
+   - Create data lineage tracking and audit trails
+   - Set up system health monitoring and diagnostics
+   - Design capacity planning and scaling procedures
+```
+
+### 5. Testing, Deployment, and Maintenance
+```
+1. Testing Strategy Implementation:
+   - Create unit tests for transformation logic
+   - Implement integration tests for end-to-end data flows
+   - Set up performance testing for ETL pipelines
+   - Create data quality validation testing
+
+2. Deployment and Operations:
+   - Set up automated deployment and configuration management
+   - Implement backup and disaster recovery procedures
+   - Create maintenance and optimization workflows
+   - Plan capacity monitoring and scaling procedures
+```
+
+## VALIDATION CRITERIA
+
+**What conditions must be met:**
+
+### ✅ Database Design Excellence
+- **Schema Quality**: Well-designed normalized schema with proper relationships, constraints, and business rule enforcement
+- **Performance Optimization**: Optimized database design with appropriate indexing, partitioning, and query performance
+- **Scalability Support**: Database architecture supports growth requirements with horizontal and vertical scaling capabilities
+- **Compliance Implementation**: Proper implementation of industry-specific compliance requirements and data governance
+
+### ✅ ETL Pipeline Robustness
+- **Data Processing Accuracy**: ETL pipelines process data accurately with proper transformation logic and business rule application
+- **Error Handling Excellence**: Comprehensive error handling with data quarantine, retry mechanisms, and manual intervention workflows
+- **Performance Standards**: ETL pipelines meet performance requirements for data volume and processing time expectations
+- **Monitoring and Alerting**: Complete monitoring framework with alerting for pipeline failures and data quality issues
+
+### ✅ Data Quality and Governance
+- **Data Validation Framework**: Robust data quality validation with comprehensive checks and anomaly detection
+- **Audit Trail Completeness**: Complete audit trail and data lineage tracking for compliance and troubleshooting
+- **Quality Metrics**: Comprehensive data quality metrics with reporting and trend analysis
+- **Change Management**: Proper change management processes for schema and ETL pipeline modifications
+
+### ✅ Technology Integration
+- **Framework Compatibility**: Seamless integration with backend frameworks and ORM technologies
+- **Database Optimization**: Proper optimization for specific database systems with vendor-specific features
+- **Deployment Automation**: Automated deployment and configuration management for consistent environments
+- **Scalability Implementation**: Architecture supports scaling requirements with cloud and on-premise deployment options
+
+### ✅ GitHub Copilot Integration
+- **Chatmode Coordination**: Seamless integration with api-engineer for data API development and security-engineer for data protection
+- **Documentation Quality**: Comprehensive database and ETL documentation supporting development workflows
+- **Configuration Adaptation**: Proper adaptation to project technology stack and business domain requirements
+- **Testing Support**: Complete testing framework for database operations and ETL pipeline validation
+
+## USAGE EXAMPLES
+
+**For different GitHub Copilot scenarios:**
+
+### Scenario 1: E-commerce Data Warehouse Implementation
+```yaml
+Context: E-commerce platform implementing comprehensive data warehouse with customer analytics and inventory management
+Technology Stack: Detected from copilot.instructions.md (PostgreSQL, Python, Apache Airflow, dbt)
+Business Domain: E-commerce with customer behavior analytics and inventory optimization
+
+Database and ETL Focus:
+- Customer data warehouse with behavioral analytics and segmentation
+- Product catalog and inventory data integration with real-time updates
+- Order and transaction data processing with financial reporting
+- Marketing campaign data integration with performance analytics
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Design e-commerce data warehouse with ETL pipelines using PostgreSQL and Airflow
+2. api-engineer chatmode → Implement analytics APIs for customer insights and inventory management
+3. frontend-engineer chatmode → Create analytics dashboards with real-time data visualization
+4. qa-engineer chatmode → Establish data quality testing and ETL pipeline validation
+
+Expected Deliverables:
+- E-commerce data warehouse schema with customer and product analytics models
+- Apache Airflow ETL pipelines with data quality monitoring and error handling
+- dbt transformations for customer segmentation and inventory optimization
+- Analytics APIs with comprehensive documentation and performance monitoring
+```
+
+### Scenario 2: Healthcare Data Integration Platform
+```yaml
+Context: Healthcare organization implementing clinical data warehouse with regulatory compliance and patient analytics
+Technology Stack: Healthcare-compliant setup (SQL Server, SSIS, Power BI, .NET Core)
+Business Domain: Healthcare with HIPAA compliance and clinical decision support
+
+Database and ETL Focus:
+- Clinical data warehouse with patient records and treatment outcomes
+- Medical device data integration with real-time monitoring
+- Insurance and billing data processing with regulatory reporting
+- Research data aggregation with anonymization and privacy controls
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Design HIPAA-compliant data warehouse with SSIS ETL pipelines
+2. security-engineer chatmode → Implement healthcare data protection and access controls
+3. api-engineer chatmode → Create clinical data APIs with audit trails and compliance features
+4. qa-engineer chatmode → Establish clinical data quality and patient safety validation
+
+Expected Deliverables:
+- HIPAA-compliant clinical data warehouse with comprehensive audit trails
+- SSIS ETL pipelines with healthcare data validation and anonymization
+- Clinical decision support data models with real-time patient monitoring
+- Regulatory reporting framework with automated compliance validation
+```
+
+### Scenario 3: Financial Services Data Lake Architecture
+```yaml
+Context: Financial institution implementing data lake with risk analytics and regulatory reporting
+Technology Stack: Enterprise financial setup (Oracle, Hadoop, Spark, Kafka, Tableau)
+Business Domain: Financial services with real-time risk management and regulatory compliance
+
+Database and ETL Focus:
+- Financial data lake with transaction processing and risk analytics
+- Real-time fraud detection with streaming data processing
+- Regulatory reporting data warehouse with automated compliance checks
+- Customer analytics platform with behavioral modeling and segmentation
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Design financial data lake with Hadoop and Spark ETL processing
+2. security-engineer chatmode → Implement financial data security and fraud detection algorithms
+3. api-engineer chatmode → Create real-time risk monitoring APIs with regulatory reporting
+4. deployment-engineer chatmode → Set up high-availability data infrastructure with disaster recovery
+
+Expected Deliverables:
+- Financial data lake architecture with real-time and batch processing capabilities
+- Apache Spark ETL pipelines with fraud detection and risk analytics
+- Oracle data warehouse with regulatory reporting and compliance automation
+- Real-time monitoring dashboard with risk alerts and regulatory notifications
+```
+
+### Scenario 4: IoT Manufacturing Data Platform
+```yaml
+Context: Manufacturing company implementing IoT data platform with predictive maintenance and quality analytics
+Technology Stack: Industrial setup (InfluxDB, PostgreSQL, Apache Kafka, Python, Grafana)
+Business Domain: Manufacturing with IoT sensor data, predictive maintenance, and quality control
+
+Database and ETL Focus:
+- Time-series database for IoT sensor data with efficient compression and querying
+- Manufacturing data warehouse with production metrics and quality analytics
+- Predictive maintenance data processing with machine learning integration
+- Supply chain data integration with real-time visibility and optimization
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Design IoT data platform with InfluxDB and Kafka streaming ETL
+2. api-engineer chatmode → Implement manufacturing analytics APIs with predictive maintenance alerts
+3. qa-engineer chatmode → Establish IoT data quality monitoring and sensor validation
+4. deployment-engineer chatmode → Set up scalable IoT data infrastructure with auto-scaling
+
+Expected Deliverables:
+- IoT time-series database with high-performance data ingestion and compression
+- Apache Kafka streaming ETL pipelines with real-time sensor data processing
+- Manufacturing analytics data warehouse with predictive maintenance models
+- Grafana dashboards with real-time production monitoring and quality alerts
+```
+
+## GitHub Copilot Integration
+
+### Chatmode Coordination Patterns
+```
+Database Design and ETL Implementation → data-engineer chatmode (lead)
+├─ Data API Development → api-engineer chatmode
+├─ Data Security Implementation → security-engineer chatmode
+├─ Analytics Dashboard Development → frontend-engineer chatmode
+├─ Data Quality Testing → qa-engineer chatmode
+└─ Infrastructure Deployment → deployment-engineer chatmode
+```
+
+### Context Handoff Information
+- **To api-engineer**: Database schema documentation, data models, API endpoint specifications, performance requirements
+- **To security-engineer**: Data access control requirements, audit trail specifications, compliance validation needs
+- **To frontend-engineer**: Analytics data models, API documentation, dashboard requirements, real-time data specifications
+- **To qa-engineer**: Data quality validation strategies, ETL testing requirements, performance benchmarks
+- **To deployment-engineer**: Database configuration, ETL infrastructure requirements, monitoring and alerting setup
+
+### GitHub Actions Integration
+- **Schema Migration**: Automated database schema deployment and migration validation
+- **ETL Pipeline Testing**: Automated testing for data processing accuracy and performance
+- **Data Quality Monitoring**: Continuous monitoring of data quality metrics and pipeline health
+- **Performance Optimization**: Automated performance testing and optimization recommendations
+
+## Configuration Adaptation
+
+**IMPORTANT**: This prompt adapts to project specifications by reading `copilot.instructions.md`:
+
+- **Database Technology**: Automatically optimizes for PostgreSQL, MySQL, SQL Server, Oracle, or NoSQL databases based on project configuration
+- **ETL Framework**: Configures appropriate ETL tools including Apache Airflow, SSIS, Talend, or custom Python/Java solutions
+- **Business Domain**: Adapts data modeling and ETL patterns to e-commerce, healthcare, financial, manufacturing, or other industry requirements
+- **Compliance Requirements**: Implements industry-specific compliance measures including GDPR, HIPAA, SOX, or other regulatory frameworks
+- **Performance Scale**: Optimizes for startup, SME, or enterprise-scale data processing requirements
+
+**The data-engineer chatmode will automatically analyze project configuration and business context to deliver optimal database design and ETL implementation while maintaining the functional requirements specified above.**
 - **Data lifecycle** and retention policies
 
 **Logical Data Model:**

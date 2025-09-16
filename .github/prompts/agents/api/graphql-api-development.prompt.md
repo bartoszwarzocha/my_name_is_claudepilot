@@ -11,880 +11,290 @@ tools:
   - vscodeAPI
 ---
 
+**🤖 CHATMODE ACTIVATION:** This prompt automatically activates the `api-engineer` chatmode.
+**📋 CHATMODE CONTEXT:** The activated chatmode will read copilot.instructions.md and adapt to project requirements.
+**🔄 GITHUB COPILOT INTEGRATION:** All tasks will be managed through GitHub Copilot Chat workflows.
+
 # GraphQL API Development
 
-**Agent: api-engineer**
-**Purpose: Design and implement efficient GraphQL APIs with advanced features like subscriptions, caching, and federation**
+## FUNCTIONAL REQUIREMENTS
 
----
+**What needs to be accomplished:**
 
-## 🎯 Mission
+### Core GraphQL Architecture
+- **Schema Design**: Create type-safe GraphQL schemas that accurately represent business domain relationships
+- **Resolver Implementation**: Develop efficient resolvers with proper data fetching and transformation logic
+- **Query Optimization**: Implement efficient query execution with batching, caching, and N+1 problem prevention
+- **Type System**: Establish comprehensive type definitions with proper validation and error handling
 
-Build scalable GraphQL APIs that provide flexible data fetching capabilities while maintaining performance, security, and maintainability through modern GraphQL practices and tooling.
+### Advanced GraphQL Features
+- **Real-time Subscriptions**: Implement GraphQL subscriptions for real-time data updates and live notifications
+- **Schema Federation**: Design federated GraphQL architecture for microservices and distributed systems
+- **Caching Strategy**: Implement intelligent caching at multiple levels (query, field, and data source)
+- **Query Complexity Analysis**: Establish query depth and complexity limits to prevent abuse and performance issues
 
-## 📋 GraphQL Development Process
+### Security and Performance
+- **Authentication Integration**: Implement secure authentication mechanisms compatible with GraphQL execution model
+- **Authorization Controls**: Enforce field-level and operation-level authorization with context-aware permissions
+- **Rate Limiting**: Implement sophisticated rate limiting based on query complexity and resource consumption
+- **Input Validation**: Comprehensive validation of all GraphQL inputs with custom scalar types and business rules
 
-### Step 1: Schema Design and Architecture
+### Developer Experience
+- **Schema Documentation**: Generate comprehensive GraphQL schema documentation with examples and usage guides
+- **GraphQL Playground**: Configure interactive GraphQL IDE for development and testing
+- **Introspection Management**: Control schema introspection for development and production environments
+- **Error Handling**: Implement structured error responses with proper error codes and debugging information
 
-**Schema-First Design Approach:**
-```graphql
-# schema/user.graphql
-"""
-User entity representing application users
-"""
-type User {
-  id: ID!
-  email: String!
-  firstName: String!
-  lastName: String!
-  fullName: String!  # Computed field
-  avatar: String
-  role: UserRole!
-  isActive: Boolean!
-  createdAt: DateTime!
-  updatedAt: DateTime!
-  
-  # Relationships
-  orders(
-    first: Int = 10
-    after: String
-    status: OrderStatus
-  ): OrderConnection!
-  
-  preferences: UserPreferences!
-  posts(first: Int = 10): PostConnection!
-}
+## HIGH-LEVEL ALGORITHMS
 
-"""
-User role enumeration
-"""
-enum UserRole {
-  USER
-  ADMIN
-  MODERATOR
-}
+**How to approach the problem:**
 
-"""
-User preferences configuration
-"""
-type UserPreferences {
-  theme: Theme!
-  notifications: NotificationSettings!
-  privacy: PrivacySettings!
-}
+### 1. Project Configuration Analysis
+```
+1. Read copilot.instructions.md to extract:
+   - GraphQL framework preferences (Apollo Server, GraphQL Yoga, Mercurius, etc.)
+   - Backend technology and runtime environment
+   - Database and data source configuration
+   - Authentication and authorization requirements
 
-"""
-Connection pattern for pagination
-"""
-type UserConnection {
-  edges: [UserEdge!]!
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
-type UserEdge {
-  node: User!
-  cursor: String!
-}
-
-"""
-Standard pagination info
-"""
-type PageInfo {
-  hasNextPage: Boolean!
-  hasPreviousPage: Boolean!
-  startCursor: String
-  endCursor: String
-}
-
-# schema/mutations.graphql
-"""
-Root mutation type
-"""
-type Mutation {
-  # User mutations
-  createUser(input: CreateUserInput!): CreateUserPayload!
-  updateUser(input: UpdateUserInput!): UpdateUserPayload!
-  deleteUser(id: ID!): DeleteUserPayload!
-  
-  # Authentication mutations
-  login(input: LoginInput!): AuthPayload!
-  logout: LogoutPayload!
-  refreshToken(refreshToken: String!): AuthPayload!
-}
-
-"""
-Create user input with validation
-"""
-input CreateUserInput {
-  email: String! @validate(format: EMAIL)
-  password: String! @validate(minLength: 8, pattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]")
-  firstName: String! @validate(minLength: 1, maxLength: 50)
-  lastName: String! @validate(minLength: 1, maxLength: 50)
-  role: UserRole = USER
-}
-
-"""
-Standardized mutation payload
-"""
-type CreateUserPayload {
-  user: User
-  errors: [UserError!]!
-  success: Boolean!
-}
-
-type UserError {
-  field: String
-  message: String!
-  code: String!
-}
-
-# schema/subscriptions.graphql
-"""
-Real-time subscriptions
-"""
-type Subscription {
-  # User-related subscriptions
-  userUpdated(userId: ID!): User!
-  userOnlineStatus(userIds: [ID!]!): UserOnlineStatus!
-  
-  # Order tracking
-  orderStatusChanged(orderId: ID!): Order!
-  
-  # Notifications
-  notificationReceived(userId: ID!): Notification!
-}
-
-type UserOnlineStatus {
-  userId: ID!
-  isOnline: Boolean!
-  lastSeen: DateTime
-}
+2. Analyze existing project structure:
+   - Identify current API patterns and data models
+   - Understand authentication and session management
+   - Assess existing data access layers and ORM usage
+   - Review current testing and documentation approaches
 ```
 
-**Advanced Schema Features:**
-```graphql
-# schema/directives.graphql
-"""
-Authentication directive
-"""
-directive @auth(
-  requires: UserRole = USER
-) on FIELD_DEFINITION | OBJECT
+### 2. Schema-First Design Process
+```
+1. Domain Modeling:
+   - Map business entities to GraphQL types
+   - Define relationships between types (one-to-one, one-to-many, many-to-many)
+   - Identify queries, mutations, and subscription requirements
+   - Plan schema evolution and versioning strategy
 
-"""
-Rate limiting directive
-"""
-directive @rateLimit(
-  max: Int!
-  window: String!
-) on FIELD_DEFINITION
-
-"""
-Input validation directive
-"""
-directive @validate(
-  format: ValidateFormat
-  minLength: Int
-  maxLength: Int
-  pattern: String
-  min: Float
-  max: Float
-) on INPUT_FIELD_DEFINITION | ARGUMENT_DEFINITION
-
-enum ValidateFormat {
-  EMAIL
-  URL
-  UUID
-  PHONE
-}
-
-"""
-Caching directive for Apollo Federation
-"""
-directive @cacheControl(
-  maxAge: Int
-  scope: CacheControlScope
-  inheritMaxAge: Boolean
-) on FIELD_DEFINITION | OBJECT | INTERFACE | UNION
-
-enum CacheControlScope {
-  PUBLIC
-  PRIVATE
-}
-
-# Usage in schema
-type User @cacheControl(maxAge: 300) {
-  id: ID!
-  email: String! @auth(requires: USER)
-  
-  # Admin-only field
-  internalNotes: String @auth(requires: ADMIN)
-  
-  # Rate-limited expensive operation
-  recommendations: [Product!]! @rateLimit(max: 10, window: "1h")
-}
-
-type Query {
-  # Public data with caching
-  publicPosts: [Post!]! @cacheControl(maxAge: 3600, scope: PUBLIC)
-  
-  # Private user data
-  me: User @auth(requires: USER) @cacheControl(maxAge: 300, scope: PRIVATE)
-  
-  # Search with rate limiting
-  searchUsers(query: String!): [User!]! @rateLimit(max: 100, window: "15m")
-}
+2. Type System Design:
+   - Create scalars, enums, interfaces, and unions as needed
+   - Design input types for mutations with proper validation
+   - Plan error types and error handling strategies
+   - Define pagination patterns (offset, cursor-based, relay-style)
 ```
 
-### Step 2: Resolver Implementation
+### 3. Resolver Architecture Implementation
+```
+1. Data Layer Integration:
+   - Design efficient data fetching patterns
+   - Implement DataLoader for batching and caching
+   - Create repository patterns for data access
+   - Plan database query optimization strategies
 
-**TypeScript Resolver Architecture:**
-```typescript
-// resolvers/userResolvers.ts
-import { Resolvers, User, CreateUserInput } from '../generated/graphql';
-import { Context } from '../context';
-import { UserService } from '../services/UserService';
-import { AuthenticationError, ValidationError } from '../errors';
-
-export const userResolvers: Resolvers<Context> = {
-  Query: {
-    me: async (parent, args, context) => {
-      if (!context.user) {
-        throw new AuthenticationError('Authentication required');
-      }
-      return context.dataSources.userService.findById(context.user.id);
-    },
-    
-    user: async (parent, { id }, context) => {
-      return context.dataSources.userService.findById(id);
-    },
-    
-    users: async (parent, { first, after, filter }, context) => {
-      return context.dataSources.userService.findMany({
-        first,
-        after,
-        filter
-      });
-    }
-  },
-  
-  Mutation: {
-    createUser: async (parent, { input }, context) => {
-      try {
-        // Input validation
-        await validateCreateUserInput(input);
-        
-        // Business logic
-        const user = await context.dataSources.userService.create(input);
-        
-        // Clear relevant caches
-        await context.cache.invalidatePattern('users:*');
-        
-        return {
-          user,
-          errors: [],
-          success: true
-        };
-      } catch (error) {
-        if (error instanceof ValidationError) {
-          return {
-            user: null,
-            errors: error.errors,
-            success: false
-          };
-        }
-        throw error;
-      }
-    },
-    
-    updateUser: async (parent, { input }, context) => {
-      const user = await context.dataSources.userService.update(input);
-      
-      // Publish subscription update
-      context.pubsub.publish('USER_UPDATED', { userUpdated: user });
-      
-      return {
-        user,
-        errors: [],
-        success: true
-      };
-    }
-  },
-  
-  Subscription: {
-    userUpdated: {
-      subscribe: (parent, { userId }, context) => {
-        if (!context.user) {
-          throw new AuthenticationError('Authentication required for subscriptions');
-        }
-        
-        return context.pubsub.asyncIterator(`USER_UPDATED_${userId}`);
-      }
-    },
-    
-    notificationReceived: {
-      subscribe: withFilter(
-        (parent, args, context) => context.pubsub.asyncIterator('NOTIFICATION_RECEIVED'),
-        (payload, variables, context) => {
-          // Only send notifications to the intended recipient
-          return payload.notificationReceived.userId === context.user?.id;
-        }
-      )
-    }
-  },
-  
-  // Field resolvers
-  User: {
-    fullName: (parent) => `${parent.firstName} ${parent.lastName}`,
-    
-    orders: async (parent, args, context) => {
-      return context.dataSources.orderService.findByUserId(parent.id, args);
-    },
-    
-    recommendations: async (parent, args, context, info) => {
-      // Check cache first
-      const cacheKey = `recommendations:${parent.id}`;
-      const cached = await context.cache.get(cacheKey);
-      
-      if (cached) {
-        return cached;
-      }
-      
-      // Expensive recommendation calculation
-      const recommendations = await context.dataSources.recommendationService
-        .generateForUser(parent.id);
-      
-      // Cache for 1 hour
-      await context.cache.set(cacheKey, recommendations, 3600);
-      
-      return recommendations;
-    }
-  }
-};
-
-// Input validation
-const validateCreateUserInput = async (input: CreateUserInput) => {
-  const errors: UserError[] = [];
-  
-  // Email validation
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(input.email)) {
-    errors.push({
-      field: 'email',
-      message: 'Invalid email format',
-      code: 'INVALID_EMAIL'
-    });
-  }
-  
-  // Password strength validation
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]/;
-  if (input.password.length < 8 || !passwordRegex.test(input.password)) {
-    errors.push({
-      field: 'password',
-      message: 'Password must be at least 8 characters with uppercase, lowercase, number and special character',
-      code: 'WEAK_PASSWORD'
-    });
-  }
-  
-  if (errors.length > 0) {
-    throw new ValidationError(errors);
-  }
-};
+2. Business Logic Integration:
+   - Implement domain-specific business rules in resolvers
+   - Create middleware for cross-cutting concerns
+   - Design context propagation for authentication and authorization
+   - Plan error propagation and handling strategies
 ```
 
-**DataLoader for N+1 Query Prevention:**
-```typescript
-// dataloaders/userDataLoaders.ts
-import DataLoader from 'dataloader';
-import { User, Order, Post } from '../types';
-import { UserService, OrderService, PostService } from '../services';
+### 4. Performance and Security Optimization
+```
+1. Query Optimization:
+   - Implement query complexity analysis and limits
+   - Configure query depth limiting and timeouts
+   - Design caching strategies (in-memory, Redis, CDN)
+   - Implement query whitelisting for production
 
-export interface DataLoaders {
-  userById: DataLoader<string, User>;
-  ordersByUserId: DataLoader<string, Order[]>;
-  postsByUserId: DataLoader<string, Post[]>;
-  usersByIds: DataLoader<string[], User[]>;
-}
-
-export const createDataLoaders = (services: {
-  userService: UserService;
-  orderService: OrderService; 
-  postService: PostService;
-}): DataLoaders => ({
-  // Single user by ID
-  userById: new DataLoader(
-    async (userIds: readonly string[]) => {
-      const users = await services.userService.findByIds(userIds as string[]);
-      return userIds.map(id => users.find(user => user.id === id) || null);
-    },
-    {
-      maxBatchSize: 100,
-      cacheKeyFn: (key) => key,
-      cacheMap: new Map() // Custom cache implementation
-    }
-  ),
-  
-  // Orders for multiple users
-  ordersByUserId: new DataLoader(
-    async (userIds: readonly string[]) => {
-      const allOrders = await services.orderService.findByUserIds(userIds as string[]);
-      
-      // Group orders by user ID
-      const ordersByUser = userIds.map(userId => 
-        allOrders.filter(order => order.userId === userId)
-      );
-      
-      return ordersByUser;
-    },
-    {
-      maxBatchSize: 50
-    }
-  ),
-  
-  // Posts for multiple users  
-  postsByUserId: new DataLoader(
-    async (userIds: readonly string[]) => {
-      const allPosts = await services.postService.findByUserIds(userIds as string[]);
-      
-      const postsByUser = userIds.map(userId =>
-        allPosts.filter(post => post.authorId === userId)
-      );
-      
-      return postsByUser;
-    }
-  ),
-  
-  // Batch multiple users at once
-  usersByIds: new DataLoader(
-    async (userIdArrays: readonly string[][]) => {
-      const allUserIds = [...new Set(userIdArrays.flat())];
-      const users = await services.userService.findByIds(allUserIds);
-      
-      return userIdArrays.map(userIds => 
-        userIds.map(id => users.find(user => user.id === id)).filter(Boolean)
-      );
-    }
-  )
-});
+2. Security Implementation:
+   - Configure authentication integration with GraphQL context
+   - Implement field-level authorization with directives
+   - Add input sanitization and validation layers
+   - Configure CORS and security headers appropriately
 ```
 
-### Step 3: Advanced GraphQL Features
+### 5. Real-time and Advanced Features
+```
+1. Subscription Implementation:
+   - Design real-time subscription architecture
+   - Implement WebSocket or Server-Sent Events integration
+   - Create subscription filters and authorization
+   - Plan subscription performance and scalability
 
-**GraphQL Subscriptions with Redis:**
-```typescript
-// subscriptions/setup.ts
-import { RedisPubSub } from 'graphql-redis-subscriptions';
-import { withFilter } from 'graphql-subscriptions';
-import Redis from 'ioredis';
-
-const redis = new Redis({
-  host: process.env.REDIS_HOST,
-  port: parseInt(process.env.REDIS_PORT || '6379'),
-  retryDelayOnFailover: 100,
-  enableReadyCheck: false,
-  maxRetriesPerRequest: null,
-});
-
-export const pubsub = new RedisPubSub({
-  publisher: redis,
-  subscriber: redis,
-});
-
-// Real-time notifications
-export const notificationSubscription = {
-  subscribe: withFilter(
-    () => pubsub.asyncIterator('NOTIFICATION'),
-    (payload, variables, context) => {
-      // User-specific filtering
-      return payload.notification.recipientId === context.user?.id;
-    }
-  )
-};
-
-// Live order tracking
-export const orderTrackingSubscription = {
-  subscribe: withFilter(
-    () => pubsub.asyncIterator('ORDER_STATUS_CHANGED'),
-    async (payload, variables, context) => {
-      // Check if user has permission to track this order
-      const order = await context.dataSources.orderService.findById(payload.order.id);
-      return order && (
-        order.customerId === context.user?.id || 
-        context.user?.role === 'ADMIN'
-      );
-    }
-  )
-};
-
-// Connection state management
-export const connectionManager = {
-  connections: new Map<string, Set<string>>(),
-  
-  addConnection(userId: string, connectionId: string) {
-    if (!this.connections.has(userId)) {
-      this.connections.set(userId, new Set());
-    }
-    this.connections.get(userId)!.add(connectionId);
-    
-    // Publish online status
-    pubsub.publish('USER_ONLINE_STATUS', {
-      userOnlineStatus: {
-        userId,
-        isOnline: true,
-        lastSeen: new Date()
-      }
-    });
-  },
-  
-  removeConnection(userId: string, connectionId: string) {
-    const userConnections = this.connections.get(userId);
-    if (userConnections) {
-      userConnections.delete(connectionId);
-      
-      if (userConnections.size === 0) {
-        this.connections.delete(userId);
-        
-        // Publish offline status
-        pubsub.publish('USER_ONLINE_STATUS', {
-          userOnlineStatus: {
-            userId,
-            isOnline: false,
-            lastSeen: new Date()
-          }
-        });
-      }
-    }
-  }
-};
+2. Federation and Composition:
+   - Design schema federation for microservices
+   - Implement gateway composition and routing
+   - Create cross-service type extensions
+   - Plan schema registry and governance
 ```
 
-**Query Complexity Analysis:**
-```typescript
-// middleware/queryComplexity.ts
-import { createComplexityLimitRule } from 'graphql-query-complexity';
-import { separateOperations } from 'graphql';
+## VALIDATION CRITERIA
 
-const complexityAnalysis = createComplexityLimitRule(1000, {
-  // Field complexity calculation
-  fieldConfigMap: {
-    User: {
-      orders: { complexity: 10 }, // Expensive relationship
-      posts: { complexity: 5 },
-      recommendations: { complexity: 20 } // Very expensive computation
-    },
-    Query: {
-      searchUsers: { 
-        complexity: ({ args }) => args.first * 2 // Based on result size
-      },
-      analytics: { complexity: 50 } // Complex aggregation
-    }
-  },
-  
-  // Dynamic complexity calculation
-  estimators: [
-    simpleEstimator({ 
-      defaultComplexity: 1,
-      scalarCost: 1,
-      objectCost: 2,
-      listFactor: 10,
-      introspectionCost: 1000
-    }),
-    
-    // Custom estimator for pagination
-    (args, childComplexity) => {
-      const { first = 10 } = args;
-      return childComplexity * Math.min(first, 100);
-    }
-  ],
-  
-  // Complexity reporting
-  onComplete: (complexity, context) => {
-    console.log(`Query complexity: ${complexity}`);
-    
-    // Log expensive queries
-    if (complexity > 500) {
-      logger.warn('High complexity query', {
-        complexity,
-        userId: context.user?.id,
-        query: context.request.query
-      });
-    }
-  }
-});
+**What conditions must be met:**
+
+### ✅ Schema Design Excellence
+- **Type Safety**: Complete type definitions with proper nullability and validation
+- **Schema Consistency**: Consistent naming conventions and relationship modeling
+- **Documentation**: Comprehensive schema documentation with field descriptions and examples
+- **Evolution Strategy**: Clear versioning and deprecation strategy for schema changes
+
+### ✅ Performance Standards
+- **Query Efficiency**: Resolvers implement proper batching and avoid N+1 problems
+- **Response Times**: GraphQL operations complete within acceptable limits (< 200ms for simple queries)
+- **Complexity Controls**: Query complexity analysis prevents resource exhaustion
+- **Caching Effectiveness**: Appropriate caching strategies implemented at multiple levels
+
+### ✅ Security Implementation
+- **Authentication**: Robust authentication mechanism integrated with GraphQL execution
+- **Authorization**: Field-level and operation-level authorization properly enforced
+- **Input Validation**: Comprehensive validation preventing injection and malformed requests
+- **Rate Limiting**: Sophisticated rate limiting based on query complexity and user context
+
+### ✅ Developer Experience
+- **Interactive Documentation**: GraphQL Playground or similar tool configured for development
+- **Schema Introspection**: Proper introspection controls for different environments
+- **Error Messages**: Clear, actionable error messages with proper error codes
+- **Testing Support**: Comprehensive testing utilities and mock data support
+
+### ✅ Advanced Features Implementation
+- **Real-time Capabilities**: Subscriptions working correctly with proper authorization
+- **Federation Support**: Schema federation implemented for distributed architecture (if required)
+- **Monitoring Integration**: Performance monitoring and observability implemented
+- **Production Readiness**: Query whitelisting, security hardening, and performance optimization
+
+## USAGE EXAMPLES
+
+**For different GitHub Copilot scenarios:**
+
+### Scenario 1: Social Media Platform
+```yaml
+Context: Real-time social platform with posts, comments, and live interactions
+Technology Stack: Detected from copilot.instructions.md (Node.js + Apollo Server, Python + Strawberry)
+Business Domain: Social media with real-time interactions and content management
+
+GraphQL Design Focus:
+- User profiles and social connections
+- Posts, comments, and reactions with real-time updates
+- Media uploads and content management
+- Real-time notifications and messaging
+
+GitHub Copilot Workflow:
+1. api-engineer chatmode → Design GraphQL schema and real-time subscriptions
+2. frontend-engineer chatmode → Integrate with React/Vue using GraphQL clients
+3. security-engineer chatmode → Implement content moderation and user safety
+4. qa-engineer chatmode → Performance testing for real-time features
+
+Expected Deliverables:
+- Comprehensive GraphQL schema with social media entities
+- Real-time subscriptions for posts, comments, and notifications
+- Efficient data fetching with DataLoader and caching
+- Authentication and authorization for user-generated content
 ```
 
-### Step 4: GraphQL Federation
+### Scenario 2: E-commerce Product Catalog
+```yaml
+Context: Large-scale e-commerce with complex product data and inventory management
+Technology Stack: Adapted to project configuration (Java + GraphQL Java, .NET + Hot Chocolate)
+Business Domain: E-commerce with complex product relationships and search
 
-**Apollo Federation Setup:**
-```typescript
-// federation/userService.ts
-import { buildFederatedSchema } from '@apollo/federation';
-import { gql } from 'apollo-server-express';
+GraphQL Design Focus:
+- Product catalog with variants, categories, and attributes
+- Inventory management with real-time stock updates
+- Search and filtering with faceted navigation
+- Order management and customer data
 
-const typeDefs = gql`
-  extend type Query {
-    me: User
-    user(id: ID!): User
-  }
-  
-  type User @key(fields: "id") {
-    id: ID!
-    email: String!
-    firstName: String!
-    lastName: String!
-    fullName: String!
-    
-    # Extended by other services
-    orders: [Order!]! @external
-    reviews: [Review!]! @external
-  }
-  
-  # Reference types from other services
-  extend type Order @key(fields: "id") {
-    id: ID! @external
-    customer: User! @provides(fields: "id email firstName lastName")
-  }
-`;
+GitHub Copilot Workflow:
+1. api-engineer chatmode → Design federated schema for product and order services
+2. data-engineer chatmode → Optimize database queries and search indices
+3. frontend-engineer chatmode → Build product browse and search interfaces
+4. deployment-engineer chatmode → Scale GraphQL federation infrastructure
 
-const resolvers = {
-  Query: {
-    me: (parent, args, context) => context.user,
-    user: (parent, { id }, context) => context.dataSources.userService.findById(id)
-  },
-  
-  User: {
-    // Federation resolver for external references
-    __resolveReference: (reference, context) => {
-      return context.dataSources.userService.findById(reference.id);
-    },
-    
-    fullName: (user) => `${user.firstName} ${user.lastName}`
-  }
-};
-
-export const federatedSchema = buildFederatedSchema([{ typeDefs, resolvers }]);
+Expected Deliverables:
+- Federated GraphQL schema across multiple microservices
+- Advanced search capabilities with GraphQL queries
+- Real-time inventory updates via subscriptions
+- Performance optimization for large product catalogs
 ```
 
-**Gateway Configuration:**
-```typescript
-// gateway/apollo-gateway.ts
-import { ApolloGateway } from '@apollo/gateway';
-import { ApolloServer } from 'apollo-server-express';
+### Scenario 3: Healthcare Data Platform
+```yaml
+Context: HIPAA-compliant healthcare platform with patient data and provider integration
+Technology Stack: Enterprise-grade setup (.NET Core + Hot Chocolate, Java + GraphQL SPQR)
+Business Domain: Healthcare with strict compliance and data privacy requirements
 
-const gateway = new ApolloGateway({
-  serviceList: [
-    { name: 'users', url: 'http://user-service:4001/graphql' },
-    { name: 'products', url: 'http://product-service:4002/graphql' },
-    { name: 'orders', url: 'http://order-service:4003/graphql' },
-    { name: 'reviews', url: 'http://review-service:4004/graphql' }
-  ],
-  
-  // Service health checking
-  serviceHealthCheck: true,
-  
-  // Schema composition debugging  
-  debug: process.env.NODE_ENV === 'development',
-  
-  // Custom directive handling
-  buildService: ({ url }) => new RemoteGraphQLDataSource({
-    url,
-    willSendRequest({ request, context }) {
-      // Forward authentication
-      if (context.auth) {
-        request.http?.headers.set('authorization', context.auth);
-      }
-      
-      // Add correlation ID
-      request.http?.headers.set('x-correlation-id', context.correlationId);
-    }
-  })
-});
+GraphQL Design Focus:
+- Patient data with comprehensive privacy controls
+- Provider networks and appointment scheduling
+- Medical records with role-based access
+- Integration with external healthcare systems
 
-const server = new ApolloServer({
-  gateway,
-  subscriptions: false, // Handled by individual services
-  context: ({ req }) => ({
-    auth: req.headers.authorization,
-    correlationId: req.headers['x-correlation-id'] || generateId(),
-    user: req.user
-  }),
-  
-  // Gateway-level plugins
-  plugins: [
-    {
-      requestDidStart() {
-        return {
-          willSendSubgraphRequest(requestContext) {
-            console.log(`Sending request to ${requestContext.subgraphName}`);
-          }
-        };
-      }
-    }
-  ]
-});
+GitHub Copilot Workflow:
+1. api-engineer chatmode → Design HIPAA-compliant GraphQL architecture
+2. security-engineer chatmode → Implement field-level authorization and audit logging
+3. data-engineer chatmode → Optimize healthcare data access patterns
+4. qa-engineer chatmode → Compliance testing and security validation
+
+Expected Deliverables:
+- HIPAA-compliant GraphQL API with comprehensive audit trails
+- Field-level authorization for sensitive patient data
+- Integration patterns for healthcare data standards (HL7 FHIR)
+- Advanced error handling for compliance requirements
 ```
 
-## 📊 Performance and Monitoring
+### Scenario 4: Financial Trading Platform
+```yaml
+Context: Real-time financial data platform with trading and portfolio management
+Technology Stack: High-performance setup (Go + gqlgen, Rust + async-graphql)
+Business Domain: Financial services with real-time data and regulatory compliance
 
-### Step 5: Caching and Performance
+GraphQL Design Focus:
+- Real-time market data and price feeds
+- Portfolio management and trading operations
+- Risk management and compliance reporting
+- Integration with financial data providers
 
-**Multi-Level Caching Strategy:**
-```typescript
-// caching/graphqlCache.ts
-import { KeyvAdapter } from '@apollo/utils.keyvadapter';
-import Keyv from 'keyv';
-import KeyvRedis from '@keyv/redis';
+GitHub Copilot Workflow:
+1. api-engineer chatmode → Design high-performance GraphQL for real-time data
+2. security-engineer chatmode → Implement financial data security and compliance
+3. qa-engineer chatmode → Performance testing for high-frequency data
+4. deployment-engineer chatmode → Deploy high-availability trading infrastructure
 
-// Response cache setup
-const responseCache = new Keyv({
-  store: new KeyvRedis(process.env.REDIS_URL),
-  namespace: 'graphql-response',
-  ttl: 1000 * 60 * 15 // 15 minutes default
-});
-
-// Field-level caching
-export const createFieldCache = () => new Map();
-
-// Cache configuration per field
-export const cacheConfig = {
-  'Query.me': { ttl: 300, scope: 'PRIVATE' },
-  'Query.publicPosts': { ttl: 3600, scope: 'PUBLIC' },
-  'User.recommendations': { ttl: 1800, scope: 'PRIVATE' },
-  'Product.reviews': { ttl: 600, scope: 'PUBLIC' }
-};
-
-// Automatic persisted queries
-export const apolloServerConfig = {
-  cache: new KeyvAdapter(responseCache),
-  
-  // Enable APQ
-  persistedQueries: {
-    cache: new KeyvAdapter(new Keyv({
-      store: new KeyvRedis(process.env.REDIS_URL),
-      namespace: 'graphql-apq'
-    }))
-  },
-  
-  // Response caching plugin
-  plugins: [
-    require('apollo-server-plugin-response-cache')({
-      sessionId: (requestContext) => {
-        return requestContext.context.user?.id || null;
-      },
-      
-      // Cache hints from directives
-      shouldReadFromCache: (requestContext) => {
-        const { operation } = requestContext.request;
-        return operation?.operation === 'query';
-      },
-      
-      // Dynamic TTL calculation
-      cacheKeyFrom: (requestContext) => {
-        const { query, variables, operationName } = requestContext.request;
-        return `${operationName}:${hash({ query, variables })}`;
-      }
-    })
-  ]
-};
+Expected Deliverables:
+- High-performance GraphQL API with real-time market data subscriptions
+- Advanced caching and data federation for financial services
+- Compliance controls for financial data access
+- Monitoring and alerting for trading system reliability
 ```
 
-**Query Analysis and Monitoring:**
-```typescript
-// monitoring/graphqlMetrics.ts
-import { plugin } from 'apollo-server-core';
-import { promisify } from 'util';
+## GitHub Copilot Integration
 
-export const metricsPlugin = plugin({
-  requestDidStart() {
-    return {
-      didResolveOperation(requestContext) {
-        const { operationName, operation } = requestContext.request;
-        
-        // Track operation metrics
-        graphqlOperations.inc({
-          operation_name: operationName || 'anonymous',
-          operation_type: operation?.operation || 'unknown'
-        });
-      },
-      
-      willSendResponse(requestContext) {
-        const { response } = requestContext;
-        const duration = Date.now() - requestContext.request.startTime;
-        
-        // Response time histogram
-        graphqlDuration.observe(
-          {
-            operation_name: requestContext.operationName || 'anonymous',
-            has_errors: response.errors ? 'true' : 'false'
-          },
-          duration / 1000
-        );
-        
-        // Error tracking
-        if (response.errors) {
-          response.errors.forEach(error => {
-            graphqlErrors.inc({
-              error_type: error.constructor.name,
-              error_code: error.extensions?.code || 'UNKNOWN'
-            });
-          });
-        }
-        
-        // Complexity tracking
-        const complexity = requestContext.context.complexity;
-        if (complexity) {
-          queryComplexity.observe(
-            { operation_name: requestContext.operationName },
-            complexity
-          );
-        }
-      }
-    };
-  }
-});
-
-// Prometheus metrics
-const graphqlOperations = new Counter({
-  name: 'graphql_operations_total',
-  help: 'Total number of GraphQL operations',
-  labelNames: ['operation_name', 'operation_type']
-});
-
-const graphqlDuration = new Histogram({
-  name: 'graphql_operation_duration_seconds',
-  help: 'Duration of GraphQL operations',
-  labelNames: ['operation_name', 'has_errors'],
-  buckets: [0.01, 0.1, 0.3, 0.5, 1, 3, 5, 10]
-});
-
-const queryComplexity = new Histogram({
-  name: 'graphql_query_complexity',
-  help: 'Complexity score of GraphQL queries', 
-  labelNames: ['operation_name'],
-  buckets: [1, 5, 10, 25, 50, 100, 250, 500, 1000]
-});
+### Chatmode Coordination Patterns
+```
+GraphQL Schema Design → api-engineer chatmode
+├─ Security & Authorization → security-engineer chatmode
+├─ Database Optimization → data-engineer chatmode
+├─ Frontend Integration → frontend-engineer chatmode
+├─ Performance Testing → qa-engineer chatmode
+└─ Production Deployment → deployment-engineer chatmode
 ```
 
-## 📤 Deliverables
+### Context Handoff Information
+- **To security-engineer**: Schema definition, field-level permissions, subscription authorization
+- **To frontend-engineer**: GraphQL schema, query patterns, subscription endpoints
+- **To data-engineer**: Data access patterns, resolver optimization, caching requirements
+- **To qa-engineer**: GraphQL operations, performance benchmarks, security test scenarios
+- **To deployment-engineer**: Infrastructure requirements, federation setup, monitoring needs
 
-- **GraphQL Schema** with comprehensive type definitions and advanced features
-- **Resolver Implementation** with efficient data fetching and N+1 query prevention
-- **Subscription System** with real-time capabilities and Redis pub/sub
-- **Federation Architecture** with service composition and gateway configuration
-- **Caching Strategy** with multi-level caching and automatic persisted queries
-- **Performance Monitoring** with metrics collection and query analysis
-- **Security Implementation** with authentication, authorization, and query complexity limits
+### GitHub Actions Integration
+- **Schema Validation**: Automated schema linting and breaking change detection
+- **Query Testing**: Comprehensive GraphQL operation testing with performance benchmarks
+- **Security Scanning**: GraphQL-specific security analysis and vulnerability detection
+- **Documentation**: Automatic schema documentation generation and deployment
 
-## Transition to Specialized Chatmodes
+## Configuration Adaptation
 
-After completing GraphQL API development:
+**IMPORTANT**: This prompt adapts to project specifications by reading `copilot.instructions.md`:
 
-- **For Frontend Integration**: Switch to **Frontend Engineer** chatmode to implement GraphQL client integration and real-time features
-- **For Data Layer Optimization**: Switch to **Data Engineer** chatmode to optimize database queries and implement efficient data fetching patterns
-- **For Security Enhancement**: Switch to **Security Engineer** chatmode to implement authentication middleware, authorization rules, and input validation
-- **For Deployment Configuration**: Switch to **Deployment Engineer** chatmode to set up federation deployment, monitoring, and performance optimization
-- **For Quality Assurance**: Switch to **QA Engineer** chatmode to implement GraphQL testing strategies, schema validation, and performance testing
+- **GraphQL Framework**: Automatically detects and applies patterns for Apollo Server, GraphQL Yoga, Hot Chocolate, etc.
+- **Business Domain**: Adapts GraphQL schema design to industry-specific requirements and compliance needs
+- **Performance Requirements**: Optimizes for real-time requirements and query complexity based on project needs
+- **Security Specifications**: Configures authentication and authorization based on project security requirements
+- **Integration Patterns**: Adapts to existing project architecture and microservices setup
 
----
-*Well-architected GraphQL APIs provide flexible, efficient data access while maintaining performance and security through modern GraphQL practices and tooling.*
+**The api-engineer chatmode will automatically analyze project configuration and apply GraphQL-appropriate implementation patterns while maintaining the functional requirements specified above.**

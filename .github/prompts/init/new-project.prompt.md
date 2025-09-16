@@ -1,787 +1,214 @@
 ---
 name: new-project-initialization
-description: Initialize new projects with GitHub Copilot framework, intelligent setup, and technology-adaptive configuration
-tools: [github-copilot, project-scaffolding, configuration-generation, github-integration]
-model: github-copilot
-context_adaptation: true
+description: |
+  **🤖 GitHub Copilot New Project Prompt**
+
+  Initialize new projects with GitHub Copilot framework, intelligent technology stack detection, and adaptive configuration. Creates optimal project foundation with chatmode ecosystem and enterprise-grade development standards.
+
+  **📋 Context Integration**: Automatically analyzes development environment and creates copilot.instructions.md optimized for project requirements.
+tools: [all]
+model: claude-sonnet-4
 ---
 
 # GitHub Copilot Framework - New Project Initialization
 
-## Context Analysis Framework
+**🤖 INITIALIZATION ACTIVATION**: This prompt creates new projects with complete GitHub Copilot framework integration.
+**📋 CONTEXT ADAPTATION**: The initialization process analyzes development context and generates optimized project configuration.
+**🔄 ENTERPRISE SETUP**: All generated projects meet enterprise-grade standards with comprehensive toolchain integration.
 
-This prompt automatically analyzes your development context and creates optimal project setup:
+## ✅ FUNCTIONAL REQUIREMENTS
 
-```markdown
-## Intelligent Project Analysis
-1. Read `copilot.instructions.md` for framework specifications
-2. Detect existing project artifacts (package.json, requirements.txt, etc.)
-3. Analyze current directory structure and development environment
-4. Identify preferred technology patterns and conventions
-5. Map requirements to optimal Copilot chatmode ecosystem
-```
+Create comprehensive new project foundation with intelligent technology stack selection, automated GitHub Copilot framework integration, and enterprise-grade development environment setup that adapts to business domain requirements while establishing optimal chatmode ecosystem and productivity-focused development workflows.
 
-## Technology Detection & Adaptation
+**Context Integration Requirements:**
+- Generate or enhance copilot.instructions.md with project-specific metadata and technology stack configuration
+- Detect optimal technology stack based on business domain, project scale, and development environment preferences
+- Configure chatmode ecosystem appropriate for detected or selected technology frameworks and team structure
+- Create comprehensive project structure with development tools, quality gates, and deployment automation
+- Establish GitHub integration with issue templates, workflow automation, and productivity enhancement features
 
-### Smart Technology Stack Detection
+## 🔄 HIGH-LEVEL ALGORITHMS
 
-```typescript
-// Automatic language and framework detection
-interface TechnologyPreferences {
-  primaryLanguage: string;
-  framework: string;
-  database: string;
-  deployment: string;
-  testing: string;
-}
+### New Project Initialization Methodology
 
-class ProjectTechnologyDetector {
-  detectFromEnvironment(): TechnologyPreferences {
-    const nodeVersion = process.env.NODE_VERSION;
-    const pythonVersion = process.env.PYTHON_VERSION;
-    const javaHome = process.env.JAVA_HOME;
-    const dotnetVersion = process.env.DOTNET_VERSION;
+1. **Project Context Analysis and Technology Stack Selection**
+   - Analyze business domain requirements, project scale, and development team structure for optimal technology decisions
+   - Detect development environment preferences, available toolchain, and infrastructure deployment targets
+   - Generate technology stack recommendations based on business requirements and best practices alignment
+   - Configure project metadata including naming conventions, directory structure, and development standards
+   - Establish quality gates, security requirements, and compliance frameworks appropriate for business domain
 
-    return {
-      primaryLanguage: this.detectPrimaryLanguage(),
-      framework: this.detectPreferredFramework(),
-      database: this.detectDatabasePreference(),
-      deployment: this.detectDeploymentPreference(),
-      testing: this.detectTestingFramework()
-    };
-  }
+2. **Project Structure Generation and Foundation Setup**
+   - Create comprehensive project directory structure optimized for selected technology stack and development patterns
+   - Generate configuration files for build tools, package managers, testing frameworks, and development toolchain
+   - Set up development environment files including IDE configurations, formatting standards, and toolchain integration
+   - Create foundational code templates, utility functions, and architectural patterns appropriate for project scale
+   - Initialize version control with branch protection, commit standards, and collaborative development workflows
 
-  private detectPrimaryLanguage(): string {
-    if (fs.existsSync('package.json')) return 'typescript';
-    if (fs.existsSync('requirements.txt') || fs.existsSync('pyproject.toml')) return 'python';
-    if (fs.existsSync('pom.xml') || fs.existsSync('build.gradle')) return 'java';
-    if (fs.existsSync('*.csproj') || fs.existsSync('*.sln')) return 'csharp';
-    if (fs.existsSync('go.mod')) return 'go';
-    if (fs.existsSync('Cargo.toml')) return 'rust';
-    return 'typescript'; // default
-  }
-}
-```
+3. **GitHub Copilot Framework Integration and Configuration**
+   - Generate comprehensive copilot.instructions.md with project specifications, technology stack, and chatmode ecosystem
+   - Configure chatmode ecosystem optimized for selected technology stack and business domain requirements
+   - Create GitHub Actions workflows for continuous integration, deployment automation, and quality assurance
+   - Set up issue templates, pull request templates, and project automation for enhanced development workflows
+   - Establish GitHub integration points including dependency management, security scanning, and performance monitoring
 
-### Multi-Language Project Templates
+4. **Development Environment Validation and Documentation Generation**
+   - Validate complete project setup through automated testing of generated configurations and build processes
+   - Generate comprehensive documentation including README, API documentation, and development guidelines
+   - Create onboarding documentation for team members with setup instructions and development workflow guidance
+   - Establish project health monitoring, quality metrics, and productivity measurement frameworks
+   - Provide maintenance procedures and framework update guidelines for long-term project success
 
-#### TypeScript/React Enterprise Template
-```typescript
-// Modern React + TypeScript project structure
-const reactEnterpriseTemplate = {
-  structure: {
-    'src/': {
-      'components/': 'Reusable UI components',
-      'pages/': 'Route-based page components',
-      'hooks/': 'Custom React hooks',
-      'services/': 'API services and business logic',
-      'types/': 'TypeScript type definitions',
-      'utils/': 'Utility functions and helpers',
-      '__tests__/': 'Component and integration tests'
-    },
-    'public/': 'Static assets',
-    '.github/': 'GitHub workflows and templates',
-    'docs/': 'Project documentation'
-  },
-  dependencies: {
-    react: '^18.2.0',
-    '@typescript-eslint/parser': '^6.0.0',
-    tailwindcss: '^3.3.0',
-    '@tanstack/react-query': '^4.32.0',
-    zustand: '^4.4.1'
-  },
-  copilotConfig: {
-    chatmodes: ['frontend-engineer', 'ux-designer', 'qa-engineer'],
-    tools: ['react-devtools', 'typescript-language-server'],
-    integrations: ['github-actions', 'vercel', 'storybook']
-  }
-};
-```
+## ✓ VALIDATION CRITERIA
 
-#### Python/FastAPI Microservice Template
-```python
-# FastAPI + Python project structure
-fastapi_template = {
-    "structure": {
-        "app/": {
-            "api/": "API routes and endpoints",
-            "core/": "Core application configuration",
-            "db/": "Database models and connections",
-            "services/": "Business logic services",
-            "schemas/": "Pydantic models for API",
-            "utils/": "Utility functions",
-            "tests/": "Unit and integration tests"
-        },
-        "migrations/": "Database migrations",
-        "scripts/": "Development and deployment scripts",
-        ".github/": "GitHub workflows",
-        "docs/": "API documentation"
-    },
-    "dependencies": {
-        "fastapi": "^0.104.0",
-        "uvicorn": "^0.24.0",
-        "sqlalchemy": "^2.0.0",
-        "alembic": "^1.12.0",
-        "pytest": "^7.4.0",
-        "pytest-asyncio": "^0.21.0"
-    },
-    "copilot_config": {
-        "chatmodes": ["backend-engineer", "api-engineer", "data-engineer"],
-        "tools": ["python-language-server", "sqlalchemy-devtools"],
-        "integrations": ["github-actions", "docker", "postgresql"]
-    }
-}
-```
+### Project Foundation Quality and Completeness (REQUIRED)
 
-#### Java/Spring Boot Enterprise Template
-```java
-// Spring Boot enterprise project structure
-@Component
-public class SpringBootEnterpriseTemplate {
+**Technology Stack Integration Effectiveness (REQUIRED):**
+- Selected technology stack perfectly aligned with business domain requirements and project scale specifications
+- All configuration files generated using appropriate formats and best practices for selected technology framework
+- Development toolchain integration complete with build tools, testing frameworks, and quality assurance automation
+- Project structure follows established patterns and conventions for selected technology stack and business domain
+- Foundation code templates and architectural patterns appropriate for project complexity and scalability requirements
 
-    private final ProjectStructure structure = ProjectStructure.builder()
-        .sourceDirectory("src/main/java/com/company/project")
-        .testDirectory("src/test/java/com/company/project")
-        .resourcesDirectory("src/main/resources")
-        .addPackage("controller", "REST API controllers")
-        .addPackage("service", "Business logic services")
-        .addPackage("repository", "Data access layer")
-        .addPackage("model", "Entity models")
-        .addPackage("config", "Configuration classes")
-        .addPackage("dto", "Data transfer objects")
-        .build();
+**GitHub Copilot Framework Integration Success (REQUIRED):**
+- copilot.instructions.md accurately reflects project specifications with complete technology stack and business domain configuration
+- Chatmode ecosystem optimally configured for selected technology frameworks and anticipated development workflow patterns
+- GitHub integration enhances development productivity with intelligent automation and workflow optimization
+- Issue templates, PR templates, and project automation appropriate for team structure and development processes
+- Development environment integration seamless with IDE support and toolchain compatibility
 
-    private final CopilotConfiguration copilotConfig = CopilotConfiguration.builder()
-        .addChatmode("backend-engineer")
-        .addChatmode("api-engineer")
-        .addChatmode("security-engineer")
-        .addTool("spring-boot-devtools")
-        .addTool("java-language-server")
-        .addIntegration("github-actions")
-        .addIntegration("maven")
-        .addIntegration("docker")
-        .build();
-}
-```
+**Quality and Standards Compliance (REQUIRED):**
+- Generated project meets enterprise-grade quality standards with comprehensive testing and validation frameworks
+- Security standards implemented appropriate for business domain with automated scanning and vulnerability detection
+- Performance optimization patterns included with monitoring, profiling, and optimization capability integration
+- Documentation comprehensive with setup instructions, development guidelines, and maintenance procedures
+- Compliance requirements addressed appropriate for business domain with audit trails and governance frameworks
 
-#### .NET Core Web API Template
-```csharp
-// .NET Core Web API project structure
-public class DotNetCoreWebApiTemplate
-{
-    public ProjectStructure Structure { get; } = new()
-    {
-        SourceDirectory = "src/",
-        TestDirectory = "tests/",
-        Directories = new Dictionary<string, string>
-        {
-            ["Controllers/"] = "API controllers",
-            ["Services/"] = "Business logic services",
-            ["Models/"] = "Data models and entities",
-            ["DTOs/"] = "Data transfer objects",
-            ["Repositories/"] = "Data access layer",
-            ["Configuration/"] = "App configuration",
-            ["Middleware/"] = "Custom middleware"
-        }
-    };
+### Development Productivity and Team Integration (REQUIRED)
 
-    public CopilotConfiguration CopilotConfig { get; } = new()
-    {
-        Chatmodes = ["backend-engineer", "api-engineer", "security-engineer"],
-        Tools = ["omnisharp", "dotnet-cli", "entity-framework-tools"],
-        Integrations = ["github-actions", "nuget", "azure-devops"]
-    };
-}
-```
+**Development Workflow Optimization (REQUIRED):**
+- Project structure enables efficient development with clear separation of concerns and modular architecture
+- Build and deployment processes optimized for development productivity with fast iteration cycles
+- Testing strategy comprehensive with unit tests, integration tests, and quality assurance automation
+- Development environment setup streamlined with automated configuration and dependency management
+- Team collaboration enhanced with clear workflows, documentation, and communication integration
 
-## Core Implementation Patterns
+**Long-term Maintainability and Scalability (REQUIRED):**
+- Project architecture supports scalability requirements with appropriate patterns and infrastructure integration
+- Code organization follows established patterns enabling easy maintenance and feature extension
+- Documentation strategy supports knowledge sharing with comprehensive technical and business documentation
+- Update and maintenance procedures established for framework evolution and technology stack updates
+- Monitoring and health checking integrated for ongoing project health and performance optimization
 
-### 1. Intelligent Project Initialization Engine
+## 💡 USAGE EXAMPLES
 
-```typescript
-interface ProjectInitializationRequest {
-  projectName: string;
-  primaryLanguage: string;
-  businessDomain: string;
-  projectScale: 'startup' | 'sme' | 'enterprise';
-  specialRequirements?: string[];
-  githubIntegration: boolean;
-  deploymentTarget?: string;
-}
-
-class GitHubCopilotProjectInitializer {
-  async initializeProject(request: ProjectInitializationRequest): Promise<ProjectSetup> {
-    // Step 1: Analyze context and preferences
-    const context = await this.analyzeContext();
-
-    // Step 2: Generate technology-specific template
-    const template = await this.generateProjectTemplate(request, context);
-
-    // Step 3: Create copilot.instructions.md
-    const instructions = await this.generateCopilotInstructions(request, template);
-
-    // Step 4: Set up GitHub integration
-    const githubSetup = await this.setupGitHubIntegration(request);
-
-    // Step 5: Initialize development environment
-    const devEnvironment = await this.setupDevelopmentEnvironment(template);
-
-    return {
-      template,
-      instructions,
-      githubSetup,
-      devEnvironment,
-      readyForDevelopment: true
-    };
-  }
-
-  private async generateProjectTemplate(
-    request: ProjectInitializationRequest,
-    context: ProjectContext
-  ): Promise<ProjectTemplate> {
-    const templateGenerator = this.getTemplateGenerator(request.primaryLanguage);
-    return templateGenerator.generate(request, context);
-  }
-}
-```
-
-### 2. GitHub Integration Setup Engine
-
-```typescript
-class GitHubIntegrationSetup {
-  async setupGitHubIntegration(project: ProjectInitializationRequest): Promise<GitHubSetup> {
-    return {
-      workflows: await this.generateWorkflows(project),
-      issueTemplates: await this.generateIssueTemplates(project),
-      prTemplates: await this.generatePRTemplates(project),
-      codeowners: await this.generateCodeowners(project),
-      dependabot: await this.setupDependabot(project),
-      copilotConfiguration: await this.setupCopilotConfiguration(project)
-    };
-  }
-
-  private async generateWorkflows(project: ProjectInitializationRequest): Promise<GitHubWorkflow[]> {
-    const workflows = [
-      this.generateCIWorkflow(project),
-      this.generateCDWorkflow(project),
-      this.generateCodeQualityWorkflow(project),
-      this.generateSecurityWorkflow(project)
-    ];
-
-    return workflows.filter(Boolean);
-  }
-
-  private generateCIWorkflow(project: ProjectInitializationRequest): GitHubWorkflow {
-    const languageConfig = this.getLanguageConfig(project.primaryLanguage);
-
-    return {
-      name: 'CI Pipeline',
-      on: ['push', 'pull_request'],
-      jobs: {
-        test: {
-          'runs-on': 'ubuntu-latest',
-          steps: [
-            { uses: 'actions/checkout@v4' },
-            languageConfig.setupAction,
-            { run: languageConfig.installCommand },
-            { run: languageConfig.testCommand },
-            { run: languageConfig.lintCommand }
-          ]
-        }
-      }
-    };
-  }
-}
-```
-
-## GitHub Integration Points
-
-### 1. Advanced GitHub Actions Integration
+### Modern SaaS Web Application (React + TypeScript)
 
 ```yaml
-# .github/workflows/copilot-enhanced-ci.yml
-name: GitHub Copilot Enhanced CI/CD
+Business Domain: SaaS Platform
+Technology Stack: React + TypeScript frontend, Node.js Express API, PostgreSQL database, AWS cloud deployment
+Project Scale: Startup to SME
+Development Team: Full-stack developers with frontend focus
 
-on:
-  push:
-    branches: [ main, develop ]
-  pull_request:
-    branches: [ main ]
+Project Configuration:
+- Modern React application structure with TypeScript strict mode and component-driven architecture
+- Express.js API backend with RESTful design patterns and comprehensive error handling
+- PostgreSQL database integration with migration management and query optimization
+- AWS deployment configuration with container orchestration and infrastructure as code
 
-jobs:
-  copilot-analysis:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup GitHub Copilot Environment
-        run: |
-          # Configure Copilot for CI environment
-          gh copilot config set --context ci-environment
-
-      - name: Generate Code Analysis
-        run: |
-          # Use Copilot to analyze code quality and suggest improvements
-          gh copilot analyze --output-format json > copilot-analysis.json
-
-      - name: Automated Code Suggestions
-        run: |
-          # Generate context-aware code suggestions
-          gh copilot suggest improvements --based-on-analysis copilot-analysis.json
-
-  technology-specific-tests:
-    strategy:
-      matrix:
-        include:
-          - language: typescript
-            node-version: '18'
-            test-command: 'npm test'
-          - language: python
-            python-version: '3.11'
-            test-command: 'pytest'
-          - language: java
-            java-version: '17'
-            test-command: 'mvn test'
-          - language: csharp
-            dotnet-version: '8.0'
-            test-command: 'dotnet test'
-
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Setup Language Environment
-        uses: ./.github/actions/setup-${{ matrix.language }}
-        with:
-          version: ${{ matrix.node-version || matrix.python-version || matrix.java-version || matrix.dotnet-version }}
-
-      - name: Copilot-Enhanced Testing
-        run: |
-          # Run tests with Copilot code analysis
-          ${{ matrix.test-command }} --copilot-enhanced
+Key Deliverables:
+- Startup-optimized copilot.instructions.md with React patterns and rapid development focus
+- Chatmode ecosystem configured for frontend-engineer, backend-engineer, and qa-engineer workflows
+- GitHub Actions CI/CD pipeline with automated testing, build optimization, and AWS deployment
+- Development environment with hot reload, TypeScript validation, and comprehensive debugging support
+- Productivity-focused documentation with quick start guide and development best practices
 ```
 
-### 2. GitHub Issues & Projects Automation
-
-```typescript
-// GitHub Issues automation with Copilot integration
-interface CopilotIssueAutomation {
-  autoLabeling: {
-    enabled: boolean;
-    chatmodeMapping: Record<string, string[]>;
-    complexityDetection: boolean;
-  };
-  codeGeneration: {
-    enabled: boolean;
-    triggerKeywords: string[];
-    templateGeneration: boolean;
-  };
-  projectManagement: {
-    automaticTaskCreation: boolean;
-    progressTracking: boolean;
-    chatmodeWorkflows: boolean;
-  };
-}
-
-const setupIssueAutomation = (projectConfig: ProjectInitializationRequest): CopilotIssueAutomation => ({
-  autoLabeling: {
-    enabled: true,
-    chatmodeMapping: {
-      'frontend': ['frontend-engineer', 'ux-designer'],
-      'backend': ['backend-engineer', 'api-engineer'],
-      'security': ['security-engineer'],
-      'performance': ['qa-engineer'],
-      'architecture': ['software-architect']
-    },
-    complexityDetection: true
-  },
-  codeGeneration: {
-    enabled: true,
-    triggerKeywords: ['copilot:generate', 'copilot:implement', 'copilot:refactor'],
-    templateGeneration: projectConfig.projectScale === 'enterprise'
-  },
-  projectManagement: {
-    automaticTaskCreation: projectConfig.projectScale !== 'startup',
-    progressTracking: true,
-    chatmodeWorkflows: true
-  }
-});
-```
-
-### 3. Pull Request Enhancement
+### Enterprise API Platform (Java Spring Boot)
 
 ```yaml
-# .github/workflows/copilot-pr-enhancement.yml
-name: Copilot PR Enhancement
+Business Domain: Financial Services
+Technology Stack: Java Spring Boot, Maven build system, PostgreSQL database, Kubernetes deployment
+Project Scale: Enterprise
+Development Team: Backend engineers with microservices architecture experience
 
-on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+Project Configuration:
+- Enterprise Java application structure with Spring Boot framework and microservices architecture patterns
+- Maven multi-module build system with dependency management and enterprise security integration
+- PostgreSQL database with connection pooling, transaction management, and performance optimization
+- Kubernetes deployment with container orchestration, service mesh, and enterprise monitoring
 
-jobs:
-  copilot-review:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Copilot Code Review
-        run: |
-          # Generate AI-powered code review
-          gh copilot review --pr-number ${{ github.event.number }} \
-            --focus security,performance,maintainability
-
-      - name: Generate Code Suggestions
-        run: |
-          # Provide specific improvement suggestions
-          gh copilot suggest --context pr-review \
-            --diff-base origin/${{ github.base_ref }}
-
-      - name: Update PR Description
-        run: |
-          # Enhance PR description with AI insights
-          gh copilot enhance-pr-description \
-            --pr-number ${{ github.event.number }}
+Key Deliverables:
+- Enterprise-grade copilot.instructions.md with Spring Boot patterns and financial services compliance
+- Chatmode ecosystem optimized for backend-engineer, security-engineer, and api-engineer workflows
+- GitHub Actions enterprise pipeline with security scanning, compliance validation, and Kubernetes deployment
+- Development environment with enterprise IDE integration, debugging tools, and performance profiling
+- Comprehensive documentation with architecture diagrams, API specifications, and compliance guidelines
 ```
 
-## Code Generation Templates
+### AI/ML Research Platform (Python FastAPI)
 
-### 1. Technology-Specific Copilot Instructions
+```yaml
+Business Domain: Machine Learning Research
+Technology Stack: Python FastAPI, async processing, PostgreSQL + Redis, Docker containerization
+Project Scale: SME
+Development Team: Data scientists and ML engineers with research focus
 
-```typescript
-interface CopilotInstructionsGenerator {
-  generateForTechnology(language: string, framework: string): string;
-}
+Project Configuration:
+- FastAPI application structure optimized for machine learning workflows and async data processing
+- Python environment with ML libraries, experiment tracking, and reproducible research patterns
+- Database architecture supporting both structured data and ML model storage with performance optimization
+- Docker containerization with ML runtime optimization and GPU support integration
 
-class TechnologySpecificInstructionsGenerator implements CopilotInstructionsGenerator {
-  generateForTechnology(language: string, framework: string): string {
-    const baseTemplate = this.getBaseTemplate();
-    const languageConfig = this.getLanguageConfig(language);
-    const frameworkConfig = this.getFrameworkConfig(framework);
-
-    return `
-# ${this.projectName} - GitHub Copilot Instructions
-
-## 0. Project Metadata
-- **project_name**: ${this.projectName}
-- **primary_language**: ${language}
-- **framework**: ${framework}
-- **business_domain**: ${this.businessDomain}
-- **project_scale**: ${this.projectScale}
-- **development_stage**: mvp
-
-## 1. Technology Stack
-${this.generateTechnologySection(languageConfig, frameworkConfig)}
-
-## 2. Chatmode Ecosystem
-${this.generateChatmodeSection(language, framework)}
-
-## 3. Development Patterns
-${this.generatePatternsSection(languageConfig, frameworkConfig)}
-
-## 4. GitHub Integration
-${this.generateGitHubIntegrationSection()}
-    `;
-  }
-
-  private generateTechnologySection(languageConfig: any, frameworkConfig: any): string {
-    return `
-- **Primary Language**: ${languageConfig.name} ${languageConfig.version}
-- **Framework**: ${frameworkConfig.name} ${frameworkConfig.version}
-- **Package Manager**: ${languageConfig.packageManager}
-- **Testing**: ${frameworkConfig.testingFramework}
-- **Build Tool**: ${frameworkConfig.buildTool}
-- **Database**: ${this.databaseChoice || 'PostgreSQL'}
-- **Deployment**: ${this.deploymentTarget || 'Docker + GitHub Actions'}
-    `;
-  }
-}
+Key Deliverables:
+- ML-research-optimized copilot.instructions.md with FastAPI patterns and data science workflow integration
+- Specialized chatmode configuration for data-engineer, backend-engineer, and qa-engineer roles
+- GitHub Actions ML pipeline with model validation, experiment tracking, and automated deployment
+- Research environment with Jupyter integration, experiment reproducibility, and collaboration tools
+- Documentation focused on research workflows with model documentation and experiment tracking guidelines
 ```
 
-### 2. Automated Project Scaffolding
+### Cross-Platform Mobile App (Flutter + Backend)
 
-```typescript
-class ProjectScaffolder {
-  async scaffoldProject(config: ProjectInitializationRequest): Promise<void> {
-    // Create directory structure
-    await this.createDirectoryStructure(config);
+```yaml
+Business Domain: Consumer Mobile Application
+Technology Stack: Flutter frontend, .NET Core Web API backend, SQL Server database, Azure cloud services
+Project Scale: Startup
+Development Team: Mobile developers with cross-platform experience
 
-    // Generate configuration files
-    await this.generateConfigurationFiles(config);
+Project Configuration:
+- Flutter application structure with state management, navigation, and platform-specific optimization
+- .NET Core Web API backend with mobile-optimized endpoints and performance considerations
+- SQL Server database with mobile data synchronization and offline capability support
+- Azure cloud integration with mobile backend services and push notification infrastructure
 
-    // Set up GitHub integration
-    await this.setupGitHubIntegration(config);
-
-    // Initialize development environment
-    await this.initializeDevelopmentEnvironment(config);
-
-    // Create initial code templates
-    await this.generateInitialCode(config);
-  }
-
-  private async createDirectoryStructure(config: ProjectInitializationRequest): Promise<void> {
-    const template = this.getProjectTemplate(config.primaryLanguage);
-
-    for (const [path, description] of Object.entries(template.structure)) {
-      await fs.mkdir(path, { recursive: true });
-      await fs.writeFile(
-        `${path}/.gitkeep`,
-        `# ${description}\n# This directory is part of the ${config.projectName} project structure.`
-      );
-    }
-  }
-
-  private async generateConfigurationFiles(config: ProjectInitializationRequest): Promise<void> {
-    const generators = {
-      typescript: () => this.generateTypeScriptConfig(config),
-      python: () => this.generatePythonConfig(config),
-      java: () => this.generateJavaConfig(config),
-      csharp: () => this.generateDotNetConfig(config)
-    };
-
-    const generator = generators[config.primaryLanguage];
-    if (generator) {
-      await generator();
-    }
-  }
-}
+Key Deliverables:
+- Mobile-optimized copilot.instructions.md with Flutter patterns and cross-platform development focus
+- Chatmode ecosystem configured for frontend-engineer (mobile), backend-engineer, and qa-engineer workflows
+- GitHub Actions mobile CI/CD with automated testing, platform builds, and Azure deployment
+- Development environment with Flutter toolchain, debugging, and device testing integration
+- Mobile-focused documentation with platform guidelines, deployment procedures, and user experience standards
 ```
 
-## Quality Gates & Standards
+## 🔄 GitHub Copilot Development Workflow Integration
 
-### 1. Code Quality Enforcement
+**Project Initialization Workflow:**
+- **Foundation Setup**: Complete project structure generation with technology stack optimization
+- **Framework Integration**: GitHub Copilot configuration with chatmode ecosystem establishment
+- **Development Environment**: Toolchain setup with productivity optimization and team collaboration
+- **Quality Assurance**: Testing framework setup with continuous integration and quality gate establishment
 
-```typescript
-interface CopilotQualityGates {
-  codeGeneration: CodeGenerationStandards;
-  documentation: DocumentationRequirements;
-  testing: TestingStandards;
-  security: SecurityStandards;
-}
+**Chatmode Transition Strategy:**
+- **Post-Initialization** → **software-architect**: Architecture review and optimization with scalability planning
+- **Security Setup** → **security-engineer**: Security framework implementation and vulnerability assessment
+- **Quality Implementation** → **qa-engineer**: Testing strategy implementation and quality assurance automation
+- **Deployment Preparation** → **deployment-engineer**: CI/CD setup and infrastructure automation
 
-const establishQualityGates = (projectScale: string): CopilotQualityGates => ({
-  codeGeneration: {
-    typeSafety: projectScale === 'enterprise' ? 'strict' : 'standard',
-    errorHandling: 'comprehensive',
-    performanceOptimized: true,
-    productionReady: projectScale !== 'startup',
-    codeComments: projectScale === 'enterprise' ? 'extensive' : 'contextual'
-  },
-  documentation: {
-    apiDocumentation: 'automatic',
-    inlineComments: 'contextual',
-    readmeGeneration: 'comprehensive',
-    architectureDocumentation: projectScale === 'enterprise'
-  },
-  testing: {
-    unitTestCoverage: projectScale === 'enterprise' ? 90 : 70,
-    integrationTests: 'critical-paths',
-    e2eTests: projectScale !== 'startup',
-    performanceTests: projectScale === 'enterprise'
-  },
-  security: {
-    inputValidation: 'strict',
-    outputSanitization: 'automatic',
-    dependencyScanning: true,
-    secretsDetection: true,
-    complianceFramework: projectScale === 'enterprise' ? 'comprehensive' : 'basic'
-  }
-});
-```
+**GitHub Copilot IDE Integration:**
+- New project development environment optimization with Copilot Chat integration and intelligent assistance
+- Technology-specific toolchain integration with code suggestions and development workflow enhancement
+- Team productivity optimization with chatmode workflows and collaborative development patterns
+- Continuous improvement integration with metrics tracking and development workflow optimization
 
-### 2. Development Environment Validation
-
-```typescript
-class DevelopmentEnvironmentValidator {
-  async validateSetup(projectPath: string): Promise<ValidationResult> {
-    const checks = await Promise.all([
-      this.validateProjectStructure(projectPath),
-      this.validateConfigurationFiles(projectPath),
-      this.validateGitHubIntegration(projectPath),
-      this.validateCopilotConfiguration(projectPath),
-      this.validateDevelopmentTools(projectPath)
-    ]);
-
-    return {
-      isValid: checks.every(check => check.passed),
-      checks,
-      recommendations: this.generateRecommendations(checks)
-    };
-  }
-
-  private async validateCopilotConfiguration(projectPath: string): Promise<ValidationCheck> {
-    const instructionsPath = path.join(projectPath, 'copilot.instructions.md');
-    const exists = await fs.pathExists(instructionsPath);
-
-    if (!exists) {
-      return {
-        name: 'Copilot Configuration',
-        passed: false,
-        message: 'copilot.instructions.md not found'
-      };
-    }
-
-    const content = await fs.readFile(instructionsPath, 'utf-8');
-    const hasRequiredSections = [
-      'Project Metadata',
-      'Technology Stack',
-      'Chatmode Ecosystem',
-      'GitHub Integration'
-    ].every(section => content.includes(section));
-
-    return {
-      name: 'Copilot Configuration',
-      passed: hasRequiredSections,
-      message: hasRequiredSections ? 'Valid configuration' : 'Missing required sections'
-    };
-  }
-}
-```
-
-## Transition Guidance
-
-### Project Initialization Workflow
-```markdown
-After completing project initialization, follow this development workflow:
-
-**Phase 1 - Foundation Setup**: Continue with `software-architect` chatmode for architecture review
-**Phase 2 - Implementation**: Switch to appropriate implementation chatmode (`frontend-engineer`, `backend-engineer`)
-**Phase 3 - Quality Assurance**: Use `qa-engineer` chatmode for testing and performance optimization
-**Phase 4 - Security Review**: Switch to `security-engineer` chatmode for security audit
-**Phase 5 - Deployment**: Use `deployment-engineer` chatmode for CI/CD and deployment setup
-```
-
-### Development Lifecycle Integration
-```typescript
-const developmentLifecycle = {
-  initialization: {
-    chatmode: 'new-project-initialization',
-    deliverables: ['Project structure', 'Configuration files', 'GitHub integration']
-  },
-  architecture: {
-    chatmode: 'software-architect',
-    deliverables: ['Architecture documentation', 'Technology decisions', 'Scalability plan']
-  },
-  development: {
-    chatmodes: ['frontend-engineer', 'backend-engineer', 'api-engineer'],
-    deliverables: ['Feature implementation', 'API development', 'UI components']
-  },
-  testing: {
-    chatmode: 'qa-engineer',
-    deliverables: ['Test automation', 'Performance optimization', 'Quality metrics']
-  },
-  deployment: {
-    chatmode: 'deployment-engineer',
-    deliverables: ['CI/CD pipelines', 'Infrastructure setup', 'Monitoring']
-  }
-};
-```
-
-## Examples & Use Cases
-
-### Example 1: Modern Web Application (React + TypeScript)
-
-```bash
-# Project Initialization Request
-{
-  "projectName": "modern-web-app",
-  "primaryLanguage": "typescript",
-  "businessDomain": "saas",
-  "projectScale": "startup",
-  "githubIntegration": true,
-  "deploymentTarget": "vercel"
-}
-
-# Generated Structure
-/modern-web-app
-├── src/
-│   ├── components/
-│   ├── pages/
-│   ├── hooks/
-│   └── services/
-├── .github/
-│   ├── workflows/
-│   └── issue-templates/
-├── copilot.instructions.md
-├── package.json
-├── tsconfig.json
-└── README.md
-
-# Copilot Configuration Focus
-# - React development patterns
-# - TypeScript best practices
-# - Component-driven development
-# - Performance optimization
-```
-
-### Example 2: Enterprise API (Java Spring Boot)
-
-```bash
-# Project Initialization Request
-{
-  "projectName": "enterprise-api",
-  "primaryLanguage": "java",
-  "businessDomain": "enterprise",
-  "projectScale": "enterprise",
-  "githubIntegration": true,
-  "deploymentTarget": "kubernetes"
-}
-
-# Generated Structure
-/enterprise-api
-├── src/
-│   └── main/java/com/company/api/
-│       ├── controller/
-│       ├── service/
-│       ├── repository/
-│       └── model/
-├── .github/
-│   ├── workflows/
-│   └── dependabot.yml
-├── copilot.instructions.md
-├── pom.xml
-└── Dockerfile
-
-# Copilot Configuration Focus
-# - Enterprise Java patterns
-# - Spring Boot best practices
-# - Security and compliance
-# - Microservices architecture
-```
-
-### Example 3: ML/AI Application (Python FastAPI)
-
-```bash
-# Project Initialization Request
-{
-  "projectName": "ml-api-service",
-  "primaryLanguage": "python",
-  "businessDomain": "ai",
-  "projectScale": "sme",
-  "specialRequirements": ["machine-learning", "async-processing"],
-  "deploymentTarget": "docker"
-}
-
-# Generated Structure
-/ml-api-service
-├── app/
-│   ├── api/
-│   ├── ml/
-│   ├── core/
-│   └── services/
-├── notebooks/
-├── models/
-├── .github/workflows/
-├── copilot.instructions.md
-├── requirements.txt
-└── docker-compose.yml
-
-# Copilot Configuration Focus
-# - FastAPI async patterns
-# - ML model integration
-# - Data processing pipelines
-# - Performance optimization
-```
-
-This comprehensive prompt creates production-ready projects with full GitHub Copilot integration, technology-specific optimizations, and enterprise-grade development workflows.
+---
+*This prompt creates comprehensive, production-ready projects with complete GitHub Copilot framework integration, enterprise-grade standards, and optimized development workflows for maximum team productivity.*

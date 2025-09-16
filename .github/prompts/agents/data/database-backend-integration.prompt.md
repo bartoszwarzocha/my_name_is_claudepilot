@@ -1,5 +1,5 @@
 ---
-description: Design and implement database-backend integration with ORM configuration, data access patterns, and API layer architecture. Adapts to project specifications defined in copilot.instructions.md.
+description: Design and implement comprehensive database-backend integration with advanced ORM configuration, data access patterns, transaction management, and API layer architecture. Adapts to project specifications defined in copilot.instructions.md.
 model: claude-4-sonnet
 tools:
   - codebase
@@ -8,398 +8,293 @@ tools:
   - runCommands
   - githubRepo
   - search
+  - vscodeAPI
 ---
+
+**🤖 CHATMODE ACTIVATION:** This prompt automatically activates the `data-engineer` chatmode.
+**📋 CHATMODE CONTEXT:** The activated chatmode will read copilot.instructions.md and adapt to project requirements.
+**🔄 GITHUB COPILOT INTEGRATION:** All tasks will be managed through GitHub Copilot Chat workflows.
 
 # Database-Backend Integration
 
-**Agent Collaboration**: data-engineer + api-engineer
-**Primary Focus**: Database schema design, ORM configuration, API data layer architecture
+## FUNCTIONAL REQUIREMENTS
 
-## Context Analysis
+**What needs to be accomplished:**
 
-**Context Adaptation**: Read copilot.instructions.md to understand:
-- **Primary Language**: Backend technology stack (Java/Spring, .NET Core, Node.js, Python, etc.)
-- **Database Technology**: Primary database system (PostgreSQL, MySQL, SQLite, MongoDB)
-- **Project Scale**: Architecture complexity (startup/simple, SME/moderate, enterprise/complex)
-- **Business Domain**: Data modeling requirements (e-commerce, fintech, healthcare, etc.)
+### Comprehensive Database Integration Architecture
+- **ORM Configuration and Setup**: Establish robust object-relational mapping with connection pooling, transaction management, and performance optimization
+- **Data Access Layer Design**: Implement repository patterns, service layers, and data validation with proper separation of concerns
+- **Database Schema Management**: Design scalable database schemas with proper indexing, relationships, and migration strategies
+- **Transaction Management**: Implement ACID-compliant transactions with proper isolation levels and rollback mechanisms
 
-## Technology-Adaptive Implementation
+### API Data Layer Integration
+- **RESTful Data Endpoints**: Create standardized API endpoints for data operations with proper HTTP methods and status codes
+- **Data Transfer Objects**: Design efficient DTOs with validation, serialization, and transformation capabilities
+- **Error Handling and Logging**: Implement comprehensive error handling with detailed logging and monitoring integration
+- **Performance Optimization**: Optimize database queries, implement caching strategies, and prevent N+1 query problems
 
-### Java/Spring Boot + Database
-```java
-// Entity with validation and audit
-@Entity
-@Table(name = "products")
-@EntityListeners(AuditingEntityListener.class)
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+### Security and Data Protection
+- **Access Control Integration**: Implement role-based data access with proper authentication and authorization
+- **Data Validation and Sanitization**: Ensure input validation, SQL injection prevention, and data integrity enforcement
+- **Audit Trail Implementation**: Create comprehensive audit logging for data changes and access patterns
+- **Compliance and Governance**: Implement data protection measures meeting industry-specific compliance requirements
 
-    @Column(nullable = false)
-    @NotBlank
-    private String name;
+### Technology Stack Adaptation
+- **Framework-Specific Implementation**: Adapt integration patterns to detected backend technology stack and ORM preferences
+- **Database System Optimization**: Optimize for specific database systems with vendor-specific features and best practices
+- **Scalability and Performance**: Design for horizontal and vertical scaling with load balancing and connection management
+- **Development and Testing Support**: Create development-friendly patterns with testing support and debugging capabilities
 
-    @Column(precision = 10, scale = 2)
-    @DecimalMin("0.0")
-    private BigDecimal price;
+## HIGH-LEVEL ALGORITHMS
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+**How to approach the problem:**
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-}
+### 1. Technology Stack Analysis and Configuration
+```
+1. Read copilot.instructions.md to extract:
+   - Backend technology stack and framework preferences
+   - Database system and ORM technology selection
+   - Business domain data modeling requirements
+   - Performance and scalability expectations
 
-// Repository with custom queries
-@Repository
-public interface ProductRepository extends JpaRepository<Product, Long> {
-    @Query("SELECT p FROM Product p WHERE p.price BETWEEN :minPrice AND :maxPrice")
-    List<Product> findByPriceRange(@Param("minPrice") BigDecimal minPrice,
-                                  @Param("maxPrice") BigDecimal maxPrice);
-
-    @Query(value = "SELECT * FROM products WHERE created_at >= ?1", nativeQuery = true)
-    List<Product> findRecentProducts(LocalDateTime since);
-}
-
-// Service with transaction management
-@Service
-@Transactional
-public class ProductService {
-    @Autowired
-    private ProductRepository productRepository;
-
-    public Product createProduct(ProductDto productDto) {
-        Product product = new Product();
-        BeanUtils.copyProperties(productDto, product);
-        return productRepository.save(product);
-    }
-
-    @Transactional(readOnly = true)
-    public Page<Product> findProducts(Pageable pageable) {
-        return productRepository.findAll(pageable);
-    }
-}
+2. Database Technology Assessment:
+   - Analyze current database schema and migration requirements
+   - Evaluate ORM capabilities and configuration needs
+   - Assess connection pooling and transaction management requirements
+   - Review performance optimization and caching strategies
 ```
 
-### .NET Core + Entity Framework
-```csharp
-// Entity with annotations
-public class Product
-{
-    public int Id { get; set; }
+### 2. Database Schema Design and Migration
+```
+1. Schema Analysis and Design:
+   - Analyze business domain requirements for data modeling
+   - Design normalized database schema with proper relationships
+   - Implement indexing strategy for query performance optimization
+   - Plan migration and versioning strategy for schema evolution
 
-    [Required]
-    [StringLength(200)]
-    public string Name { get; set; }
-
-    [Column(TypeName = "decimal(10,2)")]
-    [Range(0, double.MaxValue)]
-    public decimal Price { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-}
-
-// DbContext with configuration
-public class AppDbContext : DbContext
-{
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
-
-    public DbSet<Product> Products { get; set; }
-
-    protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
-        modelBuilder.Entity<Product>(entity =>
-        {
-            entity.HasKey(e => e.Id);
-            entity.Property(e => e.Name).IsRequired().HasMaxLength(200);
-            entity.Property(e => e.Price).HasColumnType("decimal(10,2)");
-            entity.Property(e => e.CreatedAt).HasDefaultValueSql("GETDATE()");
-        });
-    }
-
-    public override int SaveChanges()
-    {
-        var entries = ChangeTracker.Entries()
-            .Where(e => e.State == EntityState.Added || e.State == EntityState.Modified);
-
-        foreach (var entry in entries)
-        {
-            if (entry.State == EntityState.Added)
-                entry.Property("CreatedAt").CurrentValue = DateTime.UtcNow;
-            entry.Property("UpdatedAt").CurrentValue = DateTime.UtcNow;
-        }
-
-        return base.SaveChanges();
-    }
-}
-
-// Repository pattern with async operations
-public interface IProductRepository
-{
-    Task<Product> GetByIdAsync(int id);
-    Task<IEnumerable<Product>> GetAllAsync();
-    Task<Product> CreateAsync(Product product);
-    Task UpdateAsync(Product product);
-    Task DeleteAsync(int id);
-}
-
-public class ProductRepository : IProductRepository
-{
-    private readonly AppDbContext _context;
-
-    public ProductRepository(AppDbContext context)
-    {
-        _context = context;
-    }
-
-    public async Task<Product> GetByIdAsync(int id)
-    {
-        return await _context.Products.FindAsync(id);
-    }
-
-    public async Task<IEnumerable<Product>> GetAllAsync()
-    {
-        return await _context.Products.ToListAsync();
-    }
-
-    public async Task<Product> CreateAsync(Product product)
-    {
-        _context.Products.Add(product);
-        await _context.SaveChangesAsync();
-        return product;
-    }
-}
+2. ORM Configuration and Setup:
+   - Configure ORM framework with connection pooling and transaction management
+   - Set up entity mapping with validation and constraint enforcement
+   - Implement audit trails and soft delete patterns where required
+   - Configure caching layers and performance optimization settings
 ```
 
-### Node.js + TypeORM/Prisma
-```typescript
-// TypeORM Entity
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+### 3. Data Access Layer Implementation
+```
+1. Repository Pattern Implementation:
+   - Design repository interfaces with clear separation of concerns
+   - Implement concrete repository classes with error handling
+   - Create service layer for business logic and transaction management
+   - Set up dependency injection and configuration management
 
-@Entity('products')
-export class Product {
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column({ length: 200 })
-    name: string;
-
-    @Column('decimal', { precision: 10, scale: 2 })
-    price: number;
-
-    @CreateDateColumn()
-    createdAt: Date;
-
-    @UpdateDateColumn()
-    updatedAt: Date;
-}
-
-// Repository service
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-
-@Injectable()
-export class ProductService {
-    constructor(
-        @InjectRepository(Product)
-        private productRepository: Repository<Product>,
-    ) {}
-
-    async findAll(): Promise<Product[]> {
-        return this.productRepository.find();
-    }
-
-    async findOne(id: number): Promise<Product> {
-        return this.productRepository.findOne({ where: { id } });
-    }
-
-    async create(productData: Partial<Product>): Promise<Product> {
-        const product = this.productRepository.create(productData);
-        return this.productRepository.save(product);
-    }
-
-    async update(id: number, productData: Partial<Product>): Promise<Product> {
-        await this.productRepository.update(id, productData);
-        return this.findOne(id);
-    }
-}
+2. Query Optimization and Performance:
+   - Implement efficient query patterns with proper joins and filtering
+   - Set up pagination and sorting capabilities for large datasets
+   - Create bulk operations for high-performance data processing
+   - Implement caching strategies for frequently accessed data
 ```
 
-### Python + SQLAlchemy
-```python
-# Models with SQLAlchemy
-from sqlalchemy import Column, Integer, String, Numeric, DateTime, func
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+### 4. API Integration and Data Transfer
+```
+1. RESTful Endpoint Design:
+   - Create standardized CRUD endpoints with proper HTTP methods
+   - Implement request/response DTOs with validation and transformation
+   - Set up proper status codes and error response formatting
+   - Configure CORS, security headers, and API versioning
 
-Base = declarative_base()
-
-class Product(Base):
-    __tablename__ = 'products'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String(200), nullable=False)
-    price = Column(Numeric(10, 2), nullable=False)
-    created_at = Column(DateTime, default=func.now())
-    updated_at = Column(DateTime, default=func.now(), onupdate=func.now())
-
-    def to_dict(self):
-        return {
-            'id': self.id,
-            'name': self.name,
-            'price': float(self.price),
-            'created_at': self.created_at.isoformat(),
-            'updated_at': self.updated_at.isoformat()
-        }
-
-# Repository pattern
-from abc import ABC, abstractmethod
-from typing import List, Optional
-from sqlalchemy.orm import Session
-
-class ProductRepository:
-    def __init__(self, session: Session):
-        self.session = session
-
-    def get_all(self) -> List[Product]:
-        return self.session.query(Product).all()
-
-    def get_by_id(self, product_id: int) -> Optional[Product]:
-        return self.session.query(Product).filter(Product.id == product_id).first()
-
-    def create(self, product_data: dict) -> Product:
-        product = Product(**product_data)
-        self.session.add(product)
-        self.session.commit()
-        self.session.refresh(product)
-        return product
-
-    def update(self, product_id: int, product_data: dict) -> Optional[Product]:
-        product = self.get_by_id(product_id)
-        if product:
-            for key, value in product_data.items():
-                setattr(product, key, value)
-            self.session.commit()
-            self.session.refresh(product)
-        return product
-
-# FastAPI service integration
-from fastapi import FastAPI, Depends, HTTPException
-from pydantic import BaseModel
-
-class ProductCreate(BaseModel):
-    name: str
-    price: float
-
-class ProductResponse(BaseModel):
-    id: int
-    name: str
-    price: float
-    created_at: str
-    updated_at: str
-
-@app.post("/products", response_model=ProductResponse)
-async def create_product(product: ProductCreate, db: Session = Depends(get_db)):
-    repository = ProductRepository(db)
-    created_product = repository.create(product.dict())
-    return ProductResponse(**created_product.to_dict())
+2. Data Validation and Security:
+   - Implement input validation with business rule enforcement
+   - Set up SQL injection prevention and data sanitization
+   - Create role-based access control for data operations
+   - Implement audit logging and data access monitoring
 ```
 
-## Implementation Strategy
+### 5. Testing, Monitoring, and Maintenance
+```
+1. Testing Strategy Implementation:
+   - Create unit tests for repository and service layers
+   - Implement integration tests for database operations
+   - Set up performance testing for query optimization validation
+   - Create test data management and cleanup strategies
 
-### 1. Database Schema Analysis
-- Analyze existing database structure or design new schema
-- Implement proper indexing strategy for query performance
-- Define relationships and foreign key constraints
-- Set up audit trails and soft deletes if required
-
-### 2. ORM Configuration
-- Configure connection pooling and transaction management
-- Set up migrations and versioning system
-- Implement proper error handling and logging
-- Configure caching strategy (Redis, in-memory cache)
-
-### 3. Data Access Layer
-- Implement repository pattern for clean separation
-- Create service layer for business logic
-- Set up proper validation and sanitization
-- Implement pagination and filtering capabilities
-
-### 4. API Integration Points
-- Design RESTful endpoints with proper HTTP methods
-- Implement proper status codes and error responses
-- Set up request/response DTOs with validation
-- Configure CORS and security policies
-
-## Database-Specific Optimizations
-
-### PostgreSQL Integration
-```sql
--- Performance indexes
-CREATE INDEX CONCURRENTLY idx_products_price ON products(price);
-CREATE INDEX CONCURRENTLY idx_products_created_at ON products(created_at);
-
--- Full-text search
-CREATE INDEX CONCURRENTLY idx_products_name_fts ON products USING gin(to_tsvector('english', name));
+2. Monitoring and Maintenance:
+   - Implement comprehensive logging for database operations
+   - Set up performance monitoring and alerting
+   - Create backup and recovery procedures
+   - Plan maintenance and optimization workflows
 ```
 
-### MySQL Integration
-```sql
--- Optimized table structure
-CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(200) NOT NULL,
-    price DECIMAL(10,2) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    INDEX idx_price (price),
-    INDEX idx_created (created_at)
-) ENGINE=InnoDB;
+## VALIDATION CRITERIA
+
+**What conditions must be met:**
+
+### ✅ Database Integration Excellence
+- **ORM Configuration**: Properly configured ORM with connection pooling, transaction management, and performance optimization
+- **Schema Design**: Well-designed database schema with proper normalization, indexing, and relationship management
+- **Migration Strategy**: Robust migration system with versioning and rollback capabilities
+- **Performance Optimization**: Optimized queries with appropriate indexing and caching strategies
+
+### ✅ Data Access Layer Quality
+- **Repository Pattern**: Clean repository pattern implementation with proper separation of concerns
+- **Service Layer**: Well-designed service layer with business logic encapsulation and transaction management
+- **Error Handling**: Comprehensive error handling with proper exception management and logging
+- **Data Validation**: Robust input validation with business rule enforcement and constraint checking
+
+### ✅ API Integration Standards
+- **RESTful Design**: Standardized REST API endpoints with proper HTTP methods and status codes
+- **DTO Implementation**: Efficient data transfer objects with validation and transformation capabilities
+- **Security Implementation**: Proper authentication, authorization, and data protection measures
+- **Documentation Quality**: Comprehensive API documentation with examples and usage guidelines
+
+### ✅ Performance and Scalability
+- **Query Performance**: Optimized database queries with proper indexing and join strategies
+- **Connection Management**: Efficient connection pooling and resource management
+- **Caching Strategy**: Effective caching implementation for improved performance
+- **Scalability Design**: Architecture supports horizontal and vertical scaling requirements
+
+### ✅ GitHub Copilot Integration
+- **Chatmode Coordination**: Seamless integration with api-engineer for endpoint development and security-engineer for data protection
+- **Documentation Quality**: Comprehensive database and API documentation supporting development workflows
+- **Configuration Adaptation**: Proper adaptation to project technology stack and business domain requirements
+- **Testing Support**: Complete testing framework for database operations and API integration validation
+
+## USAGE EXAMPLES
+
+**For different GitHub Copilot scenarios:**
+
+### Scenario 1: E-commerce Database Integration
+```yaml
+Context: E-commerce platform with complex product catalog, inventory, and order management
+Technology Stack: Detected from copilot.instructions.md (Java Spring Boot, PostgreSQL, Redis)
+Business Domain: E-commerce with high-volume transactions and complex product relationships
+
+Database Integration Focus:
+- Product catalog with categories, variants, and pricing tiers
+- Inventory management with real-time stock tracking
+- Order processing with payment and fulfillment workflows
+- Customer data with purchase history and preferences
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Design e-commerce database schema with Spring Boot JPA integration
+2. api-engineer chatmode → Implement RESTful endpoints for product catalog and order management
+3. security-engineer chatmode → Implement payment data protection and audit trails
+4. qa-engineer chatmode → Create comprehensive testing for transactional integrity
+
+Expected Deliverables:
+- E-commerce database schema with proper normalization and indexing
+- Spring Boot JPA entities with validation and audit trails
+- Repository and service layers with transaction management
+- RESTful API endpoints with comprehensive error handling and documentation
 ```
 
-### SQLite Integration (Desktop Apps)
-```sql
--- Lightweight structure with proper constraints
-CREATE TABLE products (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL CHECK(length(name) > 0),
-    price REAL NOT NULL CHECK(price >= 0),
-    created_at TEXT DEFAULT (datetime('now')),
-    updated_at TEXT DEFAULT (datetime('now'))
-);
+### Scenario 2: Healthcare Data Integration
+```yaml
+Context: Healthcare management system with patient data, clinical workflows, and regulatory compliance
+Technology Stack: Healthcare-compliant setup (.NET Core, SQL Server, Entity Framework)
+Business Domain: Healthcare with HIPAA compliance and clinical data management
 
-CREATE TRIGGER update_products_timestamp
-AFTER UPDATE ON products
-BEGIN
-    UPDATE products SET updated_at = datetime('now') WHERE id = NEW.id;
-END;
+Database Integration Focus:
+- Patient medical records with clinical data relationships
+- Appointment scheduling with provider and resource management
+- Billing and insurance processing with regulatory reporting
+- Clinical decision support with data analytics integration
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Design HIPAA-compliant database with Entity Framework integration
+2. security-engineer chatmode → Implement healthcare data protection and access controls
+3. api-engineer chatmode → Create clinical workflow APIs with audit trail requirements
+4. qa-engineer chatmode → Establish patient safety and data integrity validation
+
+Expected Deliverables:
+- HIPAA-compliant database schema with comprehensive audit trails
+- Entity Framework models with healthcare data validation
+- Clinical workflow APIs with regulatory compliance features
+- Data protection and access control implementation
 ```
 
-## Success Criteria
+### Scenario 3: Financial Services Data Architecture
+```yaml
+Context: Financial institution with transaction processing, risk management, and regulatory reporting
+Technology Stack: Enterprise financial setup (Java, Oracle, Spring Data JPA)
+Business Domain: Financial services with real-time transaction processing and compliance
 
-1. **Database Integration**: Proper ORM configuration with connection management
-2. **Data Validation**: Input validation and business rule enforcement
-3. **Performance**: Optimized queries with appropriate indexing
-4. **Error Handling**: Comprehensive error handling and logging
-5. **API Consistency**: Standardized request/response formats
-6. **Transaction Management**: Proper ACID compliance and rollback handling
+Database Integration Focus:
+- Account management with complex financial product relationships
+- Transaction processing with real-time fraud detection
+- Risk assessment with regulatory reporting requirements
+- Customer onboarding with KYC and compliance workflows
 
-## Common Pitfalls to Avoid
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Design financial database with Spring Data JPA and Oracle optimization
+2. security-engineer chatmode → Implement financial security controls and fraud detection
+3. api-engineer chatmode → Create real-time transaction processing APIs
+4. deployment-engineer chatmode → Set up high-availability database infrastructure
 
-- N+1 query problems with lazy loading
-- Missing database indexes on frequently queried fields
-- Inadequate connection pool configuration
-- Lack of proper error handling for constraint violations
-- Missing transaction boundaries for multi-step operations
-- Exposing internal database structure through API responses
+Expected Deliverables:
+- Financial services database with transaction integrity and audit requirements
+- Spring Data JPA integration with Oracle-specific optimizations
+- Real-time transaction processing with fraud detection capabilities
+- Regulatory reporting and compliance data management
+```
 
-## Transition to Specialized Chatmodes
+### Scenario 4: IoT and Analytics Data Platform
+```yaml
+Context: IoT platform with massive data ingestion, real-time analytics, and machine learning integration
+Technology Stack: Cloud-native setup (Python FastAPI, PostgreSQL, InfluxDB, Redis)
+Business Domain: IoT with time-series data, device management, and predictive analytics
 
-After completing database-backend integration:
+Database Integration Focus:
+- Time-series data storage with efficient compression and querying
+- Device management with metadata and configuration tracking
+- Real-time analytics with streaming data processing
+- Machine learning model integration with feature store management
 
-- **For API Development**: Switch to **api-engineer** chatmode to implement RESTful endpoints and API layer
-- **For Frontend Integration**: Switch to **frontend-engineer** chatmode to connect frontend components with the backend data layer
-- **For Security Implementation**: Switch to **security-engineer** chatmode to implement data access security and audit trails
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Design IoT data architecture with FastAPI and multi-database integration
+2. api-engineer chatmode → Implement high-throughput data ingestion and analytics APIs
+3. deployment-engineer chatmode → Set up scalable data infrastructure with auto-scaling
+4. qa-engineer chatmode → Create performance testing for high-volume data processing
+
+Expected Deliverables:
+- IoT data architecture with time-series and relational database integration
+- FastAPI implementation with SQLAlchemy and InfluxDB integration
+- High-performance data ingestion with real-time processing capabilities
+- Analytics APIs with machine learning model integration
+```
+
+## GitHub Copilot Integration
+
+### Chatmode Coordination Patterns
+```
+Database-Backend Integration → data-engineer chatmode (lead)
+├─ API Endpoint Implementation → api-engineer chatmode
+├─ Data Security Implementation → security-engineer chatmode
+├─ Frontend Data Integration → frontend-engineer chatmode
+├─ Performance Testing → qa-engineer chatmode
+└─ Infrastructure Setup → deployment-engineer chatmode
+```
+
+### Context Handoff Information
+- **To api-engineer**: Database schema design, repository patterns, DTO specifications, API endpoint requirements
+- **To security-engineer**: Data access control requirements, audit trail specifications, compliance validation needs
+- **To frontend-engineer**: API endpoint documentation, data models, integration patterns, error handling
+- **To qa-engineer**: Testing strategies, performance benchmarks, data validation scenarios
+- **To deployment-engineer**: Database configuration, connection pooling, backup and recovery requirements
+
+### GitHub Actions Integration
+- **Database Migration**: Automated database schema migration and versioning
+- **Integration Testing**: Automated testing for database operations and API endpoints
+- **Performance Monitoring**: Continuous monitoring of database performance and query optimization
+- **Security Scanning**: Automated security scanning for SQL injection and data protection vulnerabilities
+
+## Configuration Adaptation
+
+**IMPORTANT**: This prompt adapts to project specifications by reading `copilot.instructions.md`:
+
+- **Backend Technology**: Automatically detects and configures integration patterns for Spring Boot, .NET Core, FastAPI, Express.js, or other frameworks
+- **Database System**: Optimizes for PostgreSQL, MySQL, SQL Server, Oracle, or NoSQL databases based on project configuration
+- **Business Domain**: Adapts data modeling and validation patterns to e-commerce, healthcare, financial, or other industry requirements
+- **Performance Requirements**: Configures caching, connection pooling, and optimization strategies based on scale and performance needs
+- **Security Standards**: Implements appropriate security measures and compliance requirements based on industry and regulatory context
+
+**The data-engineer chatmode will automatically analyze project configuration and technology stack to deliver optimal database-backend integration while maintaining the functional requirements specified above.**

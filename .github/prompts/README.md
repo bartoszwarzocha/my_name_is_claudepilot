@@ -8,32 +8,32 @@ This directory contains comprehensive prompt engineering templates for GitHub Co
 
 ```
 .github/prompts/
-├── agents/           # Specialized domain prompts (48 files)
-│   ├── api/         # API development and integration (6 prompts)
-│   ├── architecture/# System architecture and design (2 prompts)
-│   ├── business/    # Business analysis and requirements (3 prompts)
-│   ├── data/        # Data engineering and database design (4 prompts)
-│   ├── deployment/  # DevOps and deployment automation (2 prompts)
-│   ├── design/      # UX/UI design and user research (1 prompt)
-│   ├── frontend/    # Frontend development and testing (12 prompts)
-│   ├── product/     # Product management and planning (3 prompts)
-│   ├── qa/          # Quality assurance and performance (1 prompt)
-│   ├── quality/     # Test automation and quality processes (1 prompt)
-│   ├── review/      # Code review and security assessment (2 prompts)
-│   └── security/    # Security engineering and compliance (7 prompts)
-├── init/            # Project initialization prompts (2 files)
-├── workflows/       # End-to-end workflow orchestration (7 files)
+├── agents/           # Specialized domain prompts
+│   ├── api/         # API development and integration
+│   ├── architecture/# System architecture and design
+│   ├── business/    # Business analysis and requirements
+│   ├── data/        # Data engineering and database design
+│   ├── deployment/  # DevOps and deployment automation
+│   ├── design/      # UX/UI design and user research
+│   ├── frontend/    # Frontend development and testing
+│   ├── product/     # Product management and planning
+│   ├── qa/          # Quality assurance and performance
+│   ├── quality/     # Test automation and quality processes
+│   ├── review/      # Code review and security assessment
+│   └── security/    # Security engineering and compliance
+├── init/            # Project initialization prompts
+├── workflows/       # End-to-end workflow orchestration
 ├── README.md        # This documentation
 └── TESTING.md       # Prompt validation and testing guide
 ```
 
 ## Prompt Categories
 
-### 1. Agent Prompts (48 files)
+### 1. Agent Prompts
 
-Specialized prompts that provide domain-specific expertise for focused development tasks.
+Specialized prompts that provide domain-specific expertise for focused development tasks across comprehensive software development domains.
 
-#### API Development (6 prompts)
+#### API Development
 - **frontend-backend-integration**: Full-stack integration patterns
 - **graphql-api-development**: GraphQL schema design and implementation
 - **microservices-architecture-patterns**: Distributed system patterns
@@ -41,27 +41,27 @@ Specialized prompts that provide domain-specific expertise for focused developme
 - **swagger-documentation-generation**: API documentation automation
 - **swagger-to-endpoints-generation**: Code generation from OpenAPI specs
 
-#### Architecture & Design (3 prompts)
+#### Architecture & Design
 - **system-architecture-design**: Enterprise architecture patterns
 - **desktop-application-architecture**: Desktop application frameworks
 - **user-research-and-persona-development**: UX research methodologies
 
-#### Business Analysis (3 prompts)
+#### Business Analysis
 - **business-case-development**: Business justification and ROI analysis
 - **current-state-process-analysis**: Process mapping and optimization
 - **stakeholder-requirements-gathering**: Requirements elicitation techniques
 
-#### Data Engineering (4 prompts)
+#### Data Engineering
 - **database-backend-integration**: Database connectivity patterns
 - **database-design-and-etl-implementation**: Data architecture and ETL
 - **database-to-entityframework-generation**: ORM code generation
 - **desktop-database-integration**: Desktop data access patterns
 
-#### DevOps & Deployment (2 prompts)
+#### DevOps & Deployment
 - **ci-cd-pipeline-and-infrastructure-setup**: Automated deployment pipelines
 - **desktop-deployment-and-packaging**: Desktop application distribution
 
-#### Frontend Development (12 prompts)
+#### Frontend Development
 - **angular-component-development**: Angular best practices
 - **build-tools-and-bundler-optimization**: Build system optimization
 - **frontend-testing-and-quality-assurance**: Frontend testing strategies
@@ -75,18 +75,18 @@ Specialized prompts that provide domain-specific expertise for focused developme
 - **web-accessibility-and-inclusive-design**: WCAG compliance
 - **wxwidgets-desktop-development**: Cross-platform desktop development
 
-#### Product Management (3 prompts)
+#### Product Management
 - **feature-implementation-from-specification**: Spec-driven development
 - **mvp-scoping-and-roadmap-planning**: Product strategy and planning
 - **user-story-creation-and-prioritization**: Agile story management
 
-#### Quality Assurance (3 prompts)
+#### Quality Assurance
 - **application-performance-optimization**: Performance tuning
 - **test-automation-and-quality-assurance**: Test strategy and automation
 - **security-vulnerability-assessment**: Security testing
 - **sonarqube-code-quality-analysis**: Code quality metrics
 
-#### Security Engineering (7 prompts)
+#### Security Engineering
 - **compliance-audit-and-governance**: Regulatory compliance
 - **identity-and-access-management**: Authentication and authorization
 - **incident-response-and-forensics**: Security incident handling
@@ -95,14 +95,14 @@ Specialized prompts that provide domain-specific expertise for focused developme
 - **security-architecture-and-threat-modeling**: Security design
 - **security-controls-implementation**: Security control implementation
 
-### 2. Initialization Prompts (2 files)
+### 2. Initialization Prompts
 
 Project setup and configuration prompts for different project types:
 
 - **existing-project**: Onboarding to existing codebases
 - **new-project**: Greenfield project initialization
 
-### 3. Workflow Prompts (7 files)
+### 3. Workflow Prompts
 
 End-to-end orchestration prompts that coordinate multiple phases and teams:
 

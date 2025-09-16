@@ -11,1151 +11,290 @@ tools:
   - vscodeAPI
 ---
 
+**🤖 CHATMODE ACTIVATION:** This prompt automatically activates the `api-engineer` chatmode.
+**📋 CHATMODE CONTEXT:** The activated chatmode will read copilot.instructions.md and adapt to project requirements.
+**🔄 GITHUB COPILOT INTEGRATION:** All tasks will be managed through GitHub Copilot Chat workflows.
+
 # Frontend-Backend Integration
 
-## Mission
-Implement comprehensive integration between frontend and backend applications, adapting to the technology stack specified in copilot.instructions.md. Create seamless communication, robust authentication, proper error handling, and efficient data flow between frontend and backend layers.
+## FUNCTIONAL REQUIREMENTS
 
-## Pre-Implementation Analysis
+**What needs to be accomplished:**
 
-### Step 1: Technology Stack Detection
-**CRITICAL: Always analyze copilot.instructions.md first to determine frontend and backend technologies:**
-```bash
-# Read project configuration
-cat copilot.instructions.md | grep -A 10 "Frontend\|Backend\|primary_language"
+### Cross-Layer Communication Architecture
+- **API Integration Patterns**: Establish efficient communication protocols between frontend and backend layers
+- **Data Flow Optimization**: Design optimal data transfer patterns with proper serialization and caching strategies
+- **Real-time Communication**: Implement bidirectional communication using WebSockets, Server-Sent Events, or similar technologies
+- **Error Boundary Management**: Create comprehensive error handling across the entire application stack
+
+### Authentication and Security Integration
+- **Unified Authentication**: Implement seamless authentication flow between frontend and backend systems
+- **Session Management**: Design secure session handling with proper token management and refresh mechanisms
+- **Authorization Enforcement**: Ensure consistent permission enforcement across frontend UI and backend APIs
+- **Security Headers**: Configure appropriate security headers and CORS policies for cross-origin communication
+
+### State Synchronization and Management
+- **Client-Server State Sync**: Maintain consistent application state between frontend and backend systems
+- **Optimistic Updates**: Implement optimistic UI updates with proper rollback mechanisms for failed operations
+- **Offline Capabilities**: Design offline-first patterns with data synchronization when connectivity is restored
+- **Cache Coherence**: Ensure data consistency between frontend caches and backend data sources
+
+### Developer Experience and Tooling
+- **Type Safety**: Establish end-to-end type safety from backend APIs to frontend components
+- **Development Workflow**: Create efficient development workflows with hot reloading and live API integration
+- **Error Debugging**: Implement comprehensive error tracking and debugging across the full stack
+- **Documentation Integration**: Generate and maintain up-to-date integration documentation and API contracts
+
+## HIGH-LEVEL ALGORITHMS
+
+**How to approach the problem:**
+
+### 1. Technology Stack Analysis and Adaptation
+```
+1. Read copilot.instructions.md to extract:
+   - Frontend framework and technology preferences
+   - Backend framework and API architecture
+   - Authentication and security requirements
+   - Performance and real-time communication needs
+
+2. Analyze existing project structure:
+   - Identify current integration patterns and communication layers
+   - Understand existing authentication and authorization setup
+   - Assess current error handling and state management approaches
+   - Review existing development and testing workflows
 ```
 
-**Frontend technology detection:**
-```bash
-# Angular projects
-find . -name "angular.json" -o -name "package.json" | head -3
-grep -r "@angular" package.json 2>/dev/null
+### 2. Integration Architecture Design
+```
+1. Communication Layer Design:
+   - Define API contracts and data transfer objects
+   - Plan request/response patterns and error handling
+   - Design authentication token flow and refresh mechanisms
+   - Plan real-time communication architecture if needed
 
-# React projects
-find . -name "package.json" | head -3
-grep -r "react" package.json 2>/dev/null
-
-# Vue projects
-grep -r "vue" package.json 2>/dev/null
-
-# Check existing API integration
-find . -name "*.service.ts" -o -name "*api*" -o -name "*http*" | head -5
+2. State Management Strategy:
+   - Design client-side state management patterns
+   - Plan server state synchronization mechanisms
+   - Create optimistic update and rollback strategies
+   - Design offline capability and sync patterns
 ```
 
-**Backend technology detection:**
-```bash
-# Java/Spring Boot
-find . -name "pom.xml" -o -name "*.java" | head -3
-grep -r "spring-boot" pom.xml 2>/dev/null
+### 3. Security and Authentication Implementation
+```
+1. Authentication Flow Design:
+   - Implement unified login/logout processes
+   - Create secure token storage and management
+   - Design session refresh and expiration handling
+   - Plan role-based access control integration
 
-# .NET Core
-find . -name "*.csproj" -o -name "*.cs" | head -3
-grep -r "Microsoft.AspNetCore" . --include="*.csproj" 2>/dev/null
-
-# Node.js
-find . -name "package.json" | grep -v node_modules | head -3
-grep -r "express\|fastify\|koa" package.json 2>/dev/null
-
-# Python
-find . -name "requirements.txt" -o -name "*.py" | head -3
-grep -r "django\|flask\|fastapi" requirements.txt 2>/dev/null
+2. Security Enforcement:
+   - Configure CORS policies and security headers
+   - Implement request/response validation
+   - Create comprehensive audit logging
+   - Plan security testing and vulnerability assessment
 ```
 
-### Step 2: Existing Integration Analysis
-```bash
-# Check API configuration
-find . -name "*config*" -o -name "*env*" | grep -v node_modules | head -5
-grep -r "API_URL\|BASE_URL\|BACKEND" . --include="*.ts" --include="*.js" --include="*.env" 2>/dev/null | head -5
+### 4. Performance and Reliability Optimization
+```
+1. Performance Optimization:
+   - Implement efficient data fetching patterns
+   - Design caching strategies at multiple layers
+   - Create request batching and deduplication
+   - Plan lazy loading and pagination strategies
 
-# Check authentication setup
-find . -name "*auth*" -o -name "*jwt*" -o -name "*token*" | grep -v node_modules | head -5
+2. Error Handling and Resilience:
+   - Implement comprehensive error boundary patterns
+   - Create retry mechanisms with exponential backoff
+   - Design graceful degradation for service failures
+   - Plan monitoring and alerting for integration issues
 ```
 
-## Technology-Specific Integration Patterns
+### 5. Development and Testing Integration
+```
+1. Development Workflow:
+   - Configure development environment integration
+   - Implement hot reloading and live API integration
+   - Create comprehensive type generation and validation
+   - Plan API mocking and testing strategies
 
-**⚠️ IMPORTANT: Select integration approach based on copilot.instructions.md frontend and backend technology specification**
-
-### Angular + Spring Boot Integration
-
-**Use when copilot.instructions.md specifies: Angular frontend, Java/Spring Boot backend**
-
-```typescript
-// src/app/core/services/api.service.ts - Angular HTTP service
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { catchError, retry, timeout, finalize } from 'rxjs/operators';
-import { environment } from '../../../environments/environment';
-
-export interface ApiResponse<T> {
-  data: T;
-  message?: string;
-  success: boolean;
-  timestamp: string;
-}
-
-export interface ErrorResponse {
-  error: string;
-  message: string;
-  details?: any[];
-  timestamp: string;
-  path: string;
-  status: number;
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class ApiService {
-  private readonly baseUrl = environment.apiUrl;
-  private readonly defaultTimeout = 30000; // 30 seconds
-  private loadingSubject = new BehaviorSubject<boolean>(false);
-  
-  public loading$ = this.loadingSubject.asObservable();
-
-  constructor(private http: HttpClient) {}
-
-  /**
-   * GET request with proper error handling
-   */
-  get<T>(endpoint: string, params?: HttpParams, options?: {
-    timeout?: number;
-    retries?: number;
-    requireAuth?: boolean;
-  }): Observable<ApiResponse<T>> {
-    
-    const url = `${this.baseUrl}/${endpoint.replace(/^\//, '')}`;
-    const httpOptions = this.buildHttpOptions(params, options?.requireAuth);
-    
-    this.setLoading(true);
-    
-    return this.http.get<ApiResponse<T>>(url, httpOptions)
-      .pipe(
-        timeout(options?.timeout || this.defaultTimeout),
-        retry(options?.retries || 1),
-        catchError(this.handleError.bind(this)),
-        finalize(() => this.setLoading(false))
-      );
-  }
-
-  /**
-   * POST request with proper error handling
-   */
-  post<T>(endpoint: string, body: any, options?: {
-    timeout?: number;
-    retries?: number;
-    requireAuth?: boolean;
-  }): Observable<ApiResponse<T>> {
-    
-    const url = `${this.baseUrl}/${endpoint.replace(/^\//, '')}`;
-    const httpOptions = this.buildHttpOptions(undefined, options?.requireAuth);
-    
-    this.setLoading(true);
-    
-    return this.http.post<ApiResponse<T>>(url, body, httpOptions)
-      .pipe(
-        timeout(options?.timeout || this.defaultTimeout),
-        retry(options?.retries || 0), // Don't retry POST by default
-        catchError(this.handleError.bind(this)),
-        finalize(() => this.setLoading(false))
-      );
-  }
-
-  /**
-   * PUT request with proper error handling
-   */
-  put<T>(endpoint: string, body: any, options?: {
-    timeout?: number;
-    requireAuth?: boolean;
-  }): Observable<ApiResponse<T>> {
-    
-    const url = `${this.baseUrl}/${endpoint.replace(/^\//, '')}`;
-    const httpOptions = this.buildHttpOptions(undefined, options?.requireAuth);
-    
-    this.setLoading(true);
-    
-    return this.http.put<ApiResponse<T>>(url, body, httpOptions)
-      .pipe(
-        timeout(options?.timeout || this.defaultTimeout),
-        catchError(this.handleError.bind(this)),
-        finalize(() => this.setLoading(false))
-      );
-  }
-
-  /**
-   * DELETE request with proper error handling
-   */
-  delete<T>(endpoint: string, options?: {
-    timeout?: number;
-    requireAuth?: boolean;
-  }): Observable<ApiResponse<T>> {
-    
-    const url = `${this.baseUrl}/${endpoint.replace(/^\//, '')}`;
-    const httpOptions = this.buildHttpOptions(undefined, options?.requireAuth);
-    
-    this.setLoading(true);
-    
-    return this.http.delete<ApiResponse<T>>(url, httpOptions)
-      .pipe(
-        timeout(options?.timeout || this.defaultTimeout),
-        catchError(this.handleError.bind(this)),
-        finalize(() => this.setLoading(false))
-      );
-  }
-
-  private buildHttpOptions(params?: HttpParams, requireAuth: boolean = true): any {
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    });
-
-    if (requireAuth) {
-      const token = this.getAuthToken();
-      if (token) {
-        headers = headers.set('Authorization', `Bearer ${token}`);
-      }
-    }
-
-    return {
-      headers,
-      params,
-      observe: 'response' as const
-    };
-  }
-
-  private getAuthToken(): string | null {
-    return localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<never> {
-    let errorMessage = 'An unexpected error occurred';
-    let errorDetails: any = null;
-
-    if (error.error instanceof ErrorEvent) {
-      // Client-side error
-      errorMessage = `Client Error: ${error.error.message}`;
-    } else {
-      // Server-side error
-      if (error.error && error.error.message) {
-        errorMessage = error.error.message;
-        errorDetails = error.error.details;
-      } else {
-        switch (error.status) {
-          case 400:
-            errorMessage = 'Bad Request - Please check your input';
-            break;
-          case 401:
-            errorMessage = 'Unauthorized - Please log in again';
-            // Redirect to login
-            this.handleUnauthorized();
-            break;
-          case 403:
-            errorMessage = 'Forbidden - You do not have permission to access this resource';
-            break;
-          case 404:
-            errorMessage = 'Not Found - The requested resource was not found';
-            break;
-          case 409:
-            errorMessage = 'Conflict - The resource already exists or there is a conflict';
-            break;
-          case 422:
-            errorMessage = 'Validation Error - Please check your input';
-            break;
-          case 429:
-            errorMessage = 'Too Many Requests - Please try again later';
-            break;
-          case 500:
-            errorMessage = 'Internal Server Error - Please try again later';
-            break;
-          case 503:
-            errorMessage = 'Service Unavailable - Please try again later';
-            break;
-          default:
-            errorMessage = `HTTP Error ${error.status}: ${error.statusText}`;
-        }
-      }
-    }
-
-    console.error('API Error:', error);
-
-    const errorResponse: ErrorResponse = {
-      error: error.error?.error || 'API_ERROR',
-      message: errorMessage,
-      details: errorDetails,
-      timestamp: new Date().toISOString(),
-      path: error.url || '',
-      status: error.status
-    };
-
-    return throwError(() => errorResponse);
-  }
-
-  private handleUnauthorized(): void {
-    // Clear stored tokens
-    localStorage.removeItem('access_token');
-    sessionStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    
-    // Redirect to login page
-    window.location.href = '/login';
-  }
-
-  private setLoading(loading: boolean): void {
-    this.loadingSubject.next(loading);
-  }
-}
+2. Quality Assurance:
+   - Implement end-to-end testing across full stack
+   - Create integration testing for API contracts
+   - Plan performance testing for data flow
+   - Design security testing for authentication flows
 ```
 
-```java
-// src/main/java/com/company/config/CorsConfig.java - Spring Boot CORS configuration
-package com.company.config;
+## VALIDATION CRITERIA
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+**What conditions must be met:**
 
-import java.util.Arrays;
-import java.util.List;
+### ✅ Communication Excellence
+- **API Integration**: Seamless communication between frontend and backend with proper error handling
+- **Data Consistency**: Consistent data flow and state synchronization across application layers
+- **Performance Standards**: Efficient data transfer with response times meeting application requirements
+- **Real-time Capabilities**: Real-time communication working correctly where required
 
-@Configuration
-public class CorsConfig implements WebMvcConfigurer {
+### ✅ Security Implementation
+- **Authentication Flow**: Secure and user-friendly authentication with proper token management
+- **Authorization Enforcement**: Consistent permission checking across frontend and backend
+- **Data Protection**: Sensitive data properly protected in transit and at rest
+- **Security Headers**: Appropriate CORS and security header configuration
 
-    @Value("${app.cors.allowed-origins}")
-    private List<String> allowedOrigins;
+### ✅ Developer Experience
+- **Type Safety**: End-to-end type safety from backend APIs to frontend components
+- **Development Efficiency**: Smooth development workflow with hot reloading and live integration
+- **Error Debugging**: Comprehensive error tracking and debugging capabilities
+- **Documentation Quality**: Clear integration documentation and API contracts
 
-    @Value("${app.cors.allowed-methods}")
-    private List<String> allowedMethods;
+### ✅ Reliability and Performance
+- **Error Handling**: Robust error handling across the entire application stack
+- **Offline Support**: Graceful handling of network issues and offline scenarios
+- **Caching Efficiency**: Effective caching strategies reducing unnecessary API calls
+- **Monitoring Coverage**: Comprehensive monitoring of integration points and performance
 
-    @Value("${app.cors.allowed-headers}")
-    private List<String> allowedHeaders;
+### ✅ GitHub Copilot Integration
+- **Chatmode Coordination**: Seamless coordination between api-engineer and frontend-engineer chatmodes
+- **GitHub Actions**: Automated testing for frontend-backend integration
+- **Configuration Adaptation**: Proper adaptation to project technology stack
+- **Workflow Automation**: CI/CD pipeline integration for full-stack deployment
 
-    @Value("${app.cors.allow-credentials:true}")
-    private boolean allowCredentials;
+## USAGE EXAMPLES
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/api/**")
-                .allowedOrigins(allowedOrigins.toArray(new String[0]))
-                .allowedMethods(allowedMethods.toArray(new String[0]))
-                .allowedHeaders(allowedHeaders.toArray(new String[0]))
-                .allowCredentials(allowCredentials)
-                .maxAge(3600); // 1 hour
-    }
+**For different GitHub Copilot scenarios:**
 
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        
-        // Allow specific origins
-        configuration.setAllowedOriginPatterns(allowedOrigins);
-        
-        // Allow specific methods
-        configuration.setAllowedMethods(allowedMethods);
-        
-        // Allow specific headers
-        configuration.setAllowedHeaders(allowedHeaders);
-        
-        // Allow credentials
-        configuration.setAllowCredentials(allowCredentials);
-        
-        // Expose specific headers to the client
-        configuration.setExposedHeaders(Arrays.asList(
-            "Authorization",
-            "Content-Disposition",
-            "X-Total-Count",
-            "X-Page-Number",
-            "X-Page-Size"
-        ));
+### Scenario 1: React + Node.js E-commerce Integration
+```yaml
+Context: E-commerce platform with React frontend and Node.js/Express backend
+Technology Stack: Detected from copilot.instructions.md (React, TypeScript, Node.js, PostgreSQL)
+Business Domain: E-commerce with product browsing, cart management, and checkout
 
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/api/**", configuration);
-        
-        return source;
-    }
-}
+Integration Focus:
+- Product catalog with search and filtering
+- Shopping cart state synchronization
+- Secure checkout process with payment integration
+- Real-time inventory updates and notifications
+
+GitHub Copilot Workflow:
+1. api-engineer chatmode → Design REST API contracts and authentication
+2. frontend-engineer chatmode → Implement React components with API integration
+3. security-engineer chatmode → Secure payment flow and data protection
+4. qa-engineer chatmode → End-to-end testing for purchase workflows
+
+Expected Deliverables:
+- Type-safe API integration with generated TypeScript interfaces
+- Secure authentication flow with JWT token management
+- Optimistic shopping cart updates with server synchronization
+- Real-time inventory updates using WebSocket integration
 ```
 
-```java
-// src/main/java/com/company/dto/ApiResponse.java - Standardized response format
-package com.company.dto;
+### Scenario 2: Angular + .NET Enterprise Application
+```yaml
+Context: Enterprise business application with Angular frontend and .NET Core backend
+Technology Stack: Enterprise setup (Angular, TypeScript, .NET Core, SQL Server)
+Business Domain: Business management with complex data relationships and reporting
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+Integration Focus:
+- Complex business entity management
+- Advanced search and filtering with server-side processing
+- Role-based access control with fine-grained permissions
+- Real-time collaboration and notifications
 
-import java.time.LocalDateTime;
+GitHub Copilot Workflow:
+1. api-engineer chatmode → Design .NET Core Web API with Entity Framework
+2. frontend-engineer chatmode → Angular services and reactive forms integration
+3. security-engineer chatmode → Enterprise security and compliance implementation
+4. data-engineer chatmode → Optimize complex queries and reporting
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
-    
-    private T data;
-    private String message;
-    
-    @Builder.Default
-    private boolean success = true;
-    
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    @Builder.Default
-    private LocalDateTime timestamp = LocalDateTime.now();
-    
-    // Metadata for pagination
-    private PaginationMetadata pagination;
-    
-    public static <T> ApiResponse<T> success(T data) {
-        return ApiResponse.<T>builder()
-                .data(data)
-                .success(true)
-                .build();
-    }
-    
-    public static <T> ApiResponse<T> success(T data, String message) {
-        return ApiResponse.<T>builder()
-                .data(data)
-                .message(message)
-                .success(true)
-                .build();
-    }
-    
-    public static <T> ApiResponse<T> error(String message) {
-        return ApiResponse.<T>builder()
-                .message(message)
-                .success(false)
-                .build();
-    }
-    
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class PaginationMetadata {
-        private int page;
-        private int size;
-        private long totalElements;
-        private int totalPages;
-        private boolean hasNext;
-        private boolean hasPrevious;
-    }
-}
+Expected Deliverables:
+- Comprehensive Angular services with RxJS reactive patterns
+- .NET Core API with advanced authentication and authorization
+- Entity relationship management with optimistic concurrency
+- Real-time collaboration features using SignalR
 ```
 
-### Angular + .NET Core Integration
+### Scenario 3: Vue.js + Python Healthcare Platform
+```yaml
+Context: HIPAA-compliant healthcare platform with Vue.js frontend and Python backend
+Technology Stack: Healthcare setup (Vue.js, Python/FastAPI, PostgreSQL)
+Business Domain: Healthcare with patient data management and compliance requirements
 
-**Use when copilot.instructions.md specifies: Angular frontend, .NET Core backend**
+Integration Focus:
+- Patient data management with privacy controls
+- Appointment scheduling with real-time availability
+- Medical records integration with audit trails
+- Secure communication between providers and patients
 
-```typescript
-// src/app/core/services/auth.service.ts - Angular authentication service
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { map, catchError, tap } from 'rxjs/operators';
-import { Router } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
-import { environment } from '../../../environments/environment';
+GitHub Copilot Workflow:
+1. api-engineer chatmode → Design HIPAA-compliant FastAPI with comprehensive audit logging
+2. frontend-engineer chatmode → Vue.js components with healthcare data visualization
+3. security-engineer chatmode → Healthcare security compliance and data protection
+4. qa-engineer chatmode → Compliance testing and security validation
 
-export interface LoginRequest {
-  username: string;
-  password: string;
-  rememberMe?: boolean;
-}
-
-export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-  expiresIn: number;
-  tokenType: string;
-  user: UserInfo;
-}
-
-export interface UserInfo {
-  id: string;
-  username: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  roles: string[];
-}
-
-@Injectable({
-  providedIn: 'root'
-})
-export class AuthService {
-  private readonly apiUrl = environment.apiUrl;
-  private currentUserSubject = new BehaviorSubject<UserInfo | null>(null);
-  private jwtHelper = new JwtHelperService();
-  
-  public currentUser$ = this.currentUserSubject.asObservable();
-
-  constructor(
-    private http: HttpClient,
-    private router: Router
-  ) {
-    this.initializeAuthState();
-  }
-
-  private initializeAuthState(): void {
-    const token = this.getAccessToken();
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
-      try {
-        const decodedToken = this.jwtHelper.decodeToken(token);
-        const user: UserInfo = {
-          id: decodedToken.sub,
-          username: decodedToken.username,
-          email: decodedToken.email,
-          firstName: decodedToken.given_name,
-          lastName: decodedToken.family_name,
-          roles: decodedToken.roles || []
-        };
-        this.currentUserSubject.next(user);
-      } catch (error) {
-        console.error('Error decoding token:', error);
-        this.clearTokens();
-      }
-    }
-  }
-
-  login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, credentials)
-      .pipe(
-        tap(response => this.handleLoginSuccess(response, credentials.rememberMe)),
-        catchError(this.handleAuthError.bind(this))
-      );
-  }
-
-  logout(): void {
-    const refreshToken = this.getRefreshToken();
-    
-    if (refreshToken) {
-      this.http.post(`${this.apiUrl}/auth/logout`, { refreshToken })
-        .pipe(catchError(() => of(null)))
-        .subscribe();
-    }
-    
-    this.clearTokens();
-    this.currentUserSubject.next(null);
-    this.router.navigate(['/login']);
-  }
-
-  refreshToken(): Observable<LoginResponse> {
-    const refreshToken = this.getRefreshToken();
-    
-    if (!refreshToken) {
-      return throwError(() => new Error('No refresh token available'));
-    }
-
-    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/refresh`, {
-      refreshToken: refreshToken
-    }).pipe(
-      tap(response => this.handleLoginSuccess(response, true)),
-      catchError(error => {
-        this.logout();
-        return throwError(() => error);
-      })
-    );
-  }
-
-  isAuthenticated(): boolean {
-    const token = this.getAccessToken();
-    return token != null && !this.jwtHelper.isTokenExpired(token);
-  }
-
-  hasRole(role: string): boolean {
-    const user = this.currentUserSubject.value;
-    return user?.roles?.includes(role) || false;
-  }
-
-  hasAnyRole(roles: string[]): boolean {
-    return roles.some(role => this.hasRole(role));
-  }
-
-  getCurrentUser(): UserInfo | null {
-    return this.currentUserSubject.value;
-  }
-
-  getAccessToken(): string | null {
-    return localStorage.getItem('access_token') || sessionStorage.getItem('access_token');
-  }
-
-  private getRefreshToken(): string | null {
-    return localStorage.getItem('refresh_token') || sessionStorage.getItem('refresh_token');
-  }
-
-  private handleLoginSuccess(response: LoginResponse, rememberMe: boolean = false): void {
-    const storage = rememberMe ? localStorage : sessionStorage;
-    
-    storage.setItem('access_token', response.accessToken);
-    storage.setItem('refresh_token', response.refreshToken);
-    
-    // Clear the other storage to avoid conflicts
-    const otherStorage = rememberMe ? sessionStorage : localStorage;
-    otherStorage.removeItem('access_token');
-    otherStorage.removeItem('refresh_token');
-    
-    this.currentUserSubject.next(response.user);
-  }
-
-  private handleAuthError(error: any): Observable<never> {
-    if (error.status === 401) {
-      this.clearTokens();
-      this.currentUserSubject.next(null);
-    }
-    return throwError(() => error);
-  }
-
-  private clearTokens(): void {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    sessionStorage.removeItem('access_token');
-    sessionStorage.removeItem('refresh_token');
-  }
-}
+Expected Deliverables:
+- HIPAA-compliant API integration with comprehensive audit trails
+- Secure patient data visualization with role-based access
+- Real-time appointment scheduling with conflict resolution
+- Healthcare data interoperability with HL7 FHIR standards
 ```
 
-```csharp
-// Controllers/AuthController.cs - .NET Core authentication controller
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-using DesktopApp.Models;
-using DesktopApp.DTOs;
+### Scenario 4: Mobile-First PWA with Microservices
+```yaml
+Context: Progressive Web App with microservices backend architecture
+Technology Stack: Modern setup (React/Vue.js, Service Workers, Microservices, API Gateway)
+Business Domain: Mobile-first application with offline capabilities
 
-namespace DesktopApp.Controllers
-{
-    [ApiController]
-    [Route("api/[controller]")]
-    public class AuthController : ControllerBase
-    {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
-        private readonly IConfiguration _configuration;
-        private readonly ILogger<AuthController> _logger;
+Integration Focus:
+- Offline-first architecture with service worker integration
+- API gateway integration with multiple microservices
+- Push notifications and background synchronization
+- Progressive enhancement and performance optimization
 
-        public AuthController(
-            UserManager<ApplicationUser> userManager,
-            SignInManager<ApplicationUser> signInManager,
-            IConfiguration configuration,
-            ILogger<AuthController> logger)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _configuration = configuration;
-            _logger = logger;
-        }
+GitHub Copilot Workflow:
+1. api-engineer chatmode → Design API gateway and microservices integration
+2. frontend-engineer chatmode → PWA implementation with offline capabilities
+3. deployment-engineer chatmode → Microservices deployment and service mesh
+4. qa-engineer chatmode → Performance testing and offline scenario validation
 
-        [HttpPost("login")]
-        public async Task<ActionResult<ApiResponse<LoginResponse>>> Login(
-            [FromBody] LoginRequest request)
-        {
-            try
-            {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ApiResponse<LoginResponse>.Error("Invalid request data"));
-                }
-
-                var user = await _userManager.FindByNameAsync(request.Username) ??
-                          await _userManager.FindByEmailAsync(request.Username);
-
-                if (user == null)
-                {
-                    _logger.LogWarning("Login attempt with invalid username: {Username}", request.Username);
-                    return Unauthorized(ApiResponse<LoginResponse>.Error("Invalid credentials"));
-                }
-
-                var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
-
-                if (!result.Succeeded)
-                {
-                    if (result.IsLockedOut)
-                    {
-                        _logger.LogWarning("Account locked for user: {UserId}", user.Id);
-                        return Unauthorized(ApiResponse<LoginResponse>.Error("Account is locked out"));
-                    }
-
-                    _logger.LogWarning("Failed login attempt for user: {UserId}", user.Id);
-                    return Unauthorized(ApiResponse<LoginResponse>.Error("Invalid credentials"));
-                }
-
-                var tokens = await GenerateTokensAsync(user);
-                var userInfo = await CreateUserInfoAsync(user);
-
-                var loginResponse = new LoginResponse
-                {
-                    AccessToken = tokens.AccessToken,
-                    RefreshToken = tokens.RefreshToken,
-                    ExpiresIn = tokens.ExpiresIn,
-                    TokenType = "Bearer",
-                    User = userInfo
-                };
-
-                _logger.LogInformation("User logged in successfully: {UserId}", user.Id);
-                return Ok(ApiResponse<LoginResponse>.Success(loginResponse, "Login successful"));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during login process");
-                return StatusCode(500, ApiResponse<LoginResponse>.Error("An error occurred during login"));
-            }
-        }
-
-        [HttpPost("refresh")]
-        public async Task<ActionResult<ApiResponse<LoginResponse>>> RefreshToken(
-            [FromBody] RefreshTokenRequest request)
-        {
-            try
-            {
-                var principal = GetPrincipalFromExpiredToken(request.RefreshToken);
-                if (principal == null)
-                {
-                    return Unauthorized(ApiResponse<LoginResponse>.Error("Invalid refresh token"));
-                }
-
-                var username = principal.Identity?.Name;
-                var user = await _userManager.FindByNameAsync(username);
-
-                if (user == null)
-                {
-                    return Unauthorized(ApiResponse<LoginResponse>.Error("Invalid refresh token"));
-                }
-
-                // Validate refresh token from database
-                if (!await ValidateRefreshTokenAsync(user, request.RefreshToken))
-                {
-                    return Unauthorized(ApiResponse<LoginResponse>.Error("Invalid refresh token"));
-                }
-
-                var tokens = await GenerateTokensAsync(user);
-                var userInfo = await CreateUserInfoAsync(user);
-
-                var loginResponse = new LoginResponse
-                {
-                    AccessToken = tokens.AccessToken,
-                    RefreshToken = tokens.RefreshToken,
-                    ExpiresIn = tokens.ExpiresIn,
-                    TokenType = "Bearer",
-                    User = userInfo
-                };
-
-                return Ok(ApiResponse<LoginResponse>.Success(loginResponse, "Token refreshed successfully"));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during token refresh");
-                return StatusCode(500, ApiResponse<LoginResponse>.Error("An error occurred during token refresh"));
-            }
-        }
-
-        [HttpPost("logout")]
-        public async Task<ActionResult<ApiResponse<object>>> Logout(
-            [FromBody] LogoutRequest request)
-        {
-            try
-            {
-                // Invalidate refresh token in database
-                await InvalidateRefreshTokenAsync(request.RefreshToken);
-
-                return Ok(ApiResponse<object>.Success(null, "Logged out successfully"));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error during logout");
-                return StatusCode(500, ApiResponse<object>.Error("An error occurred during logout"));
-            }
-        }
-
-        private async Task<TokenResponse> GenerateTokensAsync(ApplicationUser user)
-        {
-            var roles = await _userManager.GetRolesAsync(user);
-            
-            var claims = new List<Claim>
-            {
-                new(ClaimTypes.NameIdentifier, user.Id),
-                new(ClaimTypes.Name, user.UserName),
-                new(ClaimTypes.Email, user.Email),
-                new("username", user.UserName),
-                new("given_name", user.FirstName ?? ""),
-                new("family_name", user.LastName ?? ""),
-                new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new(JwtRegisteredClaimNames.Iat, 
-                    new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds().ToString(), 
-                    ClaimValueTypes.Integer64)
-            };
-
-            // Add role claims
-            foreach (var role in roles)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
-                claims.Add(new Claim("roles", role));
-            }
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expiresIn = int.Parse(_configuration["Jwt:ExpirationInMinutes"]);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(expiresIn),
-                signingCredentials: credentials
-            );
-
-            var accessToken = new JwtSecurityTokenHandler().WriteToken(token);
-            var refreshToken = GenerateRefreshToken();
-
-            // Store refresh token in database
-            await StoreRefreshTokenAsync(user, refreshToken);
-
-            return new TokenResponse
-            {
-                AccessToken = accessToken,
-                RefreshToken = refreshToken,
-                ExpiresIn = expiresIn * 60 // Convert to seconds
-            };
-        }
-
-        private async Task<UserInfo> CreateUserInfoAsync(ApplicationUser user)
-        {
-            var roles = await _userManager.GetRolesAsync(user);
-
-            return new UserInfo
-            {
-                Id = user.Id,
-                Username = user.UserName,
-                Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Roles = roles.ToArray()
-            };
-        }
-
-        private ClaimsPrincipal? GetPrincipalFromExpiredToken(string token)
-        {
-            var tokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateAudience = false,
-                ValidateIssuer = false,
-                ValidateIssuerSigningKey = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"])),
-                ValidateLifetime = false
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            try
-            {
-                var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out SecurityToken securityToken);
-                if (securityToken is not JwtSecurityToken jwtSecurityToken || 
-                    !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    return null;
-                }
-
-                return principal;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        private string GenerateRefreshToken()
-        {
-            return Guid.NewGuid().ToString();
-        }
-
-        private async Task StoreRefreshTokenAsync(ApplicationUser user, string refreshToken)
-        {
-            // Implementation depends on your data model
-            // Store refresh token with expiration date
-        }
-
-        private async Task<bool> ValidateRefreshTokenAsync(ApplicationUser user, string refreshToken)
-        {
-            // Implementation depends on your data model
-            // Validate refresh token exists and is not expired
-            return true;
-        }
-
-        private async Task InvalidateRefreshTokenAsync(string refreshToken)
-        {
-            // Implementation depends on your data model
-            // Mark refresh token as invalid
-        }
-    }
-
-    public class TokenResponse
-    {
-        public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
-        public int ExpiresIn { get; set; }
-    }
-}
+Expected Deliverables:
+- Comprehensive offline-first architecture with service workers
+- API gateway integration with intelligent request routing
+- Background synchronization with conflict resolution
+- Progressive enhancement for various device capabilities
 ```
 
-### React + Node.js Integration
+## GitHub Copilot Integration
 
-**Use when copilot.instructions.md specifies: React frontend, Node.js backend**
-
-```javascript
-// src/services/apiService.js - React API service with Axios
-import axios from 'axios';
-
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:3001/api';
-const REQUEST_TIMEOUT = 30000;
-
-class ApiService {
-  constructor() {
-    this.client = axios.create({
-      baseURL: API_BASE_URL,
-      timeout: REQUEST_TIMEOUT,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      }
-    });
-
-    this.setupInterceptors();
-  }
-
-  setupInterceptors() {
-    // Request interceptor for auth tokens
-    this.client.interceptors.request.use(
-      (config) => {
-        const token = this.getAuthToken();
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-        
-        // Add request ID for tracing
-        config.headers['X-Request-ID'] = this.generateRequestId();
-        
-        console.log(`API Request: ${config.method?.toUpperCase()} ${config.url}`);
-        return config;
-      },
-      (error) => {
-        console.error('Request interceptor error:', error);
-        return Promise.reject(error);
-      }
-    );
-
-    // Response interceptor for error handling
-    this.client.interceptors.response.use(
-      (response) => {
-        console.log(`API Response: ${response.status} ${response.config.url}`);
-        return response;
-      },
-      async (error) => {
-        const originalRequest = error.config;
-
-        if (error.response?.status === 401 && !originalRequest._retry) {
-          originalRequest._retry = true;
-          
-          try {
-            await this.refreshToken();
-            // Retry original request with new token
-            const token = this.getAuthToken();
-            if (token) {
-              originalRequest.headers.Authorization = `Bearer ${token}`;
-            }
-            return this.client(originalRequest);
-          } catch (refreshError) {
-            this.handleAuthenticationError();
-            return Promise.reject(refreshError);
-          }
-        }
-
-        return Promise.reject(this.handleError(error));
-      }
-    );
-  }
-
-  async get(endpoint, params = {}, options = {}) {
-    try {
-      const response = await this.client.get(endpoint, { 
-        params, 
-        ...options 
-      });
-      return this.handleSuccess(response);
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  async post(endpoint, data = {}, options = {}) {
-    try {
-      const response = await this.client.post(endpoint, data, options);
-      return this.handleSuccess(response);
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  async put(endpoint, data = {}, options = {}) {
-    try {
-      const response = await this.client.put(endpoint, data, options);
-      return this.handleSuccess(response);
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  async delete(endpoint, options = {}) {
-    try {
-      const response = await this.client.delete(endpoint, options);
-      return this.handleSuccess(response);
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-
-  handleSuccess(response) {
-    return {
-      data: response.data,
-      status: response.status,
-      headers: response.headers,
-      success: true
-    };
-  }
-
-  handleError(error) {
-    console.error('API Error:', error);
-
-    if (error.response) {
-      // Server responded with error status
-      return {
-        error: error.response.data?.error || 'SERVER_ERROR',
-        message: error.response.data?.message || 'An error occurred on the server',
-        details: error.response.data?.details,
-        status: error.response.status,
-        success: false
-      };
-    } else if (error.request) {
-      // Network error
-      return {
-        error: 'NETWORK_ERROR',
-        message: 'Network error - please check your connection',
-        status: 0,
-        success: false
-      };
-    } else {
-      // Other error
-      return {
-        error: 'CLIENT_ERROR',
-        message: error.message || 'An unexpected error occurred',
-        success: false
-      };
-    }
-  }
-
-  async refreshToken() {
-    const refreshToken = localStorage.getItem('refresh_token');
-    if (!refreshToken) {
-      throw new Error('No refresh token available');
-    }
-
-    try {
-      const response = await axios.post(`${API_BASE_URL}/auth/refresh`, {
-        refreshToken: refreshToken
-      });
-
-      const { accessToken, refreshToken: newRefreshToken } = response.data;
-      localStorage.setItem('access_token', accessToken);
-      localStorage.setItem('refresh_token', newRefreshToken);
-
-      return accessToken;
-    } catch (error) {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      throw error;
-    }
-  }
-
-  getAuthToken() {
-    return localStorage.getItem('access_token');
-  }
-
-  handleAuthenticationError() {
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-    
-    // Redirect to login page
-    window.location.href = '/login';
-  }
-
-  generateRequestId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-  }
-
-  // File upload with progress
-  async uploadFile(endpoint, file, onProgress = null) {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      const response = await this.client.post(endpoint, formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: (progressEvent) => {
-          if (onProgress) {
-            const percentCompleted = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            onProgress(percentCompleted);
-          }
-        }
-      });
-      return this.handleSuccess(response);
-    } catch (error) {
-      throw this.handleError(error);
-    }
-  }
-}
-
-export default new ApiService();
+### Chatmode Coordination Patterns
+```
+Frontend-Backend Integration → api-engineer chatmode (lead)
+├─ Frontend Implementation → frontend-engineer chatmode
+├─ Security Integration → security-engineer chatmode
+├─ Data Optimization → data-engineer chatmode
+├─ Testing Strategy → qa-engineer chatmode
+└─ Deployment Pipeline → deployment-engineer chatmode
 ```
 
-## Quality Gates
+### Context Handoff Information
+- **To frontend-engineer**: API contracts, authentication patterns, data structures, real-time endpoints
+- **To security-engineer**: Authentication flows, authorization requirements, security headers, compliance needs
+- **To data-engineer**: Data access patterns, query optimization, caching requirements
+- **To qa-engineer**: Integration test scenarios, performance benchmarks, security test cases
+- **To deployment-engineer**: Infrastructure requirements, environment configuration, monitoring setup
 
-### ✅ Integration Compliance
-- [ ] Frontend-backend integration matches copilot.instructions.md technology specification
-- [ ] API communication patterns properly implemented
-- [ ] Authentication and authorization working correctly
-- [ ] Error handling comprehensive and user-friendly
+### GitHub Actions Integration
+- **Integration Testing**: Automated testing for frontend-backend communication and data flow
+- **Security Scanning**: Full-stack security analysis including authentication and data protection
+- **Performance Testing**: End-to-end performance testing for user workflows
+- **Type Safety Validation**: Automated validation of API contracts and type generation
 
-### ✅ Security & Performance
-- [ ] CORS configuration appropriate for deployment environment
-- [ ] Token refresh mechanism implemented correctly
-- [ ] Request/response interceptors handle errors gracefully
-- [ ] API endpoints follow RESTful principles
+## Configuration Adaptation
 
-### ✅ User Experience
-- [ ] Loading states handled appropriately
-- [ ] Error messages user-friendly and actionable
-- [ ] Offline/network error handling implemented
-- [ ] Authentication state management reliable
+**IMPORTANT**: This prompt adapts to project specifications by reading `copilot.instructions.md`:
 
-## Transition to Specialized Chatmodes
+- **Technology Stack**: Automatically detects frontend and backend frameworks and applies appropriate integration patterns
+- **Business Domain**: Adapts integration patterns to industry-specific requirements and compliance needs
+- **Security Requirements**: Configures authentication and security patterns based on project specifications
+- **Performance Needs**: Optimizes integration for real-time requirements and scalability expectations
+- **Development Workflow**: Adapts to existing project structure and development practices
 
-After completing frontend-backend integration implementation:
-
-- **For API Documentation**: Switch to **API Engineer** chatmode to generate comprehensive API documentation and testing suites
-- **For Security Enhancement**: Switch to **Security Engineer** chatmode to implement additional security controls and vulnerability assessments
-- **For Performance Optimization**: Switch to **QA Engineer** chatmode to implement performance testing and optimization strategies
-- **For User Experience**: Switch to **Frontend Engineer** chatmode to enhance user interface based on integration patterns
-
-**This prompt ensures seamless integration between frontend and backend technologies specified in copilot.instructions.md, providing robust communication, proper authentication, and excellent error handling.**
+**The api-engineer chatmode will automatically coordinate with frontend-engineer chatmode to ensure seamless full-stack integration while maintaining the functional requirements specified above.**

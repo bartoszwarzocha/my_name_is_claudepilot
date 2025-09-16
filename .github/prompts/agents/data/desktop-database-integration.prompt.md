@@ -1,5 +1,5 @@
 ---
-description: Implement comprehensive database integration for desktop applications with robust data access layers, migrations, and ORM patterns. Adapts to project specifications defined in copilot.instructions.md.
+description: Implement comprehensive database integration for desktop applications with advanced data access layers, migrations, offline synchronization, and performance optimization. Adapts to project specifications defined in copilot.instructions.md.
 model: claude-4-sonnet
 tools:
   - codebase
@@ -8,26 +8,294 @@ tools:
   - runCommands
   - githubRepo
   - search
+  - vscodeAPI
 ---
+
+**🤖 CHATMODE ACTIVATION:** This prompt automatically activates the `data-engineer` chatmode.
+**📋 CHATMODE CONTEXT:** The activated chatmode will read copilot.instructions.md and adapt to project requirements.
+**🔄 GITHUB COPILOT INTEGRATION:** All tasks will be managed through GitHub Copilot Chat workflows.
 
 # Desktop Database Integration
 
-## Mission
-Implement comprehensive database integration for desktop applications, adapting to the database technology and programming language specified in copilot.instructions.md. Create robust data access layers, handle migrations, and implement appropriate ORM patterns for desktop application requirements.
+## FUNCTIONAL REQUIREMENTS
 
-**Context Adaptation**: Read copilot.instructions.md to understand:
-- **Primary Language**: Backend technology stack and desktop framework
-- **Database Technology**: Primary database system (SQLite, PostgreSQL, MySQL, SQL Server)
-- **Project Scale**: Architecture complexity and performance requirements
-- **Business Domain**: Data modeling and compliance requirements
+**What needs to be accomplished:**
 
-## Pre-Implementation Analysis
+### Comprehensive Desktop Database Architecture
+- **Local Database Implementation**: Implement robust local database solutions with SQLite, embedded PostgreSQL, or file-based databases for desktop applications
+- **Data Access Layer Design**: Create efficient data access layers with ORM integration, connection management, and transaction handling
+- **Migration and Versioning**: Implement database migration systems with version control and automatic schema updates
+- **Performance Optimization**: Optimize database operations for desktop constraints including memory usage and disk I/O efficiency
 
-### Step 1: Project Technology Detection
-**CRITICAL: Always analyze copilot.instructions.md first to determine the database and application technology:**
-```bash
-# Read project configuration
-cat copilot.instructions.md | grep -A 5 "Database\|primary_language\|Desktop"
+### Desktop-Specific Data Management
+- **Offline Data Synchronization**: Implement offline-first data management with synchronization capabilities for cloud-connected applications
+- **Local Caching Strategies**: Design intelligent caching mechanisms for improved performance and offline operation
+- **Data Backup and Recovery**: Create automatic backup systems with point-in-time recovery and data integrity validation
+- **Cross-Platform Database Support**: Ensure database integration works across Windows, macOS, and Linux desktop environments
+
+### Application Framework Integration
+- **Desktop Framework Adaptation**: Integrate database access with desktop frameworks including WPF, Qt, Electron, JavaFX, or native applications
+- **Reactive Data Binding**: Implement reactive data patterns with automatic UI updates when database changes occur
+- **Multi-Threading Support**: Design thread-safe database access patterns for responsive desktop user interfaces
+- **Configuration Management**: Create flexible configuration systems for database connections and application settings
+
+### Security and Compliance
+- **Data Encryption**: Implement encryption at rest and in transit for sensitive desktop application data
+- **User Access Control**: Create user-based access control and data segmentation for multi-user desktop applications
+- **Audit Trail Implementation**: Implement comprehensive audit logging for data changes and user actions
+- **Compliance Integration**: Ensure database implementation meets industry-specific compliance requirements for desktop applications
+
+## HIGH-LEVEL ALGORITHMS
+
+**How to approach the problem:**
+
+### 1. Desktop Technology Stack Analysis
+```
+1. Read copilot.instructions.md to extract:
+   - Desktop framework and programming language preferences
+   - Database system selection for desktop environment
+   - Business domain and data modeling requirements
+   - Performance and scalability expectations for desktop use
+
+2. Desktop Environment Assessment:
+   - Analyze target desktop platforms and constraints
+   - Evaluate local storage requirements and limitations
+   - Assess offline operation and synchronization needs
+   - Review security and compliance requirements for desktop data
+```
+
+### 2. Local Database Design and Implementation
+```
+1. Database System Configuration:
+   - Configure appropriate database system for desktop constraints
+   - Set up connection pooling and resource management
+   - Implement database initialization and seeding procedures
+   - Configure performance optimization for local storage
+
+2. Schema Design and Migration:
+   - Design database schema optimized for desktop application needs
+   - Implement migration system with version control and rollback
+   - Create data seeding and initial setup procedures
+   - Plan schema evolution and backward compatibility
+```
+
+### 3. Data Access Layer and ORM Integration
+```
+1. ORM Configuration and Setup:
+   - Configure ORM framework appropriate for desktop technology stack
+   - Implement entity mapping with desktop-specific optimizations
+   - Set up connection management and transaction handling
+   - Configure lazy loading and caching for performance
+
+2. Repository and Service Pattern Implementation:
+   - Create repository pattern with desktop-optimized data access
+   - Implement service layer with business logic encapsulation
+   - Add error handling and logging specific to desktop environments
+   - Design reactive data patterns for UI integration
+```
+
+### 4. Offline Synchronization and Data Management
+```
+1. Offline Data Strategy:
+   - Implement offline-first data access patterns
+   - Create conflict resolution for data synchronization
+   - Design incremental sync mechanisms for efficiency
+   - Plan connectivity detection and automatic sync
+
+2. Caching and Performance Optimization:
+   - Implement intelligent caching strategies for desktop performance
+   - Create data prefetching for improved user experience
+   - Optimize queries for local database constraints
+   - Design memory-efficient data loading patterns
+```
+
+### 5. Security, Backup, and Maintenance
+```
+1. Security Implementation:
+   - Implement data encryption for sensitive information
+   - Create user authentication and authorization for multi-user scenarios
+   - Add audit logging and compliance tracking
+   - Design secure data export and import capabilities
+
+2. Backup and Maintenance:
+   - Implement automatic backup and recovery systems
+   - Create data integrity validation and repair procedures
+   - Design maintenance and optimization routines
+   - Plan disaster recovery and data migration procedures
+```
+
+## VALIDATION CRITERIA
+
+**What conditions must be met:**
+
+### ✅ Desktop Database Integration Excellence
+- **Local Database Performance**: Optimized database operations meeting desktop performance requirements
+- **Framework Integration**: Seamless integration with desktop application framework and UI components
+- **Migration System**: Robust migration system with automatic schema updates and rollback capabilities
+- **Cross-Platform Compatibility**: Database integration works consistently across target desktop platforms
+
+### ✅ Data Management Quality
+- **Offline Operation**: Comprehensive offline data access with intelligent synchronization when connectivity is available
+- **Caching Efficiency**: Effective caching strategies improving application performance and user experience
+- **Data Integrity**: Strong data integrity validation with automatic backup and recovery capabilities
+- **Transaction Management**: Proper transaction handling with ACID compliance and rollback mechanisms
+
+### ✅ Security and Compliance
+- **Data Protection**: Appropriate encryption and access control for sensitive desktop application data
+- **User Authentication**: Proper user authentication and authorization for multi-user desktop scenarios
+- **Audit Trail**: Comprehensive audit logging for data changes and user actions
+- **Compliance Implementation**: Meeting industry-specific compliance requirements for desktop data storage
+
+### ✅ Development and Maintenance
+- **Code Quality**: Clean, maintainable data access code following desktop development best practices
+- **Error Handling**: Comprehensive error handling with proper user feedback and logging
+- **Documentation Quality**: Complete documentation for database setup, configuration, and maintenance
+- **Testing Support**: Comprehensive testing framework for database operations and data integrity validation
+
+### ✅ GitHub Copilot Integration
+- **Chatmode Coordination**: Seamless integration with frontend-engineer for UI data binding and security-engineer for data protection
+- **Configuration Adaptation**: Proper adaptation to desktop technology stack and business domain requirements
+- **Deployment Support**: Database integration supports desktop application packaging and deployment workflows
+- **Performance Monitoring**: Integrated monitoring and diagnostics for desktop database performance
+
+## USAGE EXAMPLES
+
+**For different GitHub Copilot scenarios:**
+
+### Scenario 1: Electron Desktop App with SQLite
+```yaml
+Context: Cross-platform desktop application built with Electron requiring local data storage
+Technology Stack: Detected from copilot.instructions.md (Electron, React, TypeScript, SQLite, better-sqlite3)
+Business Domain: Productivity application with document management and user preferences
+
+Desktop Database Focus:
+- Document metadata and content storage with full-text search
+- User preferences and application configuration management
+- Offline synchronization with cloud storage services
+- Cross-platform data compatibility and migration
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Implement SQLite integration with better-sqlite3 and migration system
+2. frontend-engineer chatmode → Create React components with reactive data binding
+3. security-engineer chatmode → Implement data encryption and secure storage
+4. qa-engineer chatmode → Create comprehensive testing for offline and sync scenarios
+
+Expected Deliverables:
+- SQLite database integration with TypeScript ORM and migration system
+- Reactive data layer with automatic UI updates for document changes
+- Offline-first architecture with intelligent cloud synchronization
+- Cross-platform data storage with encryption and backup capabilities
+```
+
+### Scenario 2: WPF Enterprise Application with Entity Framework
+```yaml
+Context: Enterprise WPF application with complex business data management and reporting
+Technology Stack: Enterprise setup (.NET Framework, WPF, Entity Framework, SQL Server LocalDB)
+Business Domain: Enterprise resource planning with complex data relationships and reporting
+
+Desktop Database Focus:
+- Complex business entity relationships with referential integrity
+- Advanced reporting and data analytics with local processing
+- User-based data access control and audit trails
+- Enterprise data synchronization with central database
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Implement Entity Framework with LocalDB and enterprise data patterns
+2. frontend-engineer chatmode → Create WPF views with MVVM data binding and validation
+3. security-engineer chatmode → Implement enterprise security and audit requirements
+4. deployment-engineer chatmode → Set up enterprise deployment with database provisioning
+
+Expected Deliverables:
+- Entity Framework integration with SQL Server LocalDB and migration system
+- WPF MVVM architecture with reactive data binding and validation
+- Enterprise security implementation with user access control and audit trails
+- Advanced reporting capabilities with local data processing and export
+```
+
+### Scenario 3: Qt Desktop Application with PostgreSQL
+```yaml
+Context: Cross-platform Qt application requiring robust database integration for scientific data
+Technology Stack: Scientific setup (C++, Qt, PostgreSQL embedded, QML)
+Business Domain: Scientific data analysis with complex calculations and data visualization
+
+Desktop Database Focus:
+- Scientific data storage with precision and performance requirements
+- Complex query optimization for large datasets and calculations
+- Data visualization integration with real-time updates
+- Cross-platform deployment with embedded database distribution
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Implement PostgreSQL embedded integration with Qt and C++
+2. frontend-engineer chatmode → Create QML interfaces with data visualization components
+3. qa-engineer chatmode → Implement performance testing for large dataset operations
+4. deployment-engineer chatmode → Set up cross-platform deployment with database embedding
+
+Expected Deliverables:
+- PostgreSQL embedded integration with Qt C++ application and ORM patterns
+- Scientific data models with precision handling and performance optimization
+- Real-time data visualization with efficient update mechanisms
+- Cross-platform deployment package with embedded database and migration tools
+```
+
+### Scenario 4: JavaFX Application with H2 Database
+```yaml
+Context: JavaFX desktop application for small business management with local data storage
+Technology Stack: Java setup (JavaFX, Spring Boot, H2 Database, Hibernate)
+Business Domain: Small business management with customer, inventory, and sales tracking
+
+Desktop Database Focus:
+- Business data management with customer and inventory relationships
+- Local transaction processing with data validation and business rules
+- Backup and restore capabilities for business continuity
+- Simple deployment and maintenance for small business users
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Implement H2 database with Hibernate and Spring Boot integration
+2. frontend-engineer chatmode → Create JavaFX interfaces with business workflow support
+3. qa-engineer chatmode → Create business logic testing and data validation
+4. deployment-engineer chatmode → Set up simple deployment with automatic database setup
+
+Expected Deliverables:
+- H2 database integration with Hibernate ORM and Spring Boot configuration
+- JavaFX business application with complete CRUD operations and validation
+- Automatic backup and restore system for business data protection
+- Simple deployment package with embedded database and business logic
+```
+
+## GitHub Copilot Integration
+
+### Chatmode Coordination Patterns
+```
+Desktop Database Integration → data-engineer chatmode (lead)
+├─ Desktop UI Integration → frontend-engineer chatmode
+├─ Desktop Security Implementation → security-engineer chatmode
+├─ Performance Testing → qa-engineer chatmode
+└─ Desktop Deployment → deployment-engineer chatmode
+```
+
+### Context Handoff Information
+- **To frontend-engineer**: Database models, reactive data patterns, UI binding requirements, offline capabilities
+- **To security-engineer**: Data encryption requirements, access control specifications, audit trail needs
+- **To qa-engineer**: Performance benchmarks, data integrity testing, offline scenario validation
+- **To deployment-engineer**: Database deployment requirements, migration procedures, backup configurations
+
+### GitHub Actions Integration
+- **Database Migration**: Automated database schema deployment and version management
+- **Desktop Testing**: Automated testing for desktop database operations across platforms
+- **Performance Monitoring**: Continuous monitoring of desktop database performance and optimization
+- **Deployment Automation**: Automated desktop application packaging with database integration
+
+## Configuration Adaptation
+
+**IMPORTANT**: This prompt adapts to project specifications by reading `copilot.instructions.md`:
+
+- **Desktop Framework**: Automatically configures database integration for Electron, WPF, Qt, JavaFX, or other desktop frameworks
+- **Database System**: Optimizes for SQLite, embedded PostgreSQL, H2, LocalDB, or other desktop-appropriate databases
+- **Business Domain**: Adapts data modeling and validation patterns to productivity, enterprise, scientific, or business applications
+- **Platform Requirements**: Configures cross-platform compatibility for Windows, macOS, and Linux deployment
+- **Performance Constraints**: Optimizes for desktop-specific performance requirements including memory usage and responsiveness
+
+**The data-engineer chatmode will automatically analyze project configuration and desktop requirements to deliver optimal desktop database integration while maintaining the functional requirements specified above.**
 ```
 
 **Technology-specific database analysis:**

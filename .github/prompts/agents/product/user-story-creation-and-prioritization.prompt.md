@@ -1,36 +1,35 @@
 ---
 name: user-story-creation-and-prioritization
-description: Transform business requirements into prioritized user stories with clear acceptance criteria and strategic backlog management
+description: |
+  **🤖 GitHub Copilot Chatmode: @product-manager**
+
+  Transform business requirements into prioritized user stories with clear acceptance criteria and strategic backlog management. Creates well-structured user stories that translate business requirements into actionable development tasks, prioritized by business value and user impact.
+
+  **📋 Context Integration**: Automatically reads .github/copilot.instructions.md to adapt user story creation and prioritization approaches to project requirements.
 tools: [all]
 model: claude-sonnet-4
 ---
 
+**🤖 CHATMODE ACTIVATION**: This prompt automatically activates the `@product-manager` chatmode.
+**📋 AGENT CONTEXT**: The activated chatmode will read .github/copilot.instructions.md and adapt to project requirements.
+**🔄 WORKFLOW INTEGRATION**: All user story creation and prioritization tasks will be managed through integrated GitHub Copilot workflows.
+
 # User Story Creation and Prioritization
 
-**Purpose: Transform business requirements into prioritized user stories with clear acceptance criteria, ensuring maximum value delivery and development efficiency**
+## ✅ FUNCTIONAL REQUIREMENTS
 
-## Context Adaptation Framework
+Transform business requirements into prioritized user stories with clear acceptance criteria and strategic backlog management. Create well-structured user stories that translate business requirements into actionable development tasks, ensuring maximum value delivery through systematic prioritization and continuous backlog optimization.
 
-Read and understand project specifications from `copilot.instructions.md` file. Adapt all user story creation and prioritization approaches to match:
+**Core Objectives:**
+- Transform business requirements into well-structured user stories with acceptance criteria
+- Apply multi-criteria prioritization frameworks for optimal value delivery
+- Create hierarchical story organization from epics to tasks
+- Establish comprehensive backlog management processes with automation
+- Develop cross-functional collaboration workflows for story refinement
 
-- **Project domain and business context**
-- **User personas and target segments**
-- **Technology stack and development constraints**
-- **Business objectives and success metrics**
-- **Development methodology and team structure**
-- **Release cadence and delivery timeline**
+## 🔄 HIGH-LEVEL ALGORITHMS
 
-All user stories and prioritization frameworks must align with project-specific context while maintaining clear value delivery focus.
-
----
-
-## 🎯 Mission
-
-Create well-structured user stories that translate business requirements into actionable development tasks, prioritized by business value, user impact, and strategic alignment with continuous backlog optimization.
-
-## 📋 Comprehensive User Story Framework
-
-### Step 1: Advanced User Story Structure
+### Algorithm 1: Advanced User Story Structure Development
 
 **Standard Format Enhancement:**
 ```typescript
@@ -116,7 +115,7 @@ So that [measurable business value and user benefit]
 - [ ] Stakeholder acceptance obtained
 ```
 
-### Step 2: Story Hierarchy and Classification
+### Algorithm 2: Story Hierarchy and Classification
 
 **Epic Level Stories (3-6 months):**
 ```typescript
@@ -188,7 +187,7 @@ interface TaskStory {
 }
 ```
 
-### Step 3: Advanced Acceptance Criteria Development
+### Algorithm 3: Advanced Acceptance Criteria Development
 
 **Behavior-Driven Development (BDD) Format:**
 ```gherkin
@@ -259,9 +258,7 @@ interface NonFunctionalCriteria {
 }
 ```
 
-## 🏆 Advanced Prioritization Framework
-
-### Multi-Criteria Decision Analysis (MCDA)
+### Algorithm 4: Advanced Prioritization Framework
 
 **Weighted Scoring Model:**
 ```typescript
@@ -593,9 +590,7 @@ interface UserProfile {
 ```
 ```
 
-## 🎯 Advanced Backlog Management
-
-### Dynamic Backlog Organization
+### Algorithm 5: Dynamic Backlog Management
 
 **Backlog Structure with Automation:**
 ```typescript
@@ -764,7 +759,28 @@ interface TechnicalFeasibility {
 }
 ```
 
-## 📊 Success Metrics and KPI Framework
+## ✓ VALIDATION CRITERIA
+
+### Success Conditions
+- **User Story Quality**: Well-structured stories following INVEST+ criteria with clear acceptance criteria
+- **Prioritization Accuracy**: Evidence-based prioritization using multi-criteria analysis with stakeholder alignment
+- **Backlog Organization**: Hierarchical story organization with automated dependency tracking and progress monitoring
+- **Cross-functional Collaboration**: Effective stakeholder engagement with clear workflows and communication processes
+- **Value Delivery**: Measurable business value delivery with continuous backlog optimization
+
+### Failure Conditions
+- Poorly written user stories without clear acceptance criteria or value proposition
+- Arbitrary prioritization without consideration of business value, effort, and risk factors
+- Disorganized backlog without clear hierarchy or dependency management
+- Poor stakeholder collaboration leading to misaligned requirements or priorities
+- Lack of measurable outcomes or continuous improvement in backlog management
+
+### Quality Gates
+- All user stories pass INVEST+ criteria validation with measurable acceptance criteria
+- Prioritization decisions documented with clear rationale and stakeholder approval
+- Backlog organization supports development team velocity and predictable delivery
+- Cross-functional collaboration processes result in refined and validated stories
+- Business value delivery tracked with metrics showing continuous improvement
 
 ### Story-Level Metrics
 
@@ -820,39 +836,53 @@ interface BacklogAnalytics {
 }
 ```
 
-## 📤 Comprehensive Deliverables
+## 💡 USAGE EXAMPLES
 
-**Product Backlog Documentation:**
-- **Prioritized User Stories** with detailed acceptance criteria
-- **Epic Roadmap** with business value alignment
-- **Sprint Planning Materials** with ready-to-develop stories
-- **Stakeholder Communication Plan** with regular update schedules
-- **Success Metrics Dashboard** with real-time progress tracking
+### E-commerce Platform User Stories
+**Scenario**: Create user stories for online marketplace product search and filtering functionality
+- **Story Structure**: "As a customer, I want to filter products by price range so that I can find items within my budget"
+- **Acceptance Criteria**: BDD format with Given/When/Then scenarios for various filter combinations and edge cases
+- **Prioritization**: High business value (impacts 80% of users), medium effort (5 story points), low risk
+- **Epic Hierarchy**: Part of "Product Discovery" epic, connects to search and recommendation features
+- **Backlog Position**: Sprint 2 priority based on value vs effort analysis and user research validation
 
-**Story Development Artifacts:**
-- **User Story Templates** adapted to project context
-- **Acceptance Criteria Standards** with BDD format examples
-- **Definition of Done Checklists** for quality assurance
-- **Prioritization Framework** with weighted scoring models
-- **Collaboration Workflows** with cross-functional team integration
+### Enterprise SaaS User Stories
+**Scenario**: Create user stories for project management dashboard with team collaboration features
+- **Story Structure**: "As a project manager, I want to assign tasks to team members so that I can track project progress and accountability"
+- **Acceptance Criteria**: Detailed scenarios covering task assignment, notification systems, and permission validation
+- **Prioritization**: Critical business value (core workflow), high effort (8 story points), medium risk (integration complexity)
+- **Epic Hierarchy**: Part of "Team Collaboration" epic, depends on user management and notification systems
+- **Backlog Position**: Sprint 1 priority as foundational feature required for subsequent development
 
-**Process Documentation:**
-- **Backlog Management Procedures** with automation guidelines
-- **Story Lifecycle Tracking** with metrics collection
-- **Stakeholder Engagement Protocols** with feedback integration
-- **Quality Assurance Standards** with testing requirements
-- **Continuous Improvement Framework** with retrospective insights
+### Healthcare Application User Stories
+**Scenario**: Create user stories for patient appointment scheduling with provider availability management
+- **Story Structure**: "As a patient, I want to view available appointment slots so that I can schedule consultations at convenient times"
+- **Acceptance Criteria**: Comprehensive scenarios covering timezone handling, provider availability, and appointment conflicts
+- **Prioritization**: High business value (essential patient workflow), medium effort (6 story points), high risk (HIPAA compliance)
+- **Epic Hierarchy**: Part of "Appointment Management" epic, integrates with provider schedules and patient records
+- **Backlog Position**: Sprint 3 priority after user authentication and provider onboarding completion
+
+### Financial Services User Stories
+**Scenario**: Create user stories for personal finance tracking with spending categorization and budgeting
+- **Story Structure**: "As a user, I want to categorize my expenses automatically so that I can understand my spending patterns"
+- **Acceptance Criteria**: Detailed scenarios for machine learning categorization, manual overrides, and custom categories
+- **Prioritization**: High business value (core value proposition), high effort (10 story points), medium risk (ML complexity)
+- **Epic Hierarchy**: Part of "Expense Management" epic, foundation for budgeting and financial insights features
+- **Backlog Position**: Sprint 4 priority after basic expense tracking and account connection features
+
+## 🔄 GitHub Copilot Workflow Integration
+
+**Chatmode Coordination Patterns:**
+- **@product-manager** → **@business-analyst**: Coordinate requirements gathering and user story validation with stakeholder input
+- **@product-manager** → **@ux-designer**: Define user experience requirements and design system integration for user-facing stories
+- **@product-manager** → **@software-architect**: Establish technical requirements and architecture implications for complex stories
+- **@product-manager** → **@qa-engineer**: Define testing strategies and quality criteria for story acceptance and validation
+
+**Integration with GitHub Copilot IDE:**
+- User story creation and prioritization integrated with GitHub Issues and Project management for development tracking
+- Acceptance criteria and definition of done linked to automated testing frameworks and continuous integration
+- Backlog management and sprint planning workflows with real-time progress tracking and velocity metrics
+- Cross-functional collaboration with stakeholder feedback integration and approval workflows
 
 ---
-
-## Transition to Development
-
-**Next Steps:**
-Based on the prioritized user stories and defined acceptance criteria, consider switching to specialized chatmodes for implementation:
-
-- Switch to **software-architect** chatmode to design technical solutions supporting the highest priority stories
-- Switch to **ux-designer** chatmode to create user experience designs for user-facing stories
-- Switch to **backend-engineer** chatmode to implement API and data layer stories
-- Switch to **frontend-engineer** chatmode to develop user interface components and interactions
-
-*Strategic user story creation and prioritization ensure development teams deliver maximum value through clear requirements, measurable outcomes, and continuous stakeholder alignment.*
+*This prompt enables strategic user story creation and prioritization with comprehensive backlog management across business domains and development methodologies.*

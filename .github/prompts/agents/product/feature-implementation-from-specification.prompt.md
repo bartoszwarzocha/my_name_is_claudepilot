@@ -1,48 +1,35 @@
 ---
 name: feature-implementation-from-specification
-description: Implement complete features from specification documents with technology-adaptive patterns, coordinated development across frontend, backend, and data layers
+description: |
+  **🤖 GitHub Copilot Chatmode: @product-manager**
+
+  Implement complete features from specification documents with technology-adaptive patterns, coordinated development across frontend, backend, and data layers. Transforms business requirements into production-ready functionality through comprehensive analysis, architecture planning, and coordinated implementation.
+
+  **📋 Context Integration**: Automatically reads .github/copilot.instructions.md to adapt feature implementation approaches to project requirements.
 tools: [bash, write, read, edit, glob, grep]
 model: claude-sonnet-4
 ---
 
-# Context Adaptation Framework
-
-This prompt operates within the [GitHub Copilot](https://github.com/github/copilot) ecosystem and adapts its guidance based on your project's specific configuration defined in `copilot.instructions.md`.
-
-The prompt dynamically adjusts its recommendations for:
-- Project architecture patterns and technology choices
-- Code organization and development standards
-- Testing approaches and quality requirements
-- Deployment and operational considerations
-
-Before beginning implementation work, the prompt will read your `copilot.instructions.md` file to understand your project context and customize all technical recommendations accordingly.
-
----
+**🤖 CHATMODE ACTIVATION**: This prompt automatically activates the `@product-manager` chatmode.
+**📋 AGENT CONTEXT**: The activated chatmode will read .github/copilot.instructions.md and adapt to project requirements.
+**🔄 WORKFLOW INTEGRATION**: All feature implementation tasks will be managed through integrated GitHub Copilot workflows.
 
 # Feature Implementation from Specification Document
 
-**Agent: product-manager**
-**Purpose: Implement complete features from specification documents with technology-adaptive patterns and coordinated development**
+## ✅ FUNCTIONAL REQUIREMENTS
 
----
+Implement complete application features based on detailed specification documents, coordinating across frontend, backend, and data layers to deliver production-ready functionality. Transform business requirements into working software through comprehensive analysis, architecture planning, and coordinated development across all technical layers.
 
-## Context Analysis
+**Core Objectives:**
+- Analyze specification documents to extract functional and technical requirements
+- Design multi-layer architecture supporting feature requirements
+- Coordinate development across frontend, backend, and data layers
+- Ensure production readiness with comprehensive testing and validation
+- Deliver features that meet business requirements and technical standards
 
-The product-manager will analyze the `copilot.instructions.md` file to determine:
-- **Technology Stack**: Frontend framework (React, Angular, Vue), backend framework (Java/Spring, .NET Core, Node.js, Python/FastAPI) for appropriate implementation patterns
-- **Architecture Pattern**: Monolithic vs microservices, component organization, and layer separation strategies
-- **Business Domain**: Industry-specific requirements, compliance needs (GDPR, HIPAA), and feature complexity patterns
-- **Project Scale**: Development team size, feature complexity, and integration requirements for coordinated implementation
-- **Development Stage**: MVP requirements, production readiness needs, and feature prioritization strategies
+## 🔄 HIGH-LEVEL ALGORITHMS
 
-Based on this analysis, the product manager will select appropriate feature implementation patterns, coordinate development across teams, and ensure technology-specific best practices are followed.
-
-## Mission
-Implement complete application features based on detailed specification documents, coordinating across frontend, backend, and data layers to deliver production-ready functionality that meets all business requirements, user experience standards, and technical specifications.
-
-## Process
-
-### Phase 1: Specification Analysis and Requirements Extraction
+### Algorithm 1: Specification Analysis and Requirements Extraction
 
 #### 1.1 Document Analysis and Parsing
 ```bash
@@ -109,7 +96,7 @@ grep -i "requirement\|feature\|user.*story\|acceptance.*criteria" specification.
 - **Reporting:** [Analytics and reporting needs]
 ```
 
-### Phase 2: Architecture Planning and Design
+### Algorithm 2: Architecture Planning and Design
 
 #### 2.1 Multi-Layer Architecture Design
 ```typescript
@@ -285,7 +272,7 @@ const userProfileFeature: FeatureArchitecture = {
 - [ ] Create data archiving strategy
 ```
 
-### Phase 3: Coordinated Implementation
+### Algorithm 3: Coordinated Implementation
 
 ## Technology-Adaptive Implementation
 
@@ -2402,146 +2389,76 @@ public class UserProfileService : IUserProfileService
 }
 ```
 
-## Deliverables
+## ✓ VALIDATION CRITERIA
 
-### 1. Complete Feature Implementation
-- **Frontend Components:** Angular components with full user interaction
-- **Backend APIs:** RESTful endpoints with business logic
-- **Database Integration:** Data persistence and retrieval
-- **File Management:** Upload, processing, and storage handling
+### Success Conditions
+- **Feature Completeness**: All specification requirements implemented with user acceptance criteria met
+- **Architecture Quality**: Clean separation of concerns across frontend, backend, and data layers
+- **Production Readiness**: Comprehensive testing, monitoring, and deployment pipeline integration
+- **User Experience**: Responsive design, accessibility compliance, and intuitive interactions
+- **Performance Standards**: Response times, scalability, and reliability requirements met
 
-### 2. Business Logic Implementation
-- **Validation Rules:** Client and server-side validation
-- **Security Controls:** Authentication, authorization, input sanitization
-- **Performance Optimization:** Caching, image processing, efficient queries
-- **Error Handling:** Comprehensive error management and user feedback
+### Failure Conditions
+- Incomplete implementation of core functionality from specification
+- Missing integration between application layers
+- Failed security, performance, or accessibility requirements
+- Inadequate testing coverage or documentation
+- Non-functional deployment or monitoring systems
 
-### 3. User Experience Features
-- **Responsive Design:** Mobile and desktop optimization
-- **Accessibility:** WCAG compliance and keyboard navigation
-- **Real-time Feedback:** Progress indicators and validation messages
-- **Offline Support:** Local storage and sync capabilities
+### Quality Gates
+- Code coverage >90% with passing unit and integration tests
+- Security review completed with no critical vulnerabilities
+- Performance benchmarks met (response time <2s, 99% uptime)
+- Accessibility audit passed (WCAG 2.1 AA compliance)
+- Stakeholder acceptance obtained with business requirements validated
 
-### 4. Production Readiness
-- **Monitoring:** Logging and performance tracking
-- **Testing:** Unit, integration, and end-to-end tests
-- **Documentation:** API documentation and user guides
-- **Deployment:** CI/CD pipeline integration
+## 💡 USAGE EXAMPLES
 
-## Quality Gates
+### E-commerce Platform Feature Implementation
+**Scenario**: Implement product review system for online marketplace
+- **Requirements Analysis**: Extract rating system, review moderation, and user feedback features from specification
+- **Architecture Design**: Design customer-facing review interface, admin moderation dashboard, and analytics backend
+- **Implementation**: Develop React review components, Node.js review API, and PostgreSQL review schema
+- **Integration**: Connect review system with existing product catalog, user authentication, and notification systems
+- **Validation**: Ensure 2-second load times, spam protection, and mobile-responsive design
 
-### ✅ Feature Completeness
-- [ ] All specification requirements implemented
-- [ ] User acceptance criteria met
-- [ ] Business rules enforced correctly
-- [ ] Error scenarios handled appropriately
-- [ ] Performance requirements satisfied
+### Enterprise SaaS Feature Implementation
+**Scenario**: Implement advanced reporting dashboard for business intelligence platform
+- **Requirements Analysis**: Extract data visualization, export capabilities, and user permission features from specification
+- **Architecture Design**: Design Angular dashboard components, Java Spring reporting services, and data aggregation pipelines
+- **Implementation**: Develop interactive charts, PDF export functionality, and role-based access controls
+- **Integration**: Connect with existing data sources, authentication systems, and notification frameworks
+- **Validation**: Ensure enterprise security standards, scalability for 10,000+ users, and GDPR compliance
 
-### ✅ Code Quality
-- [ ] Clean architecture and separation of concerns
-- [ ] Proper error handling and logging
-- [ ] Security best practices implemented
-- [ ] Performance optimization applied
-- [ ] Code coverage targets achieved
+### Healthcare Application Feature Implementation
+**Scenario**: Implement patient appointment scheduling system for medical practice management
+- **Requirements Analysis**: Extract appointment booking, provider calendar, and patient notification features from specification
+- **Architecture Design**: Design Vue.js scheduling interface, Python FastAPI booking services, and MySQL appointment database
+- **Implementation**: Develop calendar components, availability checking logic, and automated reminder system
+- **Integration**: Connect with existing patient records, provider schedules, and communication systems
+- **Validation**: Ensure HIPAA compliance, 99.9% availability, and accessibility for patients with disabilities
 
-### ✅ User Experience
-- [ ] Responsive design across devices
-- [ ] Accessibility standards met
-- [ ] User feedback and validation implemented
-- [ ] Loading states and error messages
-- [ ] Intuitive navigation and interaction
+### Financial Services Feature Implementation
+**Scenario**: Implement transaction monitoring dashboard for banking application
+- **Requirements Analysis**: Extract real-time monitoring, fraud detection alerts, and compliance reporting features from specification
+- **Architecture Design**: Design React dashboard, .NET Core monitoring services, and SQL Server transaction database
+- **Implementation**: Develop real-time charts, alert management system, and regulatory reporting tools
+- **Integration**: Connect with existing transaction systems, fraud detection engines, and compliance frameworks
+- **Validation**: Ensure financial industry security standards, real-time performance, and audit trail compliance
 
-### Generic/Fallback Implementation
+## 🔄 GitHub Copilot Workflow Integration
 
-For unsupported technologies, provide generic implementation patterns:
+**Chatmode Coordination Patterns:**
+- **@product-manager** → **@business-analyst**: Coordinate requirements validation and business case alignment
+- **@product-manager** → **@software-architect**: Define technical architecture and system design requirements
+- **@product-manager** → **@frontend-engineer**: Coordinate user interface implementation and user experience
+- **@product-manager** → **@backend-engineer**: Define API requirements and business logic implementation
 
-```yaml
-# Generic Feature Implementation Configuration
-feature_implementation:
-  approach: "specification_driven"  # or "agile", "iterative", "prototype_first"
-
-  analysis_principles:
-    - "requirement_extraction_and_decomposition"
-    - "user_story_mapping_and_acceptance_criteria"
-    - "technical_requirement_identification"
-    - "dependency_analysis_and_risk_assessment"
-    - "architecture_planning_and_design"
-
-  implementation_patterns:
-    frontend:
-      - "component_based_architecture"
-      - "reactive_forms_with_validation"
-      - "responsive_design_principles"
-      - "accessibility_compliance_wcag"
-      - "progressive_enhancement"
-
-    backend:
-      - "api_first_design_approach"
-      - "business_logic_separation"
-      - "comprehensive_input_validation"
-      - "security_first_implementation"
-      - "performance_optimization"
-
-    database:
-      - "schema_migration_strategy"
-      - "data_integrity_constraints"
-      - "query_optimization_techniques"
-      - "backup_and_recovery_procedures"
-      - "performance_monitoring"
-
-  quality_assurance:
-    - "unit_testing_for_business_logic"
-    - "integration_testing_for_apis"
-    - "end_to_end_testing_for_user_flows"
-    - "performance_testing_under_load"
-    - "security_testing_and_vulnerability_assessment"
-```
-
-## Implementation Strategy
-
-### 1. Technology Detection
-
-Analyze `copilot.instructions.md` configuration to determine:
-- **Frontend Framework** from primary_language and technology preferences (React for modern development, Angular for enterprise, Vue for rapid prototyping)
-- **Backend Framework** based on technology stack (Java/Spring for enterprise, .NET Core for Microsoft environments, Node.js for JavaScript-first teams, Python/FastAPI for data-heavy applications)
-- **Architecture Pattern** to select appropriate implementation approaches (component-based for SPAs, MVC for traditional apps, microservices for scalable systems)
-- **Business Domain** for industry-specific features, compliance requirements, and user experience patterns
-
-### 2. Feature Implementation Approach
-
-Select implementation patterns based on detected requirements:
-- **Component Architecture**: Technology-specific component patterns with proper separation of concerns
-- **State Management**: Framework-appropriate state handling (Redux/Zustand for React, NgRx for Angular, Vuex for Vue)
-- **Form Handling**: Technology-specific form validation and submission patterns
-- **File Upload**: Framework-appropriate file handling with progress tracking and validation
-
-### 3. API Integration Strategy
-
-Apply technology-specific API patterns:
-- **REST API Design**: Technology-appropriate endpoint structure and HTTP method usage
-- **Data Validation**: Framework-specific input validation and sanitization
-- **Error Handling**: Comprehensive error management with user-friendly feedback
-- **Authentication**: Technology-appropriate security implementation and authorization patterns
-
-### 4. Success Criteria
-
-Feature implementation validation checklist:
-- **Specification Compliance**: All specification requirements implemented according to acceptance criteria
-- **Technology Alignment**: Implementation follows framework best practices and patterns
-- **User Experience**: Responsive design, accessibility compliance, and intuitive user interactions
-- **Performance**: Fast loading times, optimized API calls, and efficient data processing
-- **Security**: Input validation, authorization checks, and protection against common vulnerabilities
+**Integration with GitHub Copilot IDE:**
+- Feature specifications and technical requirements integrated with GitHub Issues and Project management
+- Implementation progress tracking and coordination across development teams
+- Code review workflows ensuring specification compliance and quality standards
+- Automated testing and deployment pipelines supporting feature delivery validation
 
 ---
-
-## 🔄 Chatmode Transition Guidance
-
-After completing comprehensive feature implementation from specification, consider transitioning to these specialized chatmodes for continued development:
-
-- **Switch to `qa-engineer` chatmode** to implement comprehensive testing strategies, create test automation frameworks, and establish quality assurance processes for the implemented features
-- **Switch to `deployment-engineer` chatmode** to set up CI/CD pipelines, configure production environments, and implement monitoring and alerting for the new features
-- **Switch to `security-engineer` chatmode** to conduct security reviews, implement additional security controls, and perform vulnerability assessments on the implemented functionality
-
----
-
-*Effective feature implementation coordinates across all application layers to deliver production-ready functionality that meets business requirements and technical standards.*
+*This prompt enables comprehensive feature implementation with coordinated development across all application layers and business domains.*

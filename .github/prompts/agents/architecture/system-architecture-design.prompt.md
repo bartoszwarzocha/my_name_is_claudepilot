@@ -8,512 +8,292 @@ tools:
 model: claude-4-sonnet
 ---
 
+**🤖 CHATMODE ACTIVATION:** This prompt automatically activates the `software-architect` chatmode.
+**📋 CHATMODE CONTEXT:** The activated chatmode will read copilot.instructions.md and adapt to project requirements.
+**🔄 GITHUB COPILOT INTEGRATION:** All tasks will be managed through GitHub Copilot Chat workflows.
+
 # System Architecture Design
 
-## Context Analysis
+## FUNCTIONAL REQUIREMENTS
 
-The software-architect will analyze the copilot.instructions.md file to determine:
-- **Primary Language**: Frontend and backend technology stack detection
-- **Business Domain**: Domain-specific architectural patterns and requirements
-- **Project Scale**: Architecture complexity based on startup/SME/enterprise scale
-- **Development Stage**: Architecture evolution strategy from MVP to production
-- **Non-functional Requirements**: Performance, security, and scalability priorities
+**What needs to be accomplished:**
 
-Based on this analysis, the architect will select appropriate architectural patterns and technology-specific implementations.
+### Comprehensive Architecture Strategy
+- **System Design**: Create scalable, maintainable architecture that aligns with business goals and technical requirements
+- **Technology Integration**: Design technology stack integration patterns that support current and future business needs
+- **Quality Attributes**: Ensure architecture supports performance, security, reliability, and maintainability requirements
+- **Evolution Planning**: Design architecture evolution strategy from MVP through enterprise scale
 
-## 🎯 Mission
+### Business-Technology Alignment
+- **Domain Architecture**: Translate business domain requirements into appropriate architectural patterns and structures
+- **Stakeholder Requirements**: Balance technical excellence with business constraints, timelines, and resource limitations
+- **Risk Management**: Identify and mitigate architectural risks while maintaining business value delivery
+- **Compliance Integration**: Incorporate industry-specific compliance and regulatory requirements into architectural design
 
-Create comprehensive system architecture that supports business requirements, ensures scalability, and maintains high quality standards throughout the development lifecycle.
+### Scalability and Performance Design
+- **Growth Planning**: Design architecture that scales efficiently with user growth and data volume increases
+- **Performance Optimization**: Create performance-focused architecture with appropriate caching, load balancing, and optimization strategies
+- **Resource Efficiency**: Optimize architecture for cost-effective resource utilization across development and production environments
+- **Monitoring Integration**: Design comprehensive observability and monitoring capabilities into core architecture
 
-## 🏗️ Architecture Design Framework
+### Technology Stack Optimization
+- **Framework Selection**: Choose and integrate appropriate frameworks, libraries, and tools based on project requirements
+- **Integration Patterns**: Design efficient integration patterns between different system components and external services
+- **Development Efficiency**: Create architecture that enhances developer productivity and maintains code quality
+- **Deployment Strategy**: Design deployment and infrastructure patterns that support reliable, scalable operations
 
-### Step 1: Requirements Analysis
-- **Functional requirements** analysis from business requirements
-- **Non-functional requirements** (performance, security, scalability)
-- **Integration requirements** with existing systems
-- **Compliance and regulatory** constraints
+## HIGH-LEVEL ALGORITHMS
 
-### Step 2: Architecture Pattern Selection
+**How to approach the problem:**
 
-**Monolithic Architecture:**
-- Simple deployment and development
-- Suitable for small to medium applications
-- Easier debugging and testing
-- Consider when: Small team, simple domain, rapid prototyping
+### 1. Comprehensive Requirements Analysis
+```
+1. Read copilot.instructions.md to extract:
+   - Business domain and functional requirements
+   - Technology stack preferences and constraints
+   - Performance and scalability expectations
+   - Security and compliance requirements
 
-**Microservices Architecture:**
-- Independent service deployment and scaling
-- Technology diversity and team autonomy
-- Fault isolation and resilience
-- Consider when: Large team, complex domain, scalability needs
-
-**Serverless Architecture:**
-- Event-driven and auto-scaling
-- Reduced operational overhead
-- Pay-per-use cost model
-- Consider when: Variable workloads, quick deployment, cost optimization
-
-## Technology-Adaptive Implementation
-
-### Java + Spring Boot + React Architecture
-
-**Recommended Pattern:** Layered Architecture with Clean Architecture principles
-
-```java
-// Domain Layer
-@Entity
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String username;
-    private String email;
-}
-
-// Application Layer
-@Service
-@Transactional
-public class UserService {
-    private final UserRepository userRepository;
-    
-    public UserDto createUser(CreateUserRequest request) {
-        User user = new User(request.getUsername(), request.getEmail());
-        return UserMapper.toDto(userRepository.save(user));
-    }
-}
-
-// Infrastructure Layer
-@RestController
-@RequestMapping("/api/users")
-public class UserController {
-    private final UserService userService;
-    
-    @PostMapping
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody CreateUserRequest request) {
-        return ResponseEntity.ok(userService.createUser(request));
-    }
-}
+2. Stakeholder Requirements Assessment:
+   - Identify key stakeholders and their architectural concerns
+   - Analyze quality attribute requirements (performance, security, usability)
+   - Understand business constraints and growth projections
+   - Review existing systems and integration requirements
 ```
 
-**Frontend Integration:**
-```typescript
-// React + TypeScript service layer
-export class UserApiService {
-  private readonly baseUrl = process.env.REACT_APP_API_URL;
-  
-  async createUser(request: CreateUserRequest): Promise<UserDto> {
-    const response = await fetch(`${this.baseUrl}/api/users`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(request)
-    });
-    return response.json();
-  }
-}
+### 2. Architectural Pattern Selection and Design
+```
+1. Pattern Analysis and Selection:
+   - Evaluate architectural patterns based on requirements analysis
+   - Select appropriate patterns (layered, microservices, event-driven, etc.)
+   - Design pattern combinations that address specific business needs
+   - Plan pattern evolution and migration strategies
+
+2. System Decomposition:
+   - Design system boundaries and component responsibilities
+   - Create module and service decomposition strategies
+   - Plan data flow and communication patterns
+   - Design integration and interface specifications
 ```
 
-### .NET Core + Angular Architecture
+### 3. Technology Stack Integration and Optimization
+```
+1. Technology Architecture:
+   - Design technology stack integration patterns
+   - Select frameworks and tools based on architectural requirements
+   - Plan database architecture and data management strategies
+   - Design security architecture and authentication patterns
 
-**Recommended Pattern:** Clean Architecture with MediatR pattern
-
-```csharp
-// Domain Layer
-public class User : BaseEntity
-{
-    public string Username { get; private set; }
-    public string Email { get; private set; }
-    
-    public User(string username, string email)
-    {
-        Username = username;
-        Email = email;
-    }
-}
-
-// Application Layer
-public class CreateUserCommand : IRequest<UserDto>
-{
-    public string Username { get; set; }
-    public string Email { get; set; }
-}
-
-public class CreateUserHandler : IRequestHandler<CreateUserCommand, UserDto>
-{
-    private readonly IUserRepository _repository;
-    
-    public async Task<UserDto> Handle(CreateUserCommand request, CancellationToken cancellationToken)
-    {
-        var user = new User(request.Username, request.Email);
-        await _repository.AddAsync(user);
-        return user.ToDto();
-    }
-}
-
-// API Layer
-[ApiController]
-[Route("api/[controller]")]
-public class UsersController : ControllerBase
-{
-    private readonly IMediator _mediator;
-    
-    [HttpPost]
-    public async Task<ActionResult<UserDto>> CreateUser(CreateUserCommand command)
-    {
-        return Ok(await _mediator.Send(command));
-    }
-}
+2. Infrastructure Design:
+   - Plan deployment architecture and infrastructure requirements
+   - Design scalability and load balancing strategies
+   - Create disaster recovery and backup strategies
+   - Plan monitoring and observability architecture
 ```
 
-**Frontend Integration:**
-```typescript
-// Angular service with dependency injection
-@Injectable({
-  providedIn: 'root'
-})
-export class UserService {
-  private apiUrl = environment.apiUrl;
-  
-  constructor(private http: HttpClient) {}
-  
-  createUser(request: CreateUserRequest): Observable<UserDto> {
-    return this.http.post<UserDto>(`${this.apiUrl}/api/users`, request);
-  }
-}
+### 4. Quality Attributes and Non-Functional Requirements
+```
+1. Performance Architecture:
+   - Design performance optimization strategies
+   - Plan caching and data access optimization
+   - Create load testing and performance monitoring strategies
+   - Design capacity planning and resource scaling
+
+2. Security and Compliance Architecture:
+   - Design security architecture with defense in depth
+   - Plan authentication and authorization strategies
+   - Create compliance monitoring and audit capabilities
+   - Design data protection and privacy strategies
 ```
 
-### Node.js + NestJS + React Architecture
+### 5. Implementation and Evolution Planning
+```
+1. Implementation Strategy:
+   - Create phased implementation plan with clear milestones
+   - Design development team structure and responsibilities
+   - Plan technical debt management and code quality strategies
+   - Create architecture documentation and governance processes
 
-**Recommended Pattern:** Modular architecture with dependency injection
-
-```typescript
-// Domain Layer
-export class User {
-  constructor(
-    public readonly id: string,
-    public readonly username: string,
-    public readonly email: string
-  ) {}
-}
-
-// Application Layer
-@Injectable()
-export class UserService {
-  constructor(
-    @InjectRepository(UserEntity)
-    private userRepository: Repository<UserEntity>
-  ) {}
-  
-  async createUser(createUserDto: CreateUserDto): Promise<UserDto> {
-    const user = this.userRepository.create(createUserDto);
-    const savedUser = await this.userRepository.save(user);
-    return this.mapToDto(savedUser);
-  }
-}
-
-// API Layer
-@Controller('users')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
-  
-  @Post()
-  @UsePipes(new ValidationPipe())
-  async createUser(@Body() createUserDto: CreateUserDto): Promise<UserDto> {
-    return this.userService.createUser(createUserDto);
-  }
-}
+2. Evolution and Maintenance:
+   - Design architecture evolution and migration strategies
+   - Plan technology refresh and modernization approaches
+   - Create architecture review and validation processes
+   - Design change management and impact assessment procedures
 ```
 
-### Python + FastAPI + React Architecture
+## VALIDATION CRITERIA
 
-**Recommended Pattern:** Clean Architecture with dependency injection
+**What conditions must be met:**
 
-```python
-# Domain Layer
-from pydantic import BaseModel
-from sqlalchemy import Column, Integer, String
-from database import Base
+### ✅ Business Alignment and Value
+- **Requirements Fulfillment**: Architecture addresses all identified business and technical requirements
+- **Stakeholder Satisfaction**: Architecture meets stakeholder expectations and constraints
+- **Business Value**: Architecture enables efficient business value delivery and growth
+- **Cost Effectiveness**: Architecture optimizes total cost of ownership and resource utilization
 
-class User(Base):
-    __tablename__ = "users"
-    
-    id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index=True)
-    email = Column(String, unique=True, index=True)
+### ✅ Technical Excellence and Quality
+- **Scalability**: Architecture scales efficiently with growth in users, data, and functionality
+- **Performance**: Architecture meets performance requirements with appropriate optimization strategies
+- **Reliability**: Architecture provides high availability and fault tolerance capabilities
+- **Security**: Architecture implements comprehensive security controls and compliance measures
 
-# Application Layer
-from typing import Protocol
+### ✅ Development and Operational Efficiency
+- **Developer Productivity**: Architecture enhances development efficiency and code quality
+- **Maintainability**: Architecture supports easy maintenance, updates, and troubleshooting
+- **Deployment Efficiency**: Architecture enables reliable, automated deployment and operations
+- **Monitoring Capability**: Architecture provides comprehensive observability and monitoring
 
-class UserRepository(Protocol):
-    async def create_user(self, user: User) -> User: ...
+### ✅ Evolution and Future-Proofing
+- **Adaptability**: Architecture accommodates changing business requirements and technology evolution
+- **Technology Migration**: Architecture supports technology stack updates and migrations
+- **Growth Support**: Architecture scales with business growth without major restructuring
+- **Innovation Enablement**: Architecture enables rapid innovation and feature development
 
-class UserService:
-    def __init__(self, repository: UserRepository):
-        self.repository = repository
-    
-    async def create_user(self, request: CreateUserRequest) -> UserDto:
-        user = User(username=request.username, email=request.email)
-        created_user = await self.repository.create_user(user)
-        return UserDto.from_orm(created_user)
+### ✅ GitHub Copilot Integration
+- **Chatmode Coordination**: Seamless integration with other development chatmodes
+- **Documentation Quality**: Comprehensive architectural documentation and decision records
+- **Configuration Adaptation**: Proper adaptation to project technology stack and requirements
+- **Implementation Support**: Architecture design supports GitHub Copilot development workflows
 
-# API Layer
-from fastapi import FastAPI, Depends, HTTPException
+## USAGE EXAMPLES
 
-@app.post("/api/users", response_model=UserDto)
-async def create_user(
-    request: CreateUserRequest,
-    service: UserService = Depends(get_user_service)
-):
-    return await service.create_user(request)
-```
+**For different GitHub Copilot scenarios:**
 
-### Desktop Application Architecture (Python/wxPython)
-
-**Recommended Pattern:** MVP (Model-View-Presenter) with event-driven architecture
-
-```python
-# Model Layer
-from dataclasses import dataclass
-from typing import Protocol
-
-@dataclass
-class User:
-    id: int
-    username: str
-    email: str
-
-class UserRepository(Protocol):
-    def save_user(self, user: User) -> User: ...
-    def get_user(self, id: int) -> User: ...
-
-# Presenter Layer
-import wx
-from typing import Optional
-
-class UserPresenter:
-    def __init__(self, view: 'UserView', repository: UserRepository):
-        self.view = view
-        self.repository = repository
-        
-    def create_user(self, username: str, email: str) -> None:
-        try:
-            user = User(0, username, email)
-            created_user = self.repository.save_user(user)
-            self.view.show_success(f"User {created_user.username} created")
-        except Exception as e:
-            self.view.show_error(str(e))
-
-# View Layer
-class UserView(wx.Frame):
-    def __init__(self, presenter: UserPresenter):
-        super().__init__(None, title="User Management")
-        self.presenter = presenter
-        self.init_ui()
-        
-    def init_ui(self):
-        panel = wx.Panel(self)
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        
-        # Form controls
-        self.username_ctrl = wx.TextCtrl(panel)
-        self.email_ctrl = wx.TextCtrl(panel)
-        create_btn = wx.Button(panel, label="Create User")
-        
-        create_btn.Bind(wx.EVT_BUTTON, self.on_create_user)
-        
-        sizer.Add(self.username_ctrl, 0, wx.EXPAND | wx.ALL, 5)
-        sizer.Add(self.email_ctrl, 0, wx.EXPAND | wx.ALL, 5)
-        sizer.Add(create_btn, 0, wx.EXPAND | wx.ALL, 5)
-        
-        panel.SetSizer(sizer)
-        
-    def on_create_user(self, event):
-        username = self.username_ctrl.GetValue()
-        email = self.email_ctrl.GetValue()
-        self.presenter.create_user(username, email)
-```
-
-### Generic/Fallback Implementation
-
-For unsupported technologies, provide generic architectural principles:
-
+### Scenario 1: E-commerce Platform Architecture
 ```yaml
-# Generic Architecture Configuration
-architecture:
-  pattern: "layered"  # or "clean", "hexagonal", "microservices"
-  layers:
-    - presentation    # Controllers, Views, UI Components
-    - application     # Use Cases, Services, Commands
-    - domain         # Entities, Value Objects, Domain Services
-    - infrastructure # Repositories, External Services, Database
-    
-communication:
-  api_style: "REST"  # or "GraphQL", "gRPC"
-  data_format: "JSON"
-  authentication: "JWT"
-  
-database:
-  type: "relational"  # or "document", "key-value"
-  transactions: true
-  migrations: true
+Context: Scalable e-commerce platform with complex product catalog and order management
+Technology Stack: Detected from copilot.instructions.md (React, Node.js, PostgreSQL, Redis)
+Business Domain: E-commerce with high transaction volume and global user base
+
+Architecture Focus:
+- Microservices architecture for independent scaling of catalog, orders, and payments
+- Event-driven architecture for order processing and inventory management
+- CQRS pattern for read/write optimization in product catalog
+- API gateway for unified client access and rate limiting
+
+GitHub Copilot Workflow:
+1. software-architect chatmode → Design comprehensive system architecture
+2. api-engineer chatmode → Implement microservices and API gateway patterns
+3. data-engineer chatmode → Design database architecture and data flow
+4. deployment-engineer chatmode → Implement scalable infrastructure and deployment
+
+Expected Deliverables:
+- Comprehensive architecture documentation with system diagrams
+- Microservices decomposition with clear service boundaries
+- Event-driven communication patterns for business processes
+- Scalability and performance optimization strategies
 ```
 
-### Step 3: Technology Stack Selection
+### Scenario 2: Healthcare Management System Architecture
+```yaml
+Context: HIPAA-compliant healthcare platform with complex data privacy requirements
+Technology Stack: Enterprise setup (.NET Core, Angular, SQL Server, Azure)
+Business Domain: Healthcare with patient data, provider networks, and regulatory compliance
 
-**Backend Technologies:**
-- **Programming Language:** Based on team expertise and requirements
-- **Framework Selection:** Performance, community, and ecosystem
-- **Database Choice:** SQL vs NoSQL based on data patterns
-- **Caching Strategy:** Redis, Memcached, or application-level caching
+Architecture Focus:
+- Layered architecture with strict data access controls
+- Domain-driven design for healthcare business logic
+- Comprehensive audit logging and compliance monitoring
+- Zero-trust security architecture with fine-grained permissions
 
-**Frontend Technologies:**
-- **Framework/Library:** React, Vue, Angular based on requirements
-- **State Management:** Redux, Vuex, or native solutions
-- **Build Tools:** Webpack, Vite, or framework-specific tools
-- **Testing Framework:** Jest, Cypress, or testing library
+GitHub Copilot Workflow:
+1. software-architect chatmode → Design HIPAA-compliant system architecture
+2. security-engineer chatmode → Implement comprehensive security and compliance controls
+3. data-engineer chatmode → Design healthcare data architecture with privacy controls
+4. qa-engineer chatmode → Create compliance testing and validation strategies
 
-**Infrastructure Components:**
-- **Cloud Platform:** AWS, Azure, GCP, or on-premises
-- **Container Strategy:** Docker, Kubernetes orchestration
-- **CI/CD Pipeline:** GitLab, GitHub Actions, Jenkins
-- **Monitoring:** Application and infrastructure monitoring tools
+Expected Deliverables:
+- HIPAA-compliant architecture with comprehensive security controls
+- Domain-driven design for healthcare business processes
+- Data architecture with privacy and consent management
+- Compliance monitoring and audit trail capabilities
+```
 
-## 📐 Architecture Documentation
+### Scenario 3: Financial Trading Platform Architecture
+```yaml
+Context: High-frequency trading platform with real-time data processing requirements
+Technology Stack: High-performance setup (Java, React, Apache Kafka, Redis, PostgreSQL)
+Business Domain: Financial services with real-time trading and risk management
 
-### System Context Diagram
-- **System boundaries** and external interfaces
-- **User types** and their interactions
-- **External systems** and integration points
-- **Data flows** and communication protocols
+Architecture Focus:
+- Event-sourcing architecture for audit trails and data consistency
+- High-performance messaging with Apache Kafka for real-time data streams
+- CQRS pattern for optimized read/write operations
+- Circuit breaker and bulkhead patterns for system resilience
 
-### Container Diagram
-- **Application containers** and their responsibilities
-- **Database containers** and data storage strategy
-- **External services** and third-party integrations
-- **Communication patterns** between containers
+GitHub Copilot Workflow:
+1. software-architect chatmode → Design high-performance trading system architecture
+2. data-engineer chatmode → Implement real-time data processing and event sourcing
+3. security-engineer chatmode → Design financial data security and compliance
+4. qa-engineer chatmode → Create performance testing and system validation
 
-### Component Diagram
-- **Internal components** within each container
-- **Component relationships** and dependencies
-- **Interface definitions** and contracts
-- **Data models** and entity relationships
+Expected Deliverables:
+- High-performance architecture with real-time data processing
+- Event-sourcing implementation with comprehensive audit trails
+- Risk management and compliance monitoring systems
+- Performance optimization for high-frequency trading operations
+```
 
-### Deployment Diagram
-- **Infrastructure components** and their configurations
-- **Network architecture** and security boundaries
-- **Scaling strategies** and load balancing
-- **Disaster recovery** and backup procedures
+### Scenario 4: IoT and Analytics Platform Architecture
+```yaml
+Context: IoT platform with massive data ingestion and real-time analytics
+Technology Stack: Cloud-native setup (React, Python, Apache Kafka, InfluxDB, Kubernetes)
+Business Domain: IoT with device management, data analytics, and machine learning
 
-## 🎯 Quality Attributes
+Architecture Focus:
+- Lambda architecture for batch and real-time data processing
+- Microservices architecture for device management and analytics
+- Event-driven architecture for IoT data ingestion and processing
+- Machine learning pipeline integration for predictive analytics
 
-### Performance Requirements
-- **Response time** targets for different operations
-- **Throughput** requirements and concurrent user support
-- **Resource utilization** limits and optimization strategies
-- **Caching strategies** for improved performance
+GitHub Copilot Workflow:
+1. software-architect chatmode → Design scalable IoT data architecture
+2. data-engineer chatmode → Implement data ingestion and analytics pipelines
+3. deployment-engineer chatmode → Design cloud-native infrastructure and scaling
+4. qa-engineer chatmode → Create performance testing for high-volume data processing
 
-### Security Architecture
-- **Authentication** and authorization mechanisms
-- **Data encryption** in transit and at rest
-- **Security boundaries** and access controls
-- **Vulnerability management** and security monitoring
+Expected Deliverables:
+- Scalable IoT data architecture with real-time and batch processing
+- Device management system with secure communication protocols
+- Analytics pipeline with machine learning integration
+- Cloud-native deployment with auto-scaling capabilities
+```
 
-### Scalability Design
-- **Horizontal scaling** strategies and auto-scaling policies
-- **Vertical scaling** capabilities and resource limits
-- **Database scaling** approaches (read replicas, sharding)
-- **Caching layers** for improved scalability
+## GitHub Copilot Integration
 
-### Maintainability Principles
-- **Code organization** and module boundaries
-- **Dependency management** and version control
-- **Configuration management** and environment handling
-- **Documentation standards** and knowledge sharing
+### Chatmode Coordination Patterns
+```
+System Architecture Design → software-architect chatmode (lead)
+├─ API Design → api-engineer chatmode
+├─ Data Architecture → data-engineer chatmode
+├─ Security Architecture → security-engineer chatmode
+├─ Frontend Architecture → frontend-engineer chatmode
+├─ Quality Architecture → qa-engineer chatmode
+└─ Infrastructure Architecture → deployment-engineer chatmode
+```
 
-## 🔧 Implementation Guidelines
+### Context Handoff Information
+- **To api-engineer**: Service boundaries, API contracts, integration patterns, communication protocols
+- **To data-engineer**: Data architecture, storage patterns, data flow, consistency requirements
+- **To security-engineer**: Security architecture, authentication patterns, compliance requirements
+- **To frontend-engineer**: Frontend architecture, user experience patterns, performance requirements
+- **To qa-engineer**: Quality attributes, testing strategies, performance requirements
+- **To deployment-engineer**: Infrastructure requirements, scaling patterns, operational requirements
 
-### Development Standards
-- **Coding standards** and style guides
-- **Code review** processes and quality gates
-- **Testing strategies** (unit, integration, end-to-end)
-- **Documentation requirements** for APIs and components
+### GitHub Actions Integration
+- **Architecture Validation**: Automated validation of architectural decisions and patterns
+- **Documentation Generation**: Automated generation of architectural documentation and diagrams
+- **Compliance Checking**: Automated validation of architectural compliance with standards
+- **Performance Monitoring**: Automated monitoring of architectural quality attributes
 
-### Deployment Strategy
-- **Environment promotion** pipeline (dev → staging → production)
-- **Blue-green deployment** for zero-downtime updates
-- **Feature flags** for gradual feature rollouts
-- **Rollback procedures** and disaster recovery plans
+## Configuration Adaptation
 
-### Monitoring and Observability
-- **Application monitoring** with metrics and alerting
-- **Log aggregation** and analysis strategies
-- **Distributed tracing** for microservices debugging
-- **Health checks** and uptime monitoring
+**IMPORTANT**: This prompt adapts to project specifications by reading `copilot.instructions.md`:
 
-## 📊 Architecture Decision Records (ADRs)
+- **Business Domain**: Adapts architectural patterns to industry-specific requirements and compliance needs
+- **Technology Stack**: Selects appropriate architectural patterns based on detected technology preferences
+- **Project Scale**: Adjusts architectural complexity based on startup, SME, or enterprise requirements
+- **Quality Attributes**: Prioritizes architectural quality attributes based on project specifications
+- **Integration Requirements**: Adapts architecture to existing systems and integration constraints
 
-For each major architectural decision, document:
-- **Context:** What is the issue that we're seeing
-- **Decision:** What is the change that we're proposing
-- **Status:** Proposed, accepted, or superseded
-- **Consequences:** What becomes easier or more difficult
-
-## 📤 Deliverables
-
-- **System Architecture Document** with diagrams and explanations
-- **Technology Stack Recommendations** with justifications
-- **Architecture Decision Records** for key choices
-- **Implementation Roadmap** with phases and milestones
-- **Quality Attribute Requirements** and validation criteria
-
-## 🤝 Collaboration Points
-
-**With business-analyst:** Ensure architecture supports business requirements
-**With security-engineer:** Integrate security architecture and controls
-**With data-engineer:** Coordinate data architecture and storage strategies
-**With deployment-engineer:** Align on infrastructure and deployment strategies
-
-## Implementation Strategy
-
-### 1. Technology Detection
-
-Analyze copilot.instructions.md configuration to determine:
-- **Primary language** and framework stack from `primary_language` field
-- **Business domain** requirements for domain-specific patterns
-- **Project scale** to select appropriate architectural complexity
-- **Development stage** to balance MVP simplicity vs production scalability
-
-### 2. Architecture Pattern Selection
-
-Based on detected technology and requirements:
-- **Monolithic**: Small teams, simple domains, rapid prototyping
-- **Layered/Clean**: Medium complexity, clear separation of concerns
-- **Microservices**: Large teams, complex domains, independent scaling
-- **Event-driven**: High decoupling, async processing, scalability
-
-### 3. Technology-Specific Implementation
-
-Select implementation patterns based on detected stack:
-- **Java/Spring**: Layered architecture with dependency injection
-- **.NET Core**: Clean architecture with MediatR and CQRS patterns
-- **Node.js**: Modular architecture with TypeScript and decorators
-- **Python**: Clean architecture with dependency injection and async support
-- **Desktop**: MVP pattern with event-driven GUI frameworks
-
-### 4. Success Criteria
-
-Architecture validation checklist:
-- **Technology alignment**: Implementation matches detected tech stack
-- **Scalability**: Architecture supports project scale requirements
-- **Maintainability**: Clear separation of concerns and dependency management
-- **Testability**: Architecture enables comprehensive testing strategies
-- **Performance**: Patterns optimize for business domain requirements
-
-## Transition to Specialized Chatmodes
-
-After completing system architecture design:
-
-- **For Security Architecture**: Switch to **@security-engineer** chatmode to implement comprehensive security controls and threat modeling
-- **For Data Architecture**: Switch to **@data-engineer** chatmode to design optimal data storage and processing strategies
-- **For Infrastructure Architecture**: Switch to **@deployment-engineer** chatmode to implement scalable deployment and infrastructure solutions
-
-**This prompt ensures system architecture follows best practices for the technology stack specified in copilot.instructions.md while supporting business requirements and maintaining high quality standards.**
+**The software-architect chatmode will automatically analyze project configuration and business requirements to design optimal system architecture while maintaining the functional requirements specified above.**

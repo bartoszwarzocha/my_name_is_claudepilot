@@ -1,5 +1,5 @@
 ---
-description: Generate comprehensive Entity Framework Core models, contexts, and API endpoints from existing database schemas, including stored procedures and complete CRUD operations with performance optimization. Adapts to project specifications defined in copilot.instructions.md.
+description: Generate comprehensive Entity Framework Core models, contexts, repositories, and API endpoints from existing database schemas with advanced relationship mapping, stored procedure integration, and performance optimization. Adapts to project specifications defined in copilot.instructions.md.
 model: claude-4-sonnet
 tools:
   - codebase
@@ -8,26 +8,296 @@ tools:
   - runCommands
   - githubRepo
   - search
+  - vscodeAPI
 ---
+
+**🤖 CHATMODE ACTIVATION:** This prompt automatically activates the `data-engineer` chatmode.
+**📋 CHATMODE CONTEXT:** The activated chatmode will read copilot.instructions.md and adapt to project requirements.
+**🔄 GITHUB COPILOT INTEGRATION:** All tasks will be managed through GitHub Copilot Chat workflows.
 
 # Entity Framework Code Generation from Database Schema
 
-## Mission
-Generate comprehensive Entity Framework Core models, contexts, and API endpoints from existing database schemas, including stored procedures and functions, ensuring complete CRUD operations with proper relationship mapping, performance optimization, and production-ready data access patterns.
+## FUNCTIONAL REQUIREMENTS
 
-**Context Adaptation**: Read copilot.instructions.md to understand:
-- **Primary Language**: Verify .NET/C# as the target technology stack
-- **Database Technology**: Primary database system (SQL Server, PostgreSQL, MySQL, SQLite)
-- **Project Scale**: Architecture complexity and performance requirements
-- **Business Domain**: Data modeling and compliance requirements
+**What needs to be accomplished:**
 
-## Process
+### Comprehensive Entity Framework Model Generation
+- **Database Schema Analysis**: Analyze existing database schemas to extract table structures, relationships, constraints, and metadata
+- **Entity Model Generation**: Generate Entity Framework Core models with proper annotations, validation attributes, and navigation properties
+- **DbContext Configuration**: Create comprehensive DbContext with proper configuration, connection management, and relationship mapping
+- **Performance Optimization**: Implement lazy loading, eager loading, and query optimization patterns for Entity Framework
 
-### Phase 1: Database Analysis and Schema Discovery
+### Advanced Relationship and Constraint Mapping
+- **Relationship Configuration**: Map one-to-one, one-to-many, and many-to-many relationships with proper foreign key configuration
+- **Complex Type Mapping**: Handle complex database types, custom value converters, and domain-specific type mappings
+- **Constraint Implementation**: Implement database constraints, check constraints, and business rule validation in Entity Framework
+- **Index and Performance Configuration**: Configure indexes, query filters, and performance optimization attributes
 
-#### 1.1 Database Structure Analysis
-```sql
--- Analyze database structure
+### Repository Pattern and Data Access Layer
+- **Repository Interface Generation**: Create generic and specific repository interfaces with proper CRUD operations and query methods
+- **Service Layer Implementation**: Generate service layer with business logic, transaction management, and error handling
+- **Unit of Work Pattern**: Implement Unit of Work pattern for transaction coordination and change tracking
+- **Dependency Injection Setup**: Configure dependency injection for repositories, services, and DbContext management
+
+### API Integration and CRUD Operations
+- **Controller Generation**: Generate ASP.NET Core controllers with proper HTTP methods and status code handling
+- **DTO and Mapping Configuration**: Create Data Transfer Objects with AutoMapper configuration for entity-DTO mapping
+- **API Documentation**: Generate OpenAPI/Swagger documentation with proper model documentation and examples
+- **Validation and Error Handling**: Implement comprehensive validation, error handling, and API response formatting
+
+## HIGH-LEVEL ALGORITHMS
+
+**How to approach the problem:**
+
+### 1. Database Schema Analysis and Discovery
+```
+1. Read copilot.instructions.md to extract:
+   - .NET Core version and Entity Framework preferences
+   - Database system and connection configuration
+   - Business domain and data modeling requirements
+   - Performance and scalability expectations
+
+2. Database Structure Analysis:
+   - Connect to database and extract table schemas
+   - Analyze relationships, foreign keys, and constraints
+   - Identify stored procedures, functions, and views
+   - Review indexes, triggers, and database-specific features
+```
+
+### 2. Entity Framework Model Generation
+```
+1. Entity Class Generation:
+   - Generate entity classes with proper property types and annotations
+   - Configure navigation properties for relationships
+   - Implement validation attributes and data annotations
+   - Add audit properties and soft delete patterns where needed
+
+2. DbContext Configuration:
+   - Create DbContext with proper entity configuration
+   - Configure relationships using Fluent API
+   - Set up connection strings and database provider configuration
+   - Implement change tracking and audit trail functionality
+```
+
+### 3. Repository and Service Layer Implementation
+```
+1. Repository Pattern Implementation:
+   - Generate generic repository interface with common CRUD operations
+   - Create specific repository interfaces for complex entity operations
+   - Implement concrete repository classes with Entity Framework integration
+   - Add query optimization and performance monitoring
+
+2. Service Layer Design:
+   - Create service interfaces with business logic operations
+   - Implement service classes with transaction management
+   - Add error handling and logging integration
+   - Configure dependency injection and lifetime management
+```
+
+### 4. API Controller and DTO Generation
+```
+1. Controller Generation:
+   - Generate ASP.NET Core controllers with proper routing
+   - Implement CRUD endpoints with proper HTTP methods
+   - Add validation, error handling, and status code management
+   - Configure authorization and security attributes
+
+2. DTO and Mapping Configuration:
+   - Create request and response DTOs for API operations
+   - Configure AutoMapper profiles for entity-DTO mapping
+   - Implement validation attributes and business rule checking
+   - Add pagination and filtering support for list operations
+```
+
+### 5. Testing, Documentation, and Optimization
+```
+1. Testing Framework Generation:
+   - Create unit tests for repository and service layers
+   - Generate integration tests for API controllers
+   - Add database seeding and test data management
+   - Implement performance testing for Entity Framework queries
+
+2. Documentation and Optimization:
+   - Generate comprehensive API documentation with Swagger
+   - Create database migration scripts and version management
+   - Implement performance monitoring and query optimization
+   - Add logging and diagnostics for debugging and monitoring
+```
+
+## VALIDATION CRITERIA
+
+**What conditions must be met:**
+
+### ✅ Entity Framework Model Quality
+- **Accurate Mapping**: Entity models accurately reflect database schema with proper type mapping and constraints
+- **Relationship Configuration**: All database relationships properly configured with navigation properties and foreign keys
+- **Performance Optimization**: Entity Framework configured with appropriate lazy loading, change tracking, and query optimization
+- **Validation Implementation**: Comprehensive validation attributes and business rule enforcement in entity models
+
+### ✅ Data Access Layer Excellence
+- **Repository Pattern**: Clean repository pattern implementation with proper separation of concerns and testability
+- **Service Layer Design**: Well-designed service layer with business logic encapsulation and transaction management
+- **Error Handling**: Comprehensive error handling with proper exception management and logging
+- **Unit of Work**: Proper Unit of Work implementation for transaction coordination and data consistency
+
+### ✅ API Integration Standards
+- **Controller Quality**: Well-designed ASP.NET Core controllers with proper HTTP methods and status codes
+- **DTO Implementation**: Efficient DTO classes with proper validation and mapping configuration
+- **Documentation Completeness**: Comprehensive API documentation with Swagger integration and examples
+- **Security Implementation**: Proper authorization and authentication integration in API controllers
+
+### ✅ Performance and Scalability
+- **Query Optimization**: Optimized Entity Framework queries with proper includes and projections
+- **Database Performance**: Appropriate indexes and query patterns for optimal database performance
+- **Memory Management**: Efficient memory usage with proper disposal and change tracking configuration
+- **Connection Management**: Proper connection pooling and resource management for scalability
+
+### ✅ GitHub Copilot Integration
+- **Chatmode Coordination**: Seamless integration with api-engineer for API development and security-engineer for data protection
+- **Code Generation Quality**: Generated code follows .NET best practices and Entity Framework conventions
+- **Configuration Adaptation**: Proper adaptation to project technology stack and business domain requirements
+- **Testing Support**: Complete testing framework for Entity Framework operations and API validation
+
+## USAGE EXAMPLES
+
+**For different GitHub Copilot scenarios:**
+
+### Scenario 1: E-commerce Database to Entity Framework
+```yaml
+Context: E-commerce platform with complex product catalog, inventory, and order management database
+Technology Stack: Detected from copilot.instructions.md (.NET 8, Entity Framework Core, SQL Server, AutoMapper)
+Business Domain: E-commerce with product variants, inventory tracking, and order processing
+
+Entity Framework Generation Focus:
+- Product catalog with categories, variants, and pricing relationships
+- Customer management with addresses and order history
+- Order processing with line items and payment integration
+- Inventory tracking with stock movements and supplier relationships
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Generate comprehensive Entity Framework models from e-commerce database schema
+2. api-engineer chatmode → Create RESTful API controllers with proper CRUD operations and validation
+3. security-engineer chatmode → Implement data access security and audit trails for financial data
+4. qa-engineer chatmode → Generate comprehensive testing for Entity Framework operations and API endpoints
+
+Expected Deliverables:
+- Complete Entity Framework models with e-commerce relationship mapping
+- Repository and service layers with business logic and transaction management
+- ASP.NET Core API controllers with comprehensive CRUD operations
+- AutoMapper configuration and DTO classes for API integration
+```
+
+### Scenario 2: Healthcare Database Entity Framework Generation
+```yaml
+Context: Healthcare management system with patient records, clinical workflows, and regulatory compliance
+Technology Stack: Healthcare-compliant setup (.NET Core, Entity Framework, PostgreSQL, FluentValidation)
+Business Domain: Healthcare with HIPAA compliance and clinical data management
+
+Entity Framework Generation Focus:
+- Patient medical records with clinical data relationships
+- Provider and appointment management with scheduling constraints
+- Medical billing and insurance processing with audit requirements
+- Clinical decision support with treatment protocols and outcomes
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Generate HIPAA-compliant Entity Framework models with audit trails
+2. security-engineer chatmode → Implement healthcare data protection and access controls
+3. api-engineer chatmode → Create clinical workflow APIs with regulatory compliance features
+4. qa-engineer chatmode → Establish patient safety and data integrity validation
+
+Expected Deliverables:
+- HIPAA-compliant Entity Framework models with comprehensive audit trails
+- Clinical workflow repository and service layers with regulatory compliance
+- Healthcare API controllers with patient data protection and access controls
+- Comprehensive validation framework for clinical data integrity
+```
+
+### Scenario 3: Financial Services Entity Framework Architecture
+```yaml
+Context: Financial institution with transaction processing, account management, and regulatory reporting
+Technology Stack: Enterprise financial setup (.NET Framework, Entity Framework, Oracle, Enterprise Library)
+Business Domain: Financial services with real-time transaction processing and compliance
+
+Entity Framework Generation Focus:
+- Account management with complex financial product relationships
+- Transaction processing with real-time fraud detection integration
+- Customer onboarding with KYC and compliance validation
+- Regulatory reporting with automated compliance checks
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Generate financial Entity Framework models with Oracle optimization
+2. security-engineer chatmode → Implement financial security controls and fraud detection
+3. api-engineer chatmode → Create real-time transaction processing APIs
+4. deployment-engineer chatmode → Set up high-availability Entity Framework configuration
+
+Expected Deliverables:
+- Financial services Entity Framework models with transaction integrity
+- Oracle-optimized DbContext with performance tuning and connection pooling
+- Real-time transaction API controllers with fraud detection integration
+- Regulatory reporting services with automated compliance validation
+```
+
+### Scenario 4: Manufacturing ERP Entity Framework Integration
+```yaml
+Context: Manufacturing company with ERP system integration and production management
+Technology Stack: Industrial setup (.NET Core, Entity Framework, MySQL, Hangfire)
+Business Domain: Manufacturing with production planning, quality control, and supply chain management
+
+Entity Framework Generation Focus:
+- Production planning with work orders and resource scheduling
+- Quality control with inspection processes and compliance tracking
+- Supply chain management with supplier relationships and procurement
+- Equipment maintenance with predictive maintenance and asset tracking
+
+GitHub Copilot Workflow:
+1. data-engineer chatmode → Generate manufacturing Entity Framework models with MySQL optimization
+2. api-engineer chatmode → Create production management APIs with real-time monitoring
+3. qa-engineer chatmode → Implement quality control validation and testing frameworks
+4. deployment-engineer chatmode → Set up scalable Entity Framework infrastructure
+
+Expected Deliverables:
+- Manufacturing Entity Framework models with production workflow relationships
+- MySQL-optimized DbContext with performance tuning for high-volume operations
+- Production management API controllers with real-time monitoring and alerts
+- Quality control services with automated inspection and compliance validation
+```
+
+## GitHub Copilot Integration
+
+### Chatmode Coordination Patterns
+```
+Entity Framework Generation → data-engineer chatmode (lead)
+├─ API Controller Development → api-engineer chatmode
+├─ Data Security Implementation → security-engineer chatmode
+├─ Frontend Integration → frontend-engineer chatmode
+├─ Testing Strategy → qa-engineer chatmode
+└─ Infrastructure Configuration → deployment-engineer chatmode
+```
+
+### Context Handoff Information
+- **To api-engineer**: Entity Framework models, repository interfaces, DTO specifications, API endpoint requirements
+- **To security-engineer**: Data access control requirements, audit trail specifications, compliance validation needs
+- **To frontend-engineer**: API endpoint documentation, data models, integration patterns, validation requirements
+- **To qa-engineer**: Testing strategies, Entity Framework testing patterns, performance benchmarks
+- **To deployment-engineer**: DbContext configuration, connection strings, performance tuning, deployment requirements
+
+### GitHub Actions Integration
+- **Code Generation**: Automated Entity Framework model generation from database schema changes
+- **Migration Management**: Automated database migration generation and deployment
+- **Testing Integration**: Automated testing for Entity Framework operations and API endpoints
+- **Performance Monitoring**: Continuous monitoring of Entity Framework query performance and optimization
+
+## Configuration Adaptation
+
+**IMPORTANT**: This prompt adapts to project specifications by reading `copilot.instructions.md`:
+
+- **.NET Framework Version**: Automatically configures Entity Framework version and features based on .NET version specification
+- **Database System**: Optimizes Entity Framework configuration for SQL Server, PostgreSQL, MySQL, or Oracle databases
+- **Business Domain**: Adapts entity modeling and validation patterns to industry-specific requirements and compliance needs
+- **Performance Requirements**: Configures Entity Framework performance optimizations based on scale and performance expectations
+- **Security Standards**: Implements appropriate data access security measures and audit trail requirements
+
+**The data-engineer chatmode will automatically analyze project configuration and database schema to deliver optimal Entity Framework code generation while maintaining the functional requirements specified above.**
 SELECT
     t.TABLE_SCHEMA,
     t.TABLE_NAME,

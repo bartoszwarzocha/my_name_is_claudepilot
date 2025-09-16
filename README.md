@@ -4,16 +4,16 @@
 
 **Note**: This project is a derivative work of [My Name Is Claude](https://github.com/bartoszwarzocha/my_name_is_claude), adapted specifically for GitHub Copilot ecosystem.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![GitHub](https://img.shields.io/badge/GitHub-Copilot-blue.svg)](https://github.com/features/copilot)
-[![Enterprise](https://img.shields.io/badge/Enterprise-Ready-green.svg)](https://github.com/features/copilot-enterprise)
+[![Version](https://img.shields.io/badge/Version-1.1.0-FF6B35?style=flat-square&logo=github&logoColor=white)](#)
+[![GitHub Copilot](https://img.shields.io/badge/GitHub-Copilot-FF6B35?style=flat-square&logo=github&logoColor=white)](https://github.com/features/copilot)
+[![MIT License](https://img.shields.io/badge/License-MIT-00aaff?style=flat-square)](https://opensource.org/licenses/MIT)
 
 ## 📚 Table of Contents
 
 - [🚀 Overview](#-overview)
 - [✨ Key Features](#-key-features)
-  - [🎯 Specialized Chatmodes (12)](#-specialized-chatmodes-12)
-  - [📝 Expert Prompts (50)](#-expert-prompts-50)
+  - [🎯 Specialized Chatmodes](#-specialized-chatmodes)
+  - [📝 Expert Prompts](#-expert-prompts)
   - [🔧 Technology Adaptive](#-technology-adaptive)
   - [🏢 Enterprise Features](#-enterprise-features)
 - [🎯 Quick Start](#-quick-start)
@@ -30,13 +30,13 @@
 
 ## 🚀 Overview
 
-My Name Is ClaudePilot is a comprehensive GitHub Copilot framework designed for enterprise software development. It provides 12 specialized chatmodes and 50 expert-level prompts that adapt to your technology stack and guide you through the complete development lifecycle.
+My Name Is ClaudePilot is a comprehensive GitHub Copilot framework designed for enterprise software development. It provides specialized chatmodes and expert-level prompts that adapt to your technology stack and guide you through the complete development lifecycle.
 
 Built for enterprise teams who demand excellence, security, and compliance in their development processes.
 
 ## ✨ Key Features
 
-### 🎯 Specialized Chatmodes (12)
+### 🎯 Specialized Chatmodes
 
 #### Business & Strategy
 - **business-analyst** - Requirements gathering, stakeholder management, process analysis
@@ -60,24 +60,24 @@ Built for enterprise teams who demand excellence, security, and compliance in th
 #### Operations
 - **deployment-engineer** - DevOps, CI/CD pipelines, infrastructure automation
 
-### 📝 Expert Prompts (50)
+### 📝 Expert Prompts
 
-#### Agent Prompts (41)
+#### Agent Prompts
 Domain-specific expertise for focused development tasks:
-- **API Development** (6): REST API design, GraphQL, microservices, Swagger generation
-- **Architecture** (2): System architecture design, desktop application patterns
-- **Business Analysis** (3): Requirements gathering, process analysis, business case development
-- **Data Engineering** (4): Database design, ETL implementation, backend integration
-- **Deployment** (2): CI/CD pipelines, desktop deployment and packaging
-- **Design** (1): User research and persona development
-- **Frontend** (12): React/Angular development, testing, accessibility, performance
-- **Product** (3): Feature implementation, MVP scoping, user story management
-- **QA** (1): Application performance optimization
-- **Quality** (1): Test automation and quality assurance
-- **Review** (2): Security vulnerability assessment, code quality analysis
-- **Security** (7): Compliance, identity management, penetration testing, threat modeling
+- **API Development**: REST API design, GraphQL, microservices, Swagger generation
+- **Architecture**: System architecture design, desktop application patterns
+- **Business Analysis**: Requirements gathering, process analysis, business case development
+- **Data Engineering**: Database design, ETL implementation, backend integration
+- **Deployment**: CI/CD pipelines, desktop deployment and packaging
+- **Design**: User research and persona development
+- **Frontend**: React/Angular development, testing, accessibility, performance
+- **Product**: Feature implementation, MVP scoping, user story management
+- **QA**: Application performance optimization
+- **Quality**: Test automation and quality assurance
+- **Review**: Security vulnerability assessment, code quality analysis
+- **Security**: Compliance, identity management, penetration testing, threat modeling
 
-#### Workflow Prompts (7)
+#### Workflow Prompts
 End-to-end process orchestration for complex projects:
 - **GitHub Issue to Implementation** - Complete development workflow from issue analysis to production
 - **PR Review to Deployment** - Automated deployment pipeline with risk assessment
@@ -87,7 +87,7 @@ End-to-end process orchestration for complex projects:
 - **Cross-Chatmode Context Handoff** - Seamless transitions between specialized chatmodes
 - **Enterprise Development Governance** - Compliance automation and quality gates
 
-#### Init Prompts (2)
+#### Init Prompts
 Project setup and configuration:
 - **New Project** - Greenfield project initialization with best practices
 - **Existing Project** - Onboarding to existing codebases with analysis
@@ -223,43 +223,39 @@ graph TD
 
 ```
 .github/
-├── chatmodes/              # 12 specialized chatmodes
-│   ├── business-analyst.md
-│   ├── software-architect.md
-│   ├── frontend-engineer.md
-│   └── ... (9 more chatmodes)
-├── prompts/
-│   ├── agents/            # 41 domain-specific prompts
-│   │   ├── api/          # API development (6 prompts)
-│   │   ├── frontend/     # Frontend development (12 prompts)
-│   │   ├── security/     # Security engineering (7 prompts)
-│   │   └── ... (8 more categories)
-│   ├── workflows/        # 7 end-to-end orchestration prompts
-│   ├── init/            # 2 project initialization prompts
-│   ├── README.md        # Comprehensive prompts documentation
-│   └── TESTING.md       # Enterprise testing framework
-docs/
-├── chatmode-workflow.puml  # PlantUML workflow diagram
-examples/                   # Usage examples and real-world scenarios
-├── desktop-book-writing-application.md
-├── angular-invoice-system-migration.md
-└── legacy-asp-net-modernization-tdd.md
-work/                      # Migration and strategy documentation (optional)
+├── chatmodes/              # Specialized chatmodes
+├── prompts/                # Comprehensive prompt library
+│   ├── agents/            # Domain-specific prompts
+│   ├── workflows/         # End-to-end orchestration prompts
+│   ├── init/              # Project initialization prompts
+│   ├── README.md          # Prompts documentation
+│   └── TESTING.md         # Testing framework
+CHANGELOG.md               # Version history and updates
+CLAUDE.md                  # Framework specification
+FRAMEWORK_ROADMAP.md       # Development roadmap
+LICENSE                    # MIT License
+README.md                  # This documentation
+VERSION                    # Current framework version
 copilot.instructions.md    # Project configuration template
+docs/                      # Architecture diagrams
+examples/                  # Real-world usage scenarios
+work/                      # Migration utilities (optional)
 ```
 
-### Note about `/work` Directory
+### Framework Components
 
-The `/work` directory contains migration strategies and documentation from the original "My Name Is Claude" project. This directory is **optional** and can be safely removed if you:
+**Core Directories:**
+- **`.github/`** - GitHub Copilot chatmodes and comprehensive prompt library
+- **`docs/`** - Architecture diagrams and technical documentation
+- **`examples/`** - Real-world implementation scenarios and usage patterns
 
-- Only use My Name Is ClaudePilot (don't work with the original project)
-- Don't need migration documentation and strategies
-- Want to reduce project size
+**Optional Components:**
+- **`work/`** - Migration utilities and synchronization tools with parent framework (optional)
 
-**Keep the `/work` directory if you:**
-- Work with both My Name Is Claude and My Name Is ClaudePilot projects
-- Need to update ClaudePilot based on changes in the original project
-- Want access to migration strategies and implementation documentation
+**Configuration Files:**
+- **`copilot.instructions.md`** - Project-specific configuration template
+- **`CLAUDE.md`** - Complete framework specification and guidelines
+- **`VERSION`** - Current framework version (1.1.0)
 
 ## 🎯 Usage Examples
 
@@ -356,7 +352,7 @@ If you work with both projects and want to update My Name Is ClaudePilot based o
 2. **Use Update Prompt** - Apply the comprehensive update procedure:
    ```
    @github work/update_prompt.md
-
+   
    Context: Update my_name_is_claudepilot based on latest changes in my_name_is_claude
    - Automatic change detection and analysis
    - Migration strategy application
